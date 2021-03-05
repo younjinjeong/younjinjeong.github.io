@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
 <head>
@@ -8,20 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     <meta name="googlebot" content="index,follow,snippet,archive">
-    
-    <!--
-    <link rel="stylesheet" href="{{ "hugo-theme-console/css/terminal-0.7.1.min.css" | absURL }}">
+    <link rel="stylesheet" href="{{ "hugo-theme-console/css/terminal-0.7.1.min.css" | absURL}}">
     <link rel="stylesheet" href="{{ "hugo-theme-console/css/animate-3.7.2.min.css" | absURL }}">
-    <link rel="stylesheet" href="{{ "hugo-theme-console/css/console.css" | absURL }}">
-    --> 
-    <link rel="stylesheet" href="hugo-theme-console/css/terminal-0.7.1.min.css">
-    <link rel="stylesheet" href="hugo-theme-console/css/animate-3.7.2.min.css">
-    <link rel="stylesheet" href="hugo-theme-console/css/console.css">
-
-    <!-- Xterm -->
-    
-    <link rel="stylesheet" href="hugo-theme-console/css/xterm.css" />
-    <script type="text/JavaScript" src="hugo-theme-console/js/lib/jquery-3.1.1.slim.js" ></script>
+    <link rel="stylesheet" href="{{ "hugo-theme-console/css/console.css" | absURL}}" >
 
     {{ `
       <!--[if lt IE 9]>
@@ -40,9 +30,9 @@
 
     {{- partial "header.html" . -}}
     
-    <!-- Xterm -->
-    
-    <script src="hugo-theme-console/js/lib/xterm.js"></script>
+    <link rel="stylesheet" href="{{ "hugo-theme-console/css/xterm.css" | absURL}}">
+    <script type="text/JavaScript" src="{{ "hugo-theme-console/js/lib/jquery-3.1.1.slim.js" | absURL }}" ></script>
+    <script src="{{ "hugo-theme-console/js/lib/xterm.js" | absURL }}"></script>
 
 </head>
 <body class="terminal">

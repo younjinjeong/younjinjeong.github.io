@@ -27,9 +27,7 @@ $(function () {
     };
 
     term.writeln('-----------------------');
-    term.writeln('Welcome to KEBEROS Blog');
-    term.writeln('This is a local terminal to explore this BLOG pages.');
-    term.writeln('Try Linux CLI commnads here.');
+    term.writeln('Blog CLI');
     term.writeln('');
     prompt(term);
 

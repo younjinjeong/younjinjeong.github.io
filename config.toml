@@ -1,4 +1,5 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
-title = "Younjin JEONG's Blog"
+title = "Distritubtion Complete"
 theme = "hugo-theme-console" 
+pagigate = 15 
