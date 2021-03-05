@@ -24,6 +24,7 @@ jobs:
         run: | 
           pwd
           hugo --minify
+          ls -alt ./public/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

@@ -1,6 +1,11 @@
 # Hugo default output directory
 public
 
+# node moduels 
+node_modules
+package.json 
+package-lock.json 
+
 ## OS Files
 # Windows
 Thumbs.db
