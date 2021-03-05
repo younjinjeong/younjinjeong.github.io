@@ -27,8 +27,8 @@ $(function () {
     };
 
     term.writeln('-----------------------');
-    term.writeln('Blog CLI');
-    term.writeln('');
+    term.writeln('|      Blog CLI      |');
+    term.writeln('-----------------------');
     prompt(term);
 
     term.onData(e => {
