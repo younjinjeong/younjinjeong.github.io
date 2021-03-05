@@ -3,7 +3,7 @@
 <h1>About</h1>
 
 <p>
-Younjin JEONG's Technical Blog <a href="about/">(more)</a>
+KEBEROSJ's Technical Blog <a href="about/">(more)</a>
 </p>
 <br/>
 
@@ -23,6 +23,8 @@ Younjin JEONG's Technical Blog <a href="about/">(more)</a>
 {{ end }}
 </div>
 
+
+<!-- Remove Photo feature for a while  
 <h1>Latest photos</h1>
 
 <div class="image-grid">
@@ -39,15 +41,12 @@ Younjin JEONG's Technical Blog <a href="about/">(more)</a>
 {{ end }}
 </div>
 
+-->
 
-<div id="terminal">
-
-    <script>
-        var term = new Terminal();
-        term.open(document.getElementById('terminal'));
-        term.write('blog-ctrl \x1B[1;3;31mxterm.js\x1B[0m $ ')
-    </script>
-
+<!-- <div id="terminal" style="height: 200px;">   -->
+<h1>Blog Terminal</h1>
+<div id="terminal">   
+    <script src="hugo-theme-console/js/xterm-blog.js"></script>
 </div>
 
 {{ end }}
