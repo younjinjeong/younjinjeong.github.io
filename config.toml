@@ -1,4 +1,4 @@
-baseURL = "https://younjinjeong.github.io/"
+baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
 title = "Distritubtion Complete"
 theme = "hugo-theme-console" 
