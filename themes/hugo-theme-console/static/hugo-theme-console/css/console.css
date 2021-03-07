@@ -71,10 +71,7 @@
 }
 
 .ascii-art {
-    position: inherit;
     font-family: monospace;
-    font-size: 22px;
-    font-weight: 400;
     white-space: pre;
     align-content: center;
 }
