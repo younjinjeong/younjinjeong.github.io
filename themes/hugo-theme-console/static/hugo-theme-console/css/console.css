@@ -70,6 +70,15 @@
     font-family: var(--font-stack);
 }
 
+.ascii-art {
+    position: inherit;
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: 400;
+    white-space: pre;
+    align-content: center;
+}
+
 body {
     font-family: var(--font-stack);
     font-size: var(--global-font-size);

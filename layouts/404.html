@@ -1,10 +1,20 @@
 {{ define "main" }}
 
 <main id="main">
-    <div>
-    <h1>Page not found</h1>
-        <p><a href="{{ .Site.BaseURL }}">Return to the home page</a>.</p>
+
+    <div class="ascii-art">
+
+  _                        _                        _                
+  |_) _. ._  o  _ o   |_|_ / \ |_|_   |\ |  _ _|_   |_ _      ._   _| 
+  |  (_| | | | (_ o     |  \_/   |    | \| (_) |_   | (_) |_| | | (_| 
+                                                                      
+ 
     </div>
+
+    <div>
+        <p><a href="{{ .Site.BaseURL }}">Return to the page root</a>.</p>
+    </div>
+
 </main>
 
 {{ end }}
