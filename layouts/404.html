@@ -3,46 +3,44 @@
 <main id="main">
 
     <div>
-        <p><a href="{{ .Site.BaseURL }}">Return to the page root</a>.</p>
+        <p><a href="{{ .Site.BaseURL }}">Reboot the blog</a>.</p>
     </div>
+
+    <style>
+        .ascii-art {
+            all: initial;
+            font-family: monospace;
+            font-size: 10pt; 
+            white-space: pre !important;
+            color: rgb(255, 13, 13);
+        }
+    </style>
+
+    <div class="ascii-art">
+        OOPs, Something went Wrong!
+
+            PID: 5632    TASK: ffff88e69628c080  CPU: X   PAGE: blog
+        #0 [ffffa67440b23ba0] machine_kexec at ffffffffa0c53f68
+        #1 [ffffa67440b23bf8] __crash_kexec at ffffffffa0d086d1
+        #2 [ffffa67440b23cb8] crash_kexec at ffffffffa0d08738
+        #3 [ffffa67440b23cd0] oops_end at ffffffffa0c298b3
+        #5 [ffffa67440b23d50] __do_page_fault at ffffffffa0c62476
+            [exception RIP: sysrq_handle_crash+18]
+        #7 [ffffa67440b23e78] __handle_sysrq at ffffffffa102c597
+            RIP: 00007f3952463970  RSP: 00007ffc7f3a4e58  RFLAGS: 00000246
+            RAX: ffffffffffffffda  RBX: 0000000000000002  RCX: 00007f3952463970
+            RDX: 0000000000000002  RSI: 00007ffc7f3a4f60  RDI: 0000000000000003
+            RBP: 00007ffc7f3a4f60   R8: 00005648f508b610   R9: 00007f3952944480
+            R10: 0000000000000839  R11: 0000000000000246  R12: 0000000000000002
+            R13: 0000000000000001  R14: 00005648f508b530  R15: 0000000000000002
+            ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b
+
+    </div>
+
+<div>
+    <p><a href="{{ .Site.BaseURL }}">Reboot the blog</a>.</p>
+</div>
 
 </main>
-
-<style>
-    .ascii-art {
-        all: initial;
-        font-family: monospace;
-        font-size: 10pt; 
-        white-space: pre !important;
-        color: lawngreen;
-        letter-spacing: 0.3em;
-    }
-</style>
-
-<div class="ascii-art">
-    
-    
-    "
-    404 Not Found
-
-|                _,=.=,_
-|                ,'=.     `\___,
-|            /    \  (0     |        __ _
-|            /      \     ___/       /| | ''--.._
-|            |      |     \)         || |    ===|\
-|            ',   _/    .--'         || |   ====| |
-|                `"`;    (             || |    ===|/
-|                [[[[]]_..,_        \|_|_..--;"`
-|                /  .--""``\\          __)__|_
-|                .'       .\,,||___     |        |
-|        (   .'     -""`| `"";___)---'|________|__
-|        |\ /         __|   [_____________________]
-|            \|       .-'  `\        |.----------.|
-|            \  _           |       ||          ||
-|        jgs  (          .-' )      ||          ||
-|            `""""""""""""`      """         """
-"
-    </div>
-</br>
 
 {{ end }}
