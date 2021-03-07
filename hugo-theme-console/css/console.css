@@ -71,6 +71,8 @@
 }
 
 .ascii-art {
+    all: unset;
+    align-content: center;
     font-family: monospace, 'courier new';
     font-size: 10pt; 
     white-space: pre-wrap;
