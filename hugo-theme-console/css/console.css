@@ -74,7 +74,7 @@
     display: inline-block;
     font-family: monospace;
     white-space: pre;
-    letter-spacing: -0.2em;
+    letter-spacing: 0.4em;
     line-height: 0.8em;
     align-content: center;
 }
