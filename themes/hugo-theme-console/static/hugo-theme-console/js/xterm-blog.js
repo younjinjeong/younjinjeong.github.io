@@ -5,11 +5,11 @@ $(function () {
   term.open(document.getElementById('terminal')); 
 
   term.setOption('theme', {
-    background: 'white',
-    foreground: 'green',
-    cursor: 'green',
+    background: '#000000',
+    foreground: '#29ff53',
+    cursor: '#ffffff',
     cursorStyle: 'underscore',
-    cursorBlink: 'block'
+    cursorBlink: true
   }); 
 
   // Set terminal size 
@@ -17,7 +17,7 @@ $(function () {
 
   // Variables to handle commands 
   var curr_line = "";
-  var entries =[];
+  // var entries =[];
 
   function runBlogTerminal() {
     if (term._initialized) {
