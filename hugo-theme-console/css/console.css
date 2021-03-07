@@ -71,12 +71,14 @@
 }
 
 .ascii-art {
+    all: initial; 
     display: inline-block;
     font-family: monospace;
     white-space: pre;
-    letter-spacing: 0.4em;
+    letter-spacing: 0.1em;
     line-height: 0.8em;
     align-content: center;
+    color: lawngreen;
 }
 
 body {
