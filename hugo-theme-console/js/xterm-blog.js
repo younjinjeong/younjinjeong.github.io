@@ -6,13 +6,18 @@ $(function () {
 
   term.setOption('theme', {
     background: 'white',
-    foreground: 'black',
+    foreground: 'green',
     cursor: 'green',
     cursorStyle: 'underscore',
-    cursorBlink: true
+    cursorBlink: 'block'
   }); 
 
+  // Set terminal size 
   term.resize(80,6);
+
+  // Variables to handle commands 
+  var curr_line = "";
+  var entries =[];
 
   function runBlogTerminal() {
     if (term._initialized) {
@@ -21,35 +26,72 @@ $(function () {
 
     term._initialized = true;
 
-
-    /* 
-     * Comment out until we have automated Cols setup 
-
-    const observer = new ResizeObserver(entries => {
-
-      console.log(term)
-      const cellWidth = term._core.rederer.dimensions.actualCellWidth
-      const cellHeight = term._core.renderer.dimensions.actualCellHeight
-      const cols = Math.floor(entries[0].contentRect.width / cellWidth)
-      const rows = Math.floor(entries[0].contentRect.height / cellHeight)
-
-      term.resize(cols, rows); 
-    })
-    */
-
-    /*
-    term.prompt = () => {
-      term.write('\x1B[1;3;31m\r\nblog-ctl\x1B[0m $');
-    };
-    */
-
-    term.writeln('Blog shell - Powered by XtermJS.org');
+    term.writeln('Blog shell: Powered by XtermJS.org');
     prompt(term);
 
+    /* functions to handle commands */ 
+
+    function lsCmd() {
+
+      const Http = new XMLHttpRequest();
+      const url = 'https://blog.younjinjeong.io/posts/';
+     
+      Http.open("GET", url);
+      Http.send();
+
+      Http.onreadystatechange = (e) => {
+
+        // ToDo: parse Http response to get post lits ;
+        console.log(e);
+        
+      };
+
+      term.write("\r\n");
+      curr_line = ""; 
+    
+    }
+
+    function moreCmd() {
+      // ToDo: execute more command to display specified post 
+      curr_line = "";
+    }
+
+    function findCmd() {
+      // ToDo: execute search command to display search resutls  
+      curr_line = "";
+    }
+
+    // Get key strokes and handle the commnad  
+
     term.onData(e => {
+
       switch (e) {
-        case '\r': // Enter
+        case '\r': // Enter key triggers the handler. 
+          if ( curr_line != "") {           
+            switch (curr_line) {
+              case "ls": 
+                lsCmd(); 
+                prompt(term);
+                break;
+              case "clear": 
+                term.clear(); 
+                curr_line = "";
+                break;
+              case "find":
+                findCmd();
+                prompt(term);
+              default: 
+                term.write("\r\nblog-shell: command not found");
+                prompt(term);
+            }
+          }
+            
         case '\u0003': // Ctrl+C
+          prompt(term);
+          break;
+        case '\t': // TAB
+          term.write('\r\nsupported commands:')
+          term.write('\r\nls  more  find');
           prompt(term);
           break;
         case '\u007F': // Backspace (DEL)
@@ -60,10 +102,11 @@ $(function () {
           break;          
         default: // Print all other characters for demo
           term.write(e);
-          
+          curr_line += e; 
       }
     });
   }
+  
 
   function prompt(term) {
     // term.write('\r\n$ ');
