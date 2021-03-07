@@ -2,8 +2,23 @@
 
 <main id="main">
 
-    <link rel="stylesheet" href="{{ "hugo-theme-console/css/console.css" | absURL}}" >
-    <div class="ascii-art">
+    <div>
+        <p><a href="{{ .Site.BaseURL }}">Return to the page root</a>.</p>
+    </div>
+
+</main>
+
+<div class="ascii-art">
+    <style>
+        .ascii-art {
+            all: initial;
+            font-family: monospace;
+            font-size: 10pt; 
+            white-space: pre-wrap;
+            color: lawngreen;
+            letter-spacing: 0.3em;
+        }
+    </style>
 
     404 Not Found
 
@@ -25,14 +40,6 @@
        `""""""""""""`      """         """
 
     </div>
-
 </br>
-
-
-    <div>
-        <p><a href="{{ .Site.BaseURL }}">Return to the page root</a>.</p>
-    </div>
-
-</main>
 
 {{ end }}
