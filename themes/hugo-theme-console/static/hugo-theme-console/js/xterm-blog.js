@@ -46,7 +46,6 @@ $(function () {
         
       };
 
-      term.write("\r\n");
       curr_line = ""; 
     
     }
@@ -71,7 +70,6 @@ $(function () {
             switch (curr_line) {
               case "ls": 
                 lsCmd(); 
-                prompt(term);
                 curr_line = "";
                 break;
               case "clear": 
@@ -85,7 +83,8 @@ $(function () {
                 break;
               default: 
                 term.write("\r\nblog-shell: command not found");
-                prompt(term);
+                curr_line = "";
+                // prompt(term);
             }
           }
             
