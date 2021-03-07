@@ -71,8 +71,11 @@
 }
 
 .ascii-art {
+    display: inline-block;
     font-family: monospace;
     white-space: pre;
+    letter-spacing: -0.2em;
+    line-height: 0.8em;
 }
 
 body {
