@@ -31,7 +31,7 @@
 }
 
 :root {
-    --global-font-size: 16px;
+    --global-font-size: 15px;
     --global-font-color: rgb(210, 210, 210);
     --mono-font-stack: Roboto Mono, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
     --font-stack: Roboto Mono, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -43,7 +43,7 @@
 
 @media only screen and (max-width: 850px) {
     :root {
-        --global-font-size: 14px;
+        --global-font-size: 15px;
         --global-font-color: rgb(174, 174, 174);
         --global-line-height: 1.6em;
         --page-width: 70em;
@@ -180,7 +180,7 @@ figure {
 
 .terminal-prompt::after {
     -webkit-animation: cursor 1s infinite;
-    animation: cursor 1s infinite;
+    animation: cursor 1s infinite; 
     width: 10px;
 }
 
