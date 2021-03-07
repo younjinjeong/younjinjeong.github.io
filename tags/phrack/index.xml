@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>phrack on pwd</title><link>https://blog.younjinjeong.io/tags/phrack/</link><description>Recent content in phrack on pwd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 07 Mar 2021 16:21:21 +0800</lastBuildDate><atom:link href="https://blog.younjinjeong.io/tags/phrack/index.xml" rel="self" type="application/rss+xml"/><item><title>Phrack magazine Vol7 Issue51 File Descriptor Hijacking</title><link>https://blog.younjinjeong.io/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/</link><pubDate>Sun, 07 Mar 2021 16:21:21 +0800</pubDate><guid>https://blog.younjinjeong.io/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/</guid><description>블로그 테스트용으로 올려보는 예전 번역 10년전 KHDP에서 번역했었던
+File descriptor hijacking 에 대한 글이 생각나
+구글링을 해 보았더니, 수정없이 그냥들 보고 있는게 많더라.
+사실, FD Hijacking 정도 볼 것 같으면
+고딩의 저 어설픈 번역을 수정 할 법도 한데 그냥들 보고 있다는 말이지 홀홀..
+10년이 지난 지금, 아직도 저런 공격방법이 통할 지는 모르겠지만
+그 시절, 열정만을 가지고 밤새워 번역하고 코드 테스트도 해보며
+이땅에 리눅스 및 BSD가 창궐하기전 홀로 즐겼던 세상으로 다시 돌아가 본다.</description></item></channel></rss>
