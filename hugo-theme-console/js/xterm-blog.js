@@ -72,6 +72,7 @@ $(function () {
               case "ls": 
                 lsCmd(); 
                 prompt(term);
+                curr_line = "";
                 break;
               case "clear": 
                 term.clear(); 
@@ -80,6 +81,8 @@ $(function () {
               case "find":
                 findCmd();
                 prompt(term);
+                curr_line = "";
+                break;
               default: 
                 term.write("\r\nblog-shell: command not found");
                 prompt(term);
