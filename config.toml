@@ -1,5 +1,5 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
-title = "PWD"
+title = "pwd"
 theme = "hugo-theme-console" 
 pagigate = 15 
