@@ -91,7 +91,7 @@ $(function () {
           break;
         case '\t': // TAB
           term.write('\r\nsupported commands:')
-          term.write('\r\nls  more  find');
+          term.write('\r\nls  clear   find');
           prompt(term);
           break;
         case '\u007F': // Backspace (DEL)
