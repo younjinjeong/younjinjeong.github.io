@@ -3,3 +3,4 @@ languageCode = "en-us"
 title = "pwd"
 theme = "hugo-theme-console" 
 pagigate = 15 
+googleAnalytics = "G-LF5W12M5RW"

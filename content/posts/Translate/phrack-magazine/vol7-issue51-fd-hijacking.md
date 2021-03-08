@@ -2,9 +2,14 @@
 title: "Phrack magazine Vol7 Issue51 File Descriptor Hijacking"
 date: 2021-03-07T16:21:21+08:00
 draft: false
-authors:
-    - Younjin JEONG
 tags: [phrack,file descriptor]
+authors:
+  - younjinjeong
+categories:
+  - Linux
+  - FreeBSD
+  - Hack
+  - Phrack
 ---
 
 ### 블로그 테스트용으로 올려보는 예전 번역 
