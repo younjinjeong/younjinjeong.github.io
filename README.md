@@ -23,7 +23,7 @@ This is a ToyProject blog that uses
 2. Put a termial to interact with page in CLI style 
 
 
-
+[About this blog](https://blog.younjinjeong.io/about/)
 
 
 
