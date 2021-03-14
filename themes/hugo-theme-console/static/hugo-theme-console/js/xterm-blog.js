@@ -40,10 +40,10 @@ $(function () {
       Http.send();
 
       Http.onreadystatechange = (e) => {
-
         // ToDo: parse Http response to get post lits ;
-        console.log(e);
-        
+        // console.log(e);
+        // document.write(Http.reponseText);
+        // document.getElementsByClassName('container').innerHTML = (Http.responseText);
       };
 
       curr_line = ""; 
