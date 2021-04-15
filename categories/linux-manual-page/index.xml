@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux Manual Page on YJ Blog</title><link>https://blog.younjinjeong.io/categories/linux-manual-page/</link><description>Recent content in Linux Manual Page on YJ Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 15 Apr 2021 21:53:19 +0800</lastBuildDate><atom:link href="https://blog.younjinjeong.io/categories/linux-manual-page/index.xml" rel="self" type="application/rss+xml"/><item><title>Syscalls - Linux manual page</title><link>https://blog.younjinjeong.io/posts/translate/syscalls/syscalls/</link><pubDate>Thu, 15 Apr 2021 21:53:19 +0800</pubDate><guid>https://blog.younjinjeong.io/posts/translate/syscalls/syscalls/</guid><description>심심하니까 시리즈 번역물을 만들어 보기로 한다. 또하나의 장기 프로젝트 - 시스템콜
+원문 링크 syscalls(2) - Linux manual page
+번역 이름 syscalls - Linux system calls
+시놉시스 Linux system calls
+설명 시스템콜이라 함은 리눅스 커널과 애플리케이션 사이의 기반 인터페이스를 의미한다.
+시스템콜과 라이브러리 래퍼(wrapper) 함수 일반적으로 애플리케이션에서 시스템콜을 직접 호출하는 경우는 많지않다. 대신 glibc(또는 다른 라이브러리)에 내장된 래퍼 함수를 통해 호출된다. 시스템콜을 직접 호출하는 방법에 대해 알고 싶다면, 다음을 참조하자. 항상은 아니지만 대부분의 경우, 라이브러리에 내장된 래퍼 함수의 이름은 호출하고자 하는 시스템콜의 이름과 동일하다.</description></item></channel></rss>
