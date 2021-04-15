@@ -19,14 +19,19 @@ Distributed Computing, Cloud, and Open source.
 
 # About me
 
-Younjin Jeong  
 
+## Younjin Jeong  
 - Cloud Architect @DBS Bank ltd. 
 - South Korean in Singapore 
 - ex-Pivot, Principal Technologist 
 - ex-Amazonian, Solutions Architect 
 - RC, Cycle, Music, Driving 
 
+## Books
+- [Building Applications in the Cloud: Concpets, Patterns and Projects](https://jpub.tistory.com/167) - Translate 
+- [Cloud Native Java](http://m.yes24.com/Goods/Detail/61788283) - Translate 
+- [Netflix Cloud Engineering](http://m.yes24.com/Goods/Detail/90445341) - Author 
 
-LinkedIn: https://www.linkedin.com/in/younjin-jeong-8100651b/ 
-Facebook: https://www.facebook.com/younjin.jeong 
+## SNS 
+- LinkedIn: https://www.linkedin.com/in/younjin-jeong-8100651b/ 
+- Facebook: https://www.facebook.com/younjin.jeong 
