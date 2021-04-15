@@ -30,14 +30,14 @@ If you are a big fan of K-drama, then you might hear about "Itaewon Class." And 
 
 [![](http://img.youtube.com/vi/U1Fxt5wCqAg/0.jpg)](http://www.youtube.com/watch?v=U1Fxt5wCqAg "Diamond by Hyunwoo HA with ENG Sub")
 
-As you heard, his voice is crazy. His falsetto, head voice, chest voice, all quality of voice make fantastic emotions. While I listen to "Don't Cry," I always drop my tears. What a bad song! 
+As you heard, his voice is crazy. His falsetto, head voice, chest voice, all quality of voice make fantastic emotions. It pierced whole my body. While I listen to "Don't Cry," I always drop my tears. What a bad song! 
 
 If you want to know more about him, then please check the links below. 
 
 - [Wikipedia](https://en.wikipedia.org/wiki/Ha_Hyun-woo) 
 - [Namu Wiki](https://namu.wiki/w/%ED%95%98%ED%98%84%EC%9A%B0) - Use Google Translater for English 
 
-More K-pop singers come soon! 
+More K-pop singers coming soon! 
 
 
 # 한국말 
