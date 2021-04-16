@@ -1,5 +1,5 @@
 ---
-title: "Syscalls - Linux manual page"
+title: "syscalls(2) - Linux manual page"
 date: 2021-04-15T21:53:19+08:00
 draft: false
 authors:
