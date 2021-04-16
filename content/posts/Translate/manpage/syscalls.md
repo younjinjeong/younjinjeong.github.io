@@ -36,7 +36,7 @@ tags: [Linux, SystemCall, Translate, Korean, syscall]
 
   애플리케이션에서 시스템콜을 직접 호출하는 경우는 많지않다. 대신 glibc(또는 다른 라이브러리)에 내장된 래퍼 함수를 통해 호출된다. 시스템콜을 직접 호출하는 방법에 대해 알고 싶다면, [다음](https://man7.org/linux/man-pages/man2/intro.2.html)을 참조하자. 항상은 아니지만 대부분의 경우, 라이브러리에 내장된 래퍼 함수의 이름은 호출하고자 하는 시스템콜의 이름과 동일하다. 예를들면 glibc는 chdir()이라는 함수를 제공하는데 이는 "chdir" 이라는 시스템콜과 이름이 같다.  
 
-  일반적으로 glibc 내장 래퍼 함수는 매우 간략한 구조를 가진다. 시스템콜을 호출하기 전에 필요한 필요한 인자(arguments)를 올바른 레지스터에 복사하고, 시스템콜의 리턴을 바탕으로 [errno](https://man7.org/linux/man-pages/man3/errno.3.html)를 정확하게 설정하는 정도의 역할을 수행한다. (래퍼 함수가 없이 직접 시스템콜을 호출할때 [syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html)은 이와 동일한 방법과 절차로 시스템콜을 호출한다. __노트__ [syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html)에 명시된 별도의 분리된 에러 레지스터/플래그가 없는 아키텍처에서는 실패한 시스템콜 호출의 결과로 음수(negative)의 에러 상수를 리턴한다. 아무튼 이런 시스템콜 호출 실패가 발생하면 래퍼 함수는 시스템콜로 부터 리턴된 에러 상수에 다시 (-)를 곱하고(양수로 만들기 위해), 이를 [errno](https://man7.org/linux/man-pages/man3/errno.3.html)로 복사한 후 래퍼를 호출한 함수에 -1을 리턴한다.  
+  일반적으로 glibc 내장 래퍼 함수는 매우 간략한 구조를 가진다. 시스템콜을 호출하기 전에 필요한 필요한 인자(arguments)를 올바른 레지스터에 복사하고, 시스템콜의 리턴을 바탕으로 [errno(3)](https://man7.org/linux/man-pages/man3/errno.3.html)를 정확하게 설정하는 정도의 역할을 수행한다. (래퍼 함수가 없이 직접 시스템콜을 호출할때 [syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html)은 이와 동일한 방법과 절차로 시스템콜을 호출한다. __노트__ [syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html)에 명시된 별도의 분리된 에러 레지스터/플래그가 없는 아키텍처에서는 실패한 시스템콜 호출의 결과로 음수(negative)의 에러 상수를 리턴한다. 아무튼 이런 시스템콜 호출 실패가 발생하면 래퍼 함수는 시스템콜로 부터 리턴된 에러 상수에 다시 (-)를 곱하고(양수로 만들기 위해), 이를 [errno](https://man7.org/linux/man-pages/man3/errno.3.html)로 복사한 후 래퍼를 호출한 함수에 -1을 리턴한다.  
 
   래퍼 함수는 시스템콜을 호출하기전에 위에 설명한 기본 동작에 더하여 추가적인 작업을 수행하기도 한다. 예를 들면, (아래에 설명한 이유로 인해) 최근에는 [truncate(2)](https://man7.org/linux/man-pages/man2/truncate.2.html)와 [truncate64(2)](https://man7.org/linux/man-pages/man2/truncate64.2.html) 처럼 하나의 시스템에 두개의 시스템콜이 동시에 존재하는 경우, glibc의 **truncate()** 래퍼 함수가 호출 되었을때 이 두개의 시스템콜중 어떤것이 시스템에서 유효한지 확인한후 올바른 시스템콜을 선택하는 작업이다.   
 
@@ -528,7 +528,7 @@ tags: [Linux, SystemCall, Translate, Korean, syscall]
 
   x86-32를 포함한 많은 플랫폼에서 소켓콜은 모두 [socketcall(2)](https://man7.org/linux/man-pages/man2/socketcall.2.html) (glibc 래퍼 함수)를 사용하여 멀티플렉스 되었으며, System V IPC 콜은 [ipc(2)](https://man7.org/linux/man-pages/man2/ipc.2.html)를 통해 멀티플렉스 되었다.  
 
-  위의 테이블에서 몇몇 슬롯이 공백으로 예약 되어 있으나 (__역주__ 마크다운으로 바꾸면서 공백 지웠음, 나중에 각각의 시스템콜을 번역하면서 추가예정), 다음의 시스템콜은 향후 일반 커널에 추가되지 않을 예정이다. [afs_syscall(2)](), [break(2)](), *ftime(2)*, [getpmsg(2)](), [gtty(2)](), [idle(2)](), [lock(2)](), [madvisel(2)](), [mpx(2)](), [phys(2)](), [prof(2)](), *profil(2)*, [putpmsg(2)](), [security(2)](), [stty(2)](), [tuxcall(2)](), *ulimit(2)*, and [vserver(2)]() ([unimplemented(2)]()의 내용도 참조할 것). 하지만 [ftime(3)](), [profil(3)](), 그리고 [ulimit(3)]() 은 라이브러리 루틴으로서 제공된다. [phys(2)]()를 위한 슬롯은 커널 2.1.116 부터 예약 되었지만,  [umount(2)](); [phys(2)]() 이 두개의 시스템콜은 아직 구현된 적이 없다. [getpmsg(2)]() 와 [putpmsg(2)]() 콜은 STREAMS 지원을 위한 커널 패치에 사용되었지만, 일반 커널에 포함될 일은 없을 것이다. 
+  위의 테이블에서 몇몇 슬롯이 공백으로 예약 되어 있으나 (__역주__ 마크다운으로 바꾸면서 공백 지웠음, 나중에 각각의 시스템콜을 번역하면서 추가예정), 다음의 시스템콜은 향후 일반 커널에 추가되지 않을 예정이다. [afs_syscall(2)](https://man7.org/linux/man-pages/man2/afs_syscall.2.html), [break(2)](https://man7.org/linux/man-pages/man2/break.2.html), *ftime(2)*, [getpmsg(2)](https://man7.org/linux/man-pages/man2/getpmsg.2.html), [gtty(2)](https://man7.org/linux/man-pages/man2/gtty.2.html), [idle(2)](https://man7.org/linux/man-pages/man2/idle.2.html), [lock(2)](https://man7.org/linux/man-pages/man2/lock.2.html), [madvisel(2)](https://man7.org/linux/man-pages/man2/madvise1.2.html), [mpx(2)](https://man7.org/linux/man-pages/man2/mpx.2.html), [phys(2)](https://man7.org/linux/man-pages/man2/phys.2.html), [prof(2)](https://man7.org/linux/man-pages/man2/prof.2.html), *profil(2)*, [putpmsg(2)](https://man7.org/linux/man-pages/man2/putpmsg.2.html), [security(2)](https://man7.org/linux/man-pages/man2/security.2.html), [stty(2)](https://man7.org/linux/man-pages/man2/stty.2.html), [tuxcall(2)](https://man7.org/linux/man-pages/man2/tuxcall.2.html), *ulimit(2)*, and [vserver(2)](https://man7.org/linux/man-pages/man2/vserver.2.html) ([unimplemented(2)](https://man7.org/linux/man-pages/man2/unimplemented.2.html)의 내용도 참조할 것). 하지만 [ftime(3)](https://man7.org/linux/man-pages/man3/ftime.3.html), [profil(3)](https://man7.org/linux/man-pages/man3/profil.3.html), 그리고 [ulimit(3)](https://man7.org/linux/man-pages/man3/ulimit.3.html)은 라이브러리 루틴으로서 제공된다. [phys(2)](https://man7.org/linux/man-pages/man2/phys.2.html)를 위한 슬롯은 커널 2.1.116 부터 예약 되었지만, [umount(2)](https://man7.org/linux/man-pages/man2/umount.2.html); [phys(2)](https://man7.org/linux/man-pages/man2/phys.2.html) 이 두개의 시스템콜은 아직 구현된 적이 없다. [getpmsg(2)](https://man7.org/linux/man-pages/man2/getpmsg.2.html)와 [putpmsg(2)](https://man7.org/linux/man-pages/man2/putpmsg.2.html) 콜은 STREAMS 지원을 위한 커널 패치에 사용되었지만, 일반 커널에 포함될 일은 없을 것이다. 
 
   *set_zone_reclaim(2)*는 2.6.13에 추가되었지만, 2.6.16에서 제거되었다. 이 시스템콜은 유저스페이스에 제공된 적은 없다. 
 
@@ -537,14 +537,14 @@ tags: [Linux, SystemCall, Translate, Korean, syscall]
   특정 리눅스 아키텍처에 존재했으나 삭제된 시스템콜 
 
   AVR32 (리눅스 4.12 이후 삭제)
-  - [pread(2)]()
-  - [pwrite(2)]()
+  - [pread(2)](https://man7.org/linux/man-pages/man2/pread.2.html)
+  - [pwrite(2)](https://man7.org/linux/man-pages/man2/pwrite.2.html)
 
   Blackfin (리눅스 4.17 이후 삭제)
   - *bfin_spinlock(2)* (리눅스 2.6.22에서 추가)
   - *dma_memcpy(2)* (리눅스 2.6.22에서 추가)
-  - [pread(2)]() (리눅스 2.6.22에서 추가)
-  - [pwrite(2)]() (리눅스 2.6.22에서 추가)
+  - [pread(2)](https://man7.org/linux/man-pages/man2/pread.2.html) (리눅스 2.6.22에서 추가)
+  - [pwrite(2)](https://man7.org/linux/man-pages/man2/pwrite.2.html) (리눅스 2.6.22에서 추가)
   - *sram_alloc(2)* (리눅스 2.6.22에서 추가)
   - *sram_free(2)* (리눅스 2.6.22에서 추가)
 
@@ -558,37 +558,37 @@ tags: [Linux, SystemCall, Translate, Korean, syscall]
   - *cmpxchg_badaddr(2)* (리눅스 2.6.36에서 추가)
 
 
-## 특기 사항 
+## 특이 사항 
 
   대략적으로 시스템콜과 상수 __NR_xxx의 선언 코드는 리눅스 커널 소스 **/usr/include/asm/unistd.h**파일의 **sys_xxx()** 루틴에서 찾아볼 수 있다. 이 안에서는 매우 많은 예외를 찾아볼 수 있는데, 이는 다소 비체계적인 방식으로 오래된 시스템콜을 새로운 시스템콜로 대체하는 과정에서 발생된 것입다. 우선 순위를 가진 플랫폼들, 이를테면 sparc, sparc64 그리고 alpha와 같은 운영체제 에뮬레이션에서는 보다 많은 시스템콜이 추가되었다; mips64 역시 32-bit 시스템콜 전체를 포함하고 있다. 
 
-  많은 시간이 흐르면서 일부 시스템콜의 인터페이스 변화 역시 필수적인것이었다. 매우 공통적 이유중 하나는 구조체의 크기를 늘리거나 시스템콜에 전달해야 하는 스칼라 값의 증가가 필요했기 때문이다. 이러한 변화로 인해 일부 아키텍처(오랫동안 지속되었던 i386기반의 32-bit 아키텍처)에서는 오늘날 매우 다양한 그룹의 관련 시스템콜을 찾아볼수 있으며 (예를 들면 [truncate(2)](), [truncate64(2)]()) 비슷한 작업을 처리하지만 인자의 크기와 같은 세부 구현은 다르다. (앞에서 언급한 바와 같이 일반적으로 애플리케이션에서는 이러한 구분을 생각할 필요가 없다: glibc 래퍼 함수가 이러한 작업을 선처리하여 올바른 시스템콜이 호출되도록 지원하며, 오래된 바이너리를 위한 ABI 호환성을 처리해주기 때문이다.) 다양한 버전으로 존재하는 시스템콜에 대한 예제들은 다음과 같다. 
+  많은 시간이 흐르면서 일부 시스템콜의 인터페이스 변화 역시 필수적인것이었다. 매우 공통적 이유중 하나는 구조체의 크기를 늘리거나 시스템콜에 전달해야 하는 스칼라 값의 증가가 필요했기 때문이다. 이러한 변화로 인해 일부 아키텍처(오랫동안 지속되었던 i386기반의 32-bit 아키텍처)에서는 오늘날 매우 다양한 그룹의 관련 시스템콜을 찾아볼수 있으며 (예를 들면 [truncate(2)](https://man7.org/linux/man-pages/man2/truncate.2.html), [truncate64(2)](https://man7.org/linux/man-pages/man2/truncate64.2.html)) 비슷한 작업을 처리하지만 인자의 크기와 같은 세부 구현은 다르다. (앞에서 언급한 바와 같이 일반적으로 애플리케이션에서는 이러한 구분을 생각할 필요가 없다: glibc 래퍼 함수가 이러한 작업을 선처리하여 올바른 시스템콜이 호출되도록 지원하며, 오래된 바이너리를 위한 ABI 호환성을 처리해주기 때문이다.) 다양한 버전으로 존재하는 시스템콜에 대한 예제들은 다음과 같다. 
 
-  - 오늘날 [stat(2)]()의 3개의 다른 버전이 존재한다: *sys_stat()* (slot *__NR_oldstat*), *sys_newstat()* (slot *__NR_stat*), 그리고 *sys_stat64()* (slot *__NR_stat64*) 들이며 가장 마지막이 가장 최신이다. [lstate(2)](), [fstat(2)]() 이 두 시스템콜 역시 이와 유사하게 다른 버전이 존재한다. 
+  - 오늘날 [stat(2)](https://man7.org/linux/man-pages/man2/stat.2.html)의 3개의 다른 버전이 존재한다: *sys_stat()* (slot *__NR_oldstat*), *sys_newstat()* (slot *__NR_stat*), 그리고 *sys_stat64()* (slot *__NR_stat64*) 들이며 가장 마지막이 가장 최신이다. [lstate(2)](https://man7.org/linux/man-pages/man2/lstat.2.html), [fstat(2)](https://man7.org/linux/man-pages/man2/fstat.2.html) 이 두 시스템콜 역시 이와 유사하게 다른 버전이 존재한다. 
   - *__NR_oldolduname*, *__NR_olduname*, *__NR_uname* 정의(define)는 루틴 *sys_olduname()*, *sys_uname*, *sys_newuname()* 에서 참조된다. 
-  - 리눅스 2.0에서 신규 버전의 [vm86(2)]() 시스템콜 등장과 함께 이전 및 신규 커널 루틴에서 각각 *sys_vm86old()* 와 *sys_vm86()* 으로 명명되었다. 
-  - 리눅스 2.4에서 [getrlimit(2)]()의 신규 버전의 등장과 함께 이전 및 신규 각각의 커널 루틴은 *sys_old_getrlimit()* (slot *__NR_getrlimit*)과 *sys_getrlimit()* (slot *__NR_ugetrlimit*)으로 명명 되었다. 
-  - 리눅스 2.4에서는 사용자와 그룹 ID가 16비트에서 32비트로 변경되었다. 이를 반영하기 위해 종전의 "32"라는 접미사가 없었던 관련 시스템콜에 모두 32의 명명이 적용되었다. (예 [chown32(2)](), [getuid32(2)](), [getgroups32(2)](), [setresuid32(2)]())
-  - 리눅스 2.5에서는 32비트 아키텍처에서도 큰 파일(large file) 접근 지원이 추가되었다. (예: 32비트로는 표현될 수 없는 크기와 오프셋을 가진 파일) 이를 지원하기 위해 파일 오프셋과 크기를 지원하기 위한 대체 시스템콜이 필요했다. 다음의 시스템콜이 이를 위해 추가 되었다. [fcntl64(2)](), [getdents64(2)](), [stat64(2)](), [statfs64(2)](), [truncate64(2)]() 그리고 이들과 관련된 파일 데스크립터(fd, file descriptor)와 심볼릭 링크. 이 새롭게 추가된 시스템콜은 "64" 접미어가 없이 직접 "stat"을 호출하는 경우를 제외한 모든 경우에 종전의 동일한 이름을 가진 시스템콜을 대체한다. 
+  - 리눅스 2.0에서 신규 버전의 [vm86(2)](https://man7.org/linux/man-pages/man2/vm86.2.html) 시스템콜 등장과 함께 이전 및 신규 커널 루틴에서 각각 *sys_vm86old()* 와 *sys_vm86()* 으로 명명되었다. 
+  - 리눅스 2.4에서 [getrlimit(2)](https://man7.org/linux/man-pages/man2/getrlimit.2.html)의 신규 버전의 등장과 함께 이전 및 신규 각각의 커널 루틴은 *sys_old_getrlimit()* (slot *__NR_getrlimit*)과 *sys_getrlimit()* (slot *__NR_ugetrlimit*)으로 명명 되었다. 
+  - 리눅스 2.4에서는 사용자와 그룹 ID가 16비트에서 32비트로 변경되었다. 이를 반영하기 위해 종전의 "32"라는 접미사가 없었던 관련 시스템콜에 모두 32의 명명이 적용되었다. (예 [chown32(2)](https://man7.org/linux/man-pages/man2/chown32.2.html), [getuid32(2)](https://man7.org/linux/man-pages/man2/getuid32.2.html), [getgroups32(2)](https://man7.org/linux/man-pages/man2/getgroups32.2.html), [setresuid32(2)](https://man7.org/linux/man-pages/man2/setresuid32.2.html))
+  - 리눅스 2.5에서는 32비트 아키텍처에서도 큰 파일(large file) 접근 지원이 추가되었다. (예: 32비트로는 표현될 수 없는 크기와 오프셋을 가진 파일) 이를 지원하기 위해 파일 오프셋과 크기를 지원하기 위한 대체 시스템콜이 필요했다. 다음의 시스템콜이 이를 위해 추가 되었다. [fcntl64(2)](https://man7.org/linux/man-pages/man2/fcntl64.2.html), [getdents64(2)](https://man7.org/linux/man-pages/man2/getdents64.2.html), [stat64(2)](https://man7.org/linux/man-pages/man2/stat64.2.html), [statfs64(2)](https://man7.org/linux/man-pages/man2/statfs64.2.html), [truncate64(2)](https://man7.org/linux/man-pages/man2/truncate64.2.html) 그리고 이들과 관련된 파일 데스크립터(fd, file descriptor)와 심볼릭 링크. 이 새롭게 추가된 시스템콜은 "64" 접미어가 없이 직접 "stat"을 호출하는 경우를 제외한 모든 경우에 종전의 동일한 이름을 가진 시스템콜을 대체한다. 
 
   64-bit 파일 접근 또는 32-bit UIDs/GIDs중 단 하나만을 지원하는 최근의 플랫폼에서는 (예: alpha, ia64, s390x, x86-64) 한개의 버전만이 GIDs/UIDs 및 파일 접근 시스템콜을 위해 제공된다. (일반적으로 32비트 플랫폼들에서) *64와 *32 두가지 모두 존재하는 플랫폼에서 둘중의 하나는 사용되지 않는다. __역주__ 32비트와 64비트 모두 존재하는 아키텍처에서 커널은 두가지 버전 모두를 지원하는 시스템콜을 제공하지만, 실제 시스템에 따라 둘중의 하나만 사용된다는 의미. 
 
-  - *rt_sig** 콜은 커널 2.2에서 실시간(real-time) 시그널을 지원하기위해 추가되었다. ([signal(7)]()참고) 이 시스템콜들은 rt_ 접두어를 가지지 않은 이전 시스템콜을 대체한다. 
-  - [select(2)]()와 [mmap(2)]() 시스템콜은 5개 또는 그 이상의 인자를 사용하는데, 이는 i386에서만 종전과 사용하던 방법과 차이가 있어 문제가 되었다. 따라서 다른 아키텍처들이 *__NR_select*와 *__NR_mmap*에 대응하는 *sys_select()*와 *sys_mmap()*를 사용하는 동안, i386에서는 *old_select()*, *old_mmap()* (인자 블럭의 전달을 위해 포인터를 사용하는 루틴을 적용한 함수)이 제공됬다. 하지만 오늘날 5개의 인자 전달은 더이상 문제가 되지 않으며, *sys_select()*에 해당하는 *__NR__newselect*가 제공되며 *__NR_mmap2* 역시 이와 유사한 패턴으로 존재한다. 오늘날 *old_mmap()*을 사용하는 64비트 아키텍처는 s390x 가 유일하다. 
+  - *rt_sig** 콜은 커널 2.2에서 실시간(real-time) 시그널을 지원하기위해 추가되었다. ([signal(7)](https://man7.org/linux/man-pages/man7/signal.7.html)참고) 이 시스템콜들은 rt_ 접두어를 가지지 않은 이전 시스템콜을 대체한다. 
+  - [select(2)](https://man7.org/linux/man-pages/man2/select.2.html)와 [mmap(2)](https://man7.org/linux/man-pages/man2/mmap.2.html) 시스템콜은 5개 또는 그 이상의 인자를 사용하는데, 이는 i386에서만 종전과 사용하던 방법과 차이가 있어 문제가 되었다. 따라서 다른 아키텍처들이 *__NR_select*와 *__NR_mmap*에 대응하는 *sys_select()*와 *sys_mmap()*를 사용하는 동안, i386에서는 *old_select()*, *old_mmap()* (인자 블럭의 전달을 위해 포인터를 사용하는 루틴을 적용한 함수)이 제공됬다. 하지만 오늘날 5개의 인자 전달은 더이상 문제가 되지 않으며, *sys_select()*에 해당하는 *__NR__newselect*가 제공되며 *__NR_mmap2* 역시 이와 유사한 패턴으로 존재한다. 오늘날 *old_mmap()*을 사용하는 64비트 아키텍처는 s390x 가 유일하다. 
 
 
 ### 특수 아키텍처 세부사항 : Alpha
 
-  - *getxgid(2)*는 레지스터 r0와 r20을 통해 GID와 유효 GID 한쌍을 리턴한다. 이는 [getgid(2)]()와 [getegid(2)]()를 대체한다. 
-  - *getxpid(2)*는 PID와 부모 PID를 레지지스터 r0와 r20을 통해 리턴한다. 이는 [getpid(2)]()와 [getppid(2)]()를 대체한다. 
-  - *old_adjtimex(2)*는 OSF/1 호환을 위해 *struct timeval32*를 사용하는 [adjtimex(2)]()의 변형이다. 
-  - *getxuid(2)*는 레지스터 r0과 r20을 사용해 GID와 유효 GID 한쌍을 리턴한다. 이는 [getuid(2)]() [geteuid(2)]()를 대체한다. 
+  - *getxgid(2)*는 레지스터 r0와 r20을 통해 GID와 유효 GID 한쌍을 리턴한다. 이는 [getgid(2)](https://man7.org/linux/man-pages/man2/getgid.2.html)와 [getegid(2)](https://man7.org/linux/man-pages/man2/getegid.2.html)를 대체한다. 
+  - *getxpid(2)*는 PID와 부모 PID를 레지지스터 r0와 r20을 통해 리턴한다. 이는 [getpid(2)](https://man7.org/linux/man-pages/man2/getpid.2.html)와 [getppid(2)](https://man7.org/linux/man-pages/man2/getppid.2.html)를 대체한다. 
+  - *old_adjtimex(2)*는 OSF/1 호환을 위해 *struct timeval32*를 사용하는 [adjtimex(2)](https://man7.org/linux/man-pages/man2/adjtimex.2.html)의 변형이다. 
+  - *getxuid(2)*는 레지스터 r0과 r20을 사용해 GID와 유효 GID 한쌍을 리턴한다. 이는 [getuid(2)](https://man7.org/linux/man-pages/man2/getuid.2.html) [geteuid(2)](https://man7.org/linux/man-pages/man2/geteuid.2.html)를 대체한다. 
   - *sethae(2)*는 저렴한 Alpha 시스템에서 27비트 이상의 주소 공간에 접근하기 위해 필요한 호스트 주소 확장(Host Address Extension)레지스터를 설정하는데 사용된다. 
 
 
 ## 함께 보기 
 
-intro(2), syscall(2), unimplemented(2), errno(3), libc(7), vdso(7)
+[intro(2)](https://man7.org/linux/man-pages/man2/intro.2.html), [syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html), [unimplemented(2)](https://man7.org/linux/man-pages/man2/unimplemented.2.html), [errno(3)](https://man7.org/linux/man-pages/man3/errno.3.html), [libc(7)](https://man7.org/linux/man-pages/man7/libc.7.html), [vdso(7)](https://man7.org/linux/man-pages/man7/vdso.7.html)
 
 
 ## COLOPHON 
