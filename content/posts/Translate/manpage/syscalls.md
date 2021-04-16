@@ -13,7 +13,7 @@ categories:
 tags: [Linux, SystemCall, Translate, Korean, syscall]
 ---
 
-심심하니까 시리즈 번역물을 만들어 보기로 한다. 또하나의 장기 프로젝트 - 시스템콜 
+심심하니까 시리즈 번역물을 만들어 보기로 한다. 또하나의 장기 프로젝트 - 리눅스 매뉴얼 페이지, MAN 
 
 
 # 원문 링크 
