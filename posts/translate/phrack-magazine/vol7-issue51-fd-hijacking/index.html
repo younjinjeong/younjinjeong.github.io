@@ -67,13 +67,13 @@ opening a new fd. &mdash;- 아리송해서 원문도 같이 붙여봅니당. ^^;
 이나 그 이상이라면 다시 바뀔 수 있을 지라도 box의 바깥쪽에서도 동작할것이다.</p><p>그리고 커널에서 심볼테이블을 찾아야 할 필요가 있는데, 그것은 아마 /boot/System.map또는
 그 비슷한데 있을 것이다. 이것은 실제 동작하고 있는 커널에 대해 일치한다는것을 확인해야
 한다.</p><p>그리고 &ldquo;take&rdquo; 심볼의 주소를 뒤져봐야 할것이다. 이 값을 &ldquo;00192d28"대신에 chfd에 넣어
-주어야 한다. 그리고 &ldquo;gcc chfd.c -o chfd"명령과 함께 컴파일 하라.</p><p>FreeBSD에서 컴파일 하기 위해서는 단지 FreeBSD 코드를 얻은후에 &ldquo;gcc chfd.c. -o chfd -lkvm"명령과 함께 컴파일 하면 된다. 이 코드는 FreeBSD 2.2.1 에서 작성 되었으며, 다른 버젼을 위해 좀 만져줘야 할 수도 있다.</p><p>컴파일 된후에, chfd를 다음과 같이 실행한다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ chfd pid1 fd1 pid2 fd2
+주어야 한다. 그리고 &ldquo;gcc chfd.c -o chfd"명령과 함께 컴파일 하라.</p><p>FreeBSD에서 컴파일 하기 위해서는 단지 FreeBSD 코드를 얻은후에 &ldquo;gcc chfd.c. -o chfd -lkvm"명령과 함께 컴파일 하면 된다. 이 코드는 FreeBSD 2.2.1 에서 작성 되었으며, 다른 버젼을 위해 좀 만져줘야 할 수도 있다.</p><p>컴파일 된후에, chfd를 다음과 같이 실행한다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-bash data-lang=bash>$ chfd pid1 fd1 pid2 fd2
 <span style=color:#75715e># 또는,</span>
 $ chfd pid1 fd1 pid2 fd2 pid3 fd3
 </code></pre></div><p>첫번째 경우, fd는 단지 교환(swap)되었을 뿐이다. 두번째는 두번째 프로세스가 첫번째의
 fd를 얻고, 세번째(프로세스)가 두번째의 fd를 얻으며, 첫번째가 세번째의 fd를 얻어낸다.</p><p>특별한 경우로, pid중의 하나가 0일 경우에 일치하는 fd가 버려지며, 그것 대신 /dev/null
-값이 fd에 pass된다.</p><h2 id=example-1>Example 1</h2><p>. pid 207 이 긴 계산을 하며, tty로 output 되는 경우.<br>. 당신이 &ldquo;cat > somefile"을 실행시키고, 그것의 pid를 조사 했을 경우(1746)</p><p>그렇다면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ chfd <span style=color:#ae81ff>207</span> <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>1746</span> <span style=color:#ae81ff>1</span>
-</code></pre></div><p>이것은 그 계산을 &ldquo;somefile"이란 파일로 리다이렉션 시킬것이며, 그 계산이 돌아가고있는 tty를 화면에 출력할 것이다. 그러면 ^C 로 화면에 출력되는 중요한 계산의 결과값에 대한 두려움 없이 실행을 중지할수 있다.</p><h2 id=example-2>Example 2</h2><p>. 누군가 tty에서 bash의 복사본을 pid 4022로 돌리고 있을때.<br>. 당신이 tty에서 bash의 또다른 복사본을 pid 4121로 돌리고 있을때.</p><p>그러면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sleep <span style=color:#ae81ff>10000</span>
+값이 fd에 pass된다.</p><h2 id=example-1>Example 1</h2><p>. pid 207 이 긴 계산을 하며, tty로 output 되는 경우.<br>. 당신이 &ldquo;cat > somefile"을 실행시키고, 그것의 pid를 조사 했을 경우(1746)</p><p>그렇다면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-bash data-lang=bash>$ chfd <span style=color:#ae81ff>207</span> <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>1746</span> <span style=color:#ae81ff>1</span>
+</code></pre></div><p>이것은 그 계산을 &ldquo;somefile"이란 파일로 리다이렉션 시킬것이며, 그 계산이 돌아가고있는 tty를 화면에 출력할 것이다. 그러면 ^C 로 화면에 출력되는 중요한 계산의 결과값에 대한 두려움 없이 실행을 중지할수 있다.</p><h2 id=example-2>Example 2</h2><p>. 누군가 tty에서 bash의 복사본을 pid 4022로 돌리고 있을때.<br>. 당신이 tty에서 bash의 또다른 복사본을 pid 4121로 돌리고 있을때.</p><p>그러면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-bash data-lang=bash>sleep <span style=color:#ae81ff>10000</span>
 <span style=color:#75715e># 당신의 bash에서 실행하면 당분간 tty에서 읽지 않을 것이다.</span>
 <span style=color:#75715e># 그렇지 않으면 당신의 쉘은 /dev/null 로부터 EOF를 취한후에 죽을 것이다.</span>
 <span style=color:#75715e># 그 세션은 즉시,</span>
@@ -87,14 +87,14 @@ $ chfd <span style=color:#ae81ff>4022</span> <span style=color:#ae81ff>2</span> 
 sleep를 죽이면 안전해 질수 있다.</p><p>다른 쉘들은 아마 다른 fd를 사용할 것이다. zsh는 tty로 부터 읽어 들일때 fd 10을
 사용하는것 같은데, 그에 따라 직접 바꿔 줄 필요가 있을 것이다.</p><h2 id=example-3>Example 3</h2><p>. 누군가 pid 6309로 tty에서 텔넷을 실행 시키고 있을때.<br>. 당신이 pid 7081로 텔넷을 중요하지 않은 포트로 너무 빨리 드롭 되지 않도록 실행 시킬때.
 (telnet localhost 7, telnet www.yourdomain 80, 기타 등등)<br>. 리눅스에서, 빠르게 /proc/6309/fd 와 /proc/7081/fd 를 살펴보면 텔넷이 사용하고 있는
-fd 0, 1,2,3( 3은 분명 그 커넥션일 것이다.)를 알수 있을 것이다.</p><p>그러면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ chfd <span style=color:#ae81ff>6309</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>7081</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>0</span>
+fd 0, 1,2,3( 3은 분명 그 커넥션일 것이다.)를 알수 있을 것이다.</p><p>그러면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-bash data-lang=bash>$ chfd <span style=color:#ae81ff>6309</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>7081</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>0</span>
 </code></pre></div><p>이것은 그 다른 사람의 텔넷 커넥션을 /dev/null 로 보낼것이다. (다른 사용자의 텔넷은 EOF를
 읽어 &ldquo;Connection closed by foreign host.&ldquo;라는 메세지를 볼것이다.) 그리고 당신의
 텔넷은 스스로 그 다른 사용자의 리모트 호스트에 연결될 것이다. 이 시점에서 당신의 텔넷이
 연결 위치에 echo를 멈추도록 하기 위해 당신은 아마도 ^]를 누르고 &ldquo;mode character"를
 칠것이다.</p><h2 id=example-4>Example 4</h2><p>. 누군가 tty에서 rlogin를 돌리고 있을 경우. " 각자의 rlogin이 pid 4547과 4548를
 쓰고 있을때.<br>. 당신은 다른 tty에서 pid 4852와 pid 4855로 rlogin localhost 을 돌리고,<br>. /proc/../fds 와 관련된 것들을 빠르게 살펴봄으로서 rlogin 프로세스가 커넥션을 위해
-fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>chfd <span style=color:#ae81ff>4547</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4852</span> <span style=color:#ae81ff>3</span> <span style=color:#f92672>(</span>원문에서는 이부분이 chfd <span style=color:#ae81ff>4547</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4552</span> 3<span style=color:#f92672>)</span>
+fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-bash data-lang=bash>chfd <span style=color:#ae81ff>4547</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4852</span> <span style=color:#ae81ff>3</span> <span style=color:#f92672>(</span>원문에서는 이부분이 chfd <span style=color:#ae81ff>4547</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4552</span> 3<span style=color:#f92672>)</span>
 chfd <span style=color:#ae81ff>4548</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4855</span> <span style=color:#ae81ff>3</span> <span style=color:#f92672>(</span>역시 chfd <span style=color:#ae81ff>4548</span> <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>4555</span> 3<span style=color:#f92672>)</span>
 </code></pre></div><p>당신의 rlogin이 일어날수 없는 이벤트(localhost로부터 데이터를 읽는것)를 기다리는
 것때문에 커널에 의해 당신의 rlogin이 아직 막혀 있는 경우를 제외하고 이것은 당신이
@@ -105,7 +105,7 @@ chfd <span style=color:#ae81ff>4548</span> <span style=color:#ae81ff>3</span> <s
 않는한, 당신이 원하는것을 얻을수 있을 것이다.</p><h2 id=conclusion>Conclusion</h2><p>당신도 보았듯이, 이걸 가지고 꽤 무서운 짓을 할수 있다. 그리고 루트가 이것을 돌리는
 것으로 부터 당신 자신을 보호하는 것 또한 정말 어렵다.</p><p>이것은 보안 구멍 조차 아니라는 점에서 논의 될수있다. 이 짓들이 가능하기 위해선
 루트가 <em>필요</em>하다. 반면에 /dev/kmem의 드라이버 코드 안에 당신이 /dev/kmem에
-쓰도록(write) 할 수 있는 명백한 코드는 없을것이다. 그렇지 않은가?</p><h2 id=the-linux-code>The Linux code</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#f92672>&lt;++&gt;</span> fd_hijack<span style=color:#f92672>/</span>chfd<span style=color:#f92672>-</span>linux.c
+쓰도록(write) 할 수 있는 명백한 코드는 없을것이다. 그렇지 않은가?</p><h2 id=the-linux-code>The Linux code</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=color:#f92672>&lt;++&gt;</span> fd_hijack<span style=color:#f92672>/</span>chfd<span style=color:#f92672>-</span>linux.c
 <span style=color:#75715e>/*  chfd - exchange fd&#39;s between 2 or 3 running processes.
 </span><span style=color:#75715e> *  
 </span><span style=color:#75715e> *  This was written for Linux/intel and is *very* system-specific.
@@ -275,7 +275,7 @@ chfd <span style=color:#ae81ff>4548</span> <span style=color:#ae81ff>3</span> <s
   }
   printf(<span style=color:#e6db74>&#34;Done!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
 }
-</code></pre></div><h2 id=the-freebsd-code>The FreeBSD Code</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>he FreeBSD code
+</code></pre></div><h2 id=the-freebsd-code>The FreeBSD Code</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c>he FreeBSD code
 <span style=color:#f92672>----------------</span>
 
 <span style=color:#f92672>&lt;++&gt;</span> fd_hijack<span style=color:#f92672>/</span>chfd<span style=color:#f92672>-</span>freebsd.c
