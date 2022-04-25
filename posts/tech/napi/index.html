@@ -1,5 +1,7 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>YJ Blog/posts/tech/napi/</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="all,follow"><meta name=googlebot content="index,follow,snippet,archive"><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/terminal-0.7.1.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/animate-3.7.2.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/console.css><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script><script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]--><meta property="og:title" content="NAPI on Linux"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://blog.younjinjeong.io/posts/tech/napi/"><meta property="article:published_time" content="2021-03-06T01:37:04+08:00"><meta name=twitter:title content="NAPI on Linux"><meta name=twitter:description content="이제는 오래되어 버린 기술이지만, 2006년 경의 2.6.1x 대 커널에서의 NAPI 사용으로 인한 시스템 부하 절감 및 네트워킹 성능 향상은 경이로운 것이었다. 무지막지한 인터럽트 증가로 인하여 static 파일을 서비스 하는 웹 서버가 죽을똥 살똥 하던 모습이란.
-언젠가 한번은 적어야지 했는데, 마치 Memory Hole 관련 문제처럼 언젠가는 잊어버리지 않을까 싶어, 생각 난 김에 포스팅 한다. 오랜만에 보는 HOW-To 문서를 번역할 예정이며, 요새 커널 버전과는 매우 동떨어져 있지만.. 뭐 그래도 잘 설명 되었으니까. 문서 원본은 아래의 링크에서 참조 할수있다."><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-LF5W12M5RW',{anonymize_ip:!1})}</script><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/xterm.css><script type=text/javascript src=https://blog.younjinjeong.io/hugo-theme-console/js/lib/jquery-3.1.1.slim.js></script><body class=terminal><div class=container><h1><a href=https://blog.younjinjeong.io/>Distribution Complete blog</a></h1><div class=terminal-nav><header class=terminal-logo><div class="logo terminal-prompt"><a href=https://blog.younjinjeong.io/ class=no-style>YJ Blog</a>:~#
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>YJ Blog/posts/tech/napi/</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="all,follow"><meta name=googlebot content="index,follow,snippet,archive"><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/terminal-0.7.1.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/animate-3.7.2.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/console.css><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script>
+<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]--><meta property="og:title" content="NAPI on Linux"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://blog.younjinjeong.io/posts/tech/napi/"><meta property="article:published_time" content="2021-03-06T01:37:04+08:00"><meta name=twitter:title content="NAPI on Linux"><meta name=twitter:description content="이제는 오래되어 버린 기술이지만, 2006년 경의 2.6.1x 대 커널에서의 NAPI 사용으로 인한 시스템 부하 절감 및 네트워킹 성능 향상은 경이로운 것이었다. 무지막지한 인터럽트 증가로 인하여 static 파일을 서비스 하는 웹 서버가 죽을똥 살똥 하던 모습이란.
+언젠가 한번은 적어야지 했는데, 마치 Memory Hole 관련 문제처럼 언젠가는 잊어버리지 않을까 싶어, 생각 난 김에 포스팅 한다. 오랜만에 보는 HOW-To 문서를 번역할 예정이며, 요새 커널 버전과는 매우 동떨어져 있지만.. 뭐 그래도 잘 설명 되었으니까. 문서 원본은 아래의 링크에서 참조 할수있다."><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW",{anonymize_ip:!1})}</script><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/xterm.css><script type=text/javascript src=https://blog.younjinjeong.io/hugo-theme-console/js/lib/jquery-3.1.1.slim.js></script><body class=terminal><div class=container><h1><a href=https://blog.younjinjeong.io/>Distribution Complete blog</a></h1><div class=terminal-nav><header class=terminal-logo><div class="logo terminal-prompt"><a href=https://blog.younjinjeong.io/ class=no-style>YJ Blog</a>:~#
 <a href=https://blog.younjinjeong.io/posts>posts</a>/<a href=https://blog.younjinjeong.io/posts/tech>tech</a>/<a href=https://blog.younjinjeong.io/posts/tech/napi>napi</a>/</div></header><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"></ul></nav></div></div></body></head><body class=terminal><div class=container></div><div class=container><h1>NAPI on Linux</h1>Mar. 6, 2021<br><br><p>이제는 오래되어 버린 기술이지만, 2006년 경의 2.6.1x 대 커널에서의 NAPI 사용으로 인한 시스템 부하 절감 및 네트워킹 성능 향상은 경이로운 것이었다. 무지막지한 인터럽트 증가로 인하여 static 파일을 서비스 하는 웹 서버가 죽을똥 살똥 하던 모습이란.</p><p>언젠가 한번은 적어야지 했는데, 마치 Memory Hole 관련 문제처럼 언젠가는 잊어버리지 않을까 싶어, 생각 난 김에 포스팅 한다.
 오랜만에 보는 HOW-To 문서를 번역할 예정이며, 요새 커널 버전과는 매우 동떨어져 있지만.. 뭐 그래도 잘 설명 되었으니까. 문서 원본은 아래의 링크에서 참조 할수있다.</p><p><a href=http://www.cookinglinux.org/pub/netdev_docs/napi-howto.php3.html>http://www.cookinglinux.org/pub/netdev_docs/napi-howto.php3.html</a></p><h2 id=napi-소개>NAPI 소개</h2><p>NAPI는 리눅스 머신의 네트워크 성능 향상을 이끌어내는 검증받은 기술이다. 보다 디테일한 정보는 다음의 링크에서 찾아 볼 수 있다. <a href=http://www.cyberus.ca/~hadi/usenix-paper.tgz>http://www.cyberus.ca/~hadi/usenix-paper.tgz</a></p><p>이 기술은 아래의 Robert 의 기가비트 이더넷 (e1000) 을 통해 수집된 표에 나타난 시스템 성능상의 문제를 완화시키는 작용을 한다.</p><table><thead><tr><th>Psize</th><th style=text-align:center>Ipps</th><th style=text-align:center>Tput</th><th style=text-align:center>Rxint</th><th style=text-align:center>Txint</th><th style=text-align:right>Done</th><th>Ndone</th></tr></thead><tbody><tr><td>60</td><td style=text-align:center>890000</td><td style=text-align:center>409362</td><td style=text-align:center>17</td><td style=text-align:center>27622</td><td style=text-align:right>7</td><td>6823</td></tr><tr><td>128</td><td style=text-align:center>758150</td><td style=text-align:center>464364</td><td style=text-align:center>21</td><td style=text-align:center>9301</td><td style=text-align:right>10</td><td>7738</td></tr><tr><td>256</td><td style=text-align:center>445632</td><td style=text-align:center>774646</td><td style=text-align:center>42</td><td style=text-align:center>15507</td><td style=text-align:right>21</td><td>12906</td></tr><tr><td>512</td><td style=text-align:center>232666</td><td style=text-align:center>994445</td><td style=text-align:center>241292</td><td style=text-align:center>19147</td><td style=text-align:right>241192</td><td>1062</td></tr><tr><td>1024</td><td style=text-align:center>119061</td><td style=text-align:center>1000003</td><td style=text-align:center>872519</td><td style=text-align:center>19258</td><td style=text-align:right>872511</td><td>0</td></tr><tr><td>1440</td><td style=text-align:center>85193</td><td style=text-align:center>1000003</td><td style=text-align:center>946576</td><td style=text-align:center>19505</td><td style=text-align:right>946569</td><td>0</td></tr></tbody></table><ul><li>&ldquo;Ipps&rdquo; - 초당 패킷 유입량</li><li>&ldquo;Tput&rdquo; - 1M 를 전송하는데 사용된 패킷의 총 갯수 packets out of total 1M that made it out</li><li>&ldquo;txint&rdquo; - 전송을 완료하는데 필요한 시스템 인터럽트 카운트</li><li>&ldquo;Done&rdquo; - rx ring 에서 모든 패킷이 전송되는동안 poll() 시스템 함수가 호출된 횟수.( Note from this that the lower the load the more we could clean up the rxring )</li><li>&ldquo;Ndone&rdquo; - &ldquo;Done&rdquo; 의 반대 개념.</li></ul><p>( Note again, that the higher the load the more times we couldn&rsquo;t clean up the rxring )</p><p>NIC가 890Kpackets/sec 을 수신할때 인터럽트는 단지 17회만 발생하게 된다. 시스템은 이와같은 부하 상황에서 1 인터럽트/패킷 을 처리 할 수 없다.<br>반면, rx 인터럽트가 증가하면 인터럽트/패킷의 비율이 함께 증가하는것을 볼수있다. (표 참조)</p><p>따라서, 적당히 낮은 양의 패킷이 유입되는 상황에서는, 1 개의 패킷을 처리하기 위해 1회의 인터럽트가 필요할수 있으며, 만약 시스템이 이를 처리할 수 없는 인터럽트의 양에 도달하게 되면, 그때부터 시스템은 뻗기 시작할
 것이다.</p><p><strong>NOTE</strong>: (역자 주. 표를 그냥 vmstat 로 표시했으면 편할껀데&mldr; 어쨌든 위와 같이 인터럽트가 허용 범위 이상에 도달하는 상황은 예전 NForce Chipset 에 포함되어 나온 NIC 드라이버 문제 외에 광케이블을 크로스로 2대를 연결하여 네트워크 시뮬레이션 해 보면 알 수 있다. NAPI가 적용되지 않은 드라이버의 경우, 인터럽트가 20만회 이상을
@@ -12,441 +14,442 @@ CPU 폴링리스트가 가용한 상태라면 여기에 장치 상태를 넣기 
 CPU의 폴 리스트에 넣기 위해 사용된다. _prep 가 이미 호출 되었고 1을 리턴 했음을 가정한다.</p><p>D. netif_rx_reschedule(dev, undo) :
 이미 호출된 장치 이외의 다른 장치를 폴링하기 위해 사용된다. 자세한 내용은 Appendix 2 를 참조한다.</p><p>E. netif_rx_complete(dev) :
 CPU poll 리스트에서 장치를 제거한다. 이는 반드시 현재 cpu 의 poll list 여야 한다.이는 모든 작업이 완료 되었을때, dev->poll() 를 호출한다.</p><p>위에 기술된 내용은 아래에 반영되어 있다.</p><h2 id=napi를-사용하게끔-포팅할때-변경되는-디바이스-드라이버의-내용>NAPI를 사용하게끔 포팅할때 변경되는 디바이스 드라이버의 내용</h2><p>NAPI동작을 위해서는 아래의 내용이 변경될 필요가 있다.</p><ol><li><p>dev->poll() 메서드의 소개</p><p>새로운 패킷이 수신되었을때 네트워크 코어에서 드라이버로 호출하는 메서드다.
-드라이버는 네트워크 서브 시스템의 하위 유연성을 위해 수신된 패킷을 CPU에 의해 dev->quota로 패킷을 보낼수 있다. (따라서 다른 장치들이 stack 에 접근 할 수 있다.)</p><p>dev->poll() 프로토타입은 다음과 같다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=color:#66d9ef>int</span> my_poll(<span style=color:#66d9ef>struct</span> net_device <span style=color:#f92672>*</span>dev, <span style=color:#66d9ef>int</span> <span style=color:#f92672>*</span>budget)
-</code></pre></div><p>budget 은 네트워크 서브시스템에 남아있는 패킷의 수량을 나타낸다.
+드라이버는 네트워크 서브 시스템의 하위 유연성을 위해 수신된 패킷을 CPU에 의해 dev->quota로 패킷을 보낼수 있다. (따라서 다른 장치들이 stack 에 접근 할 수 있다.)</p><p>dev->poll() 프로토타입은 다음과 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>int</span> my_poll(<span style=color:#66d9ef>struct</span> net_device <span style=color:#f92672>*</span>dev, <span style=color:#66d9ef>int</span> <span style=color:#f92672>*</span>budget)
+</span></span></code></pre></div><p>budget 은 네트워크 서브시스템에 남아있는 패킷의 수량을 나타낸다.
 *각 드라이버는 보내진 패킷 만큼 감소된 카운트를 변경해 주어야 한다.
-패킷의 총 수량은 dev->quota 보다 같거나 커질 수 없다.</p><p>dev->poll() 메서드는 시스템의 가장 높은 레벨에서 호출되며, 드라이버는 요청된 양의 패킷을 스택으로 보낼수 있다. 인터럽트 이후의 dev->poll() 에 관한 상세 내용은 아래에 기술된다.</p></li><li><p>registering dev->poll() method</p><p>dev->poll should be set in the dev->probe() method.</p><p>e.g:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c>dev<span style=color:#f92672>-&gt;</span>open <span style=color:#f92672>=</span> my_open;
-...
-<span style=color:#75715e>/* two new additions */</span>
-<span style=color:#75715e>/* first register my poll method */</span>
-   
-dev<span style=color:#f92672>-&gt;</span>poll <span style=color:#f92672>=</span> my_poll;
-   
-<span style=color:#75715e>/* next register my weight/quanta; can be overriden in /proc */</span>
-   
-dev<span style=color:#f92672>-&gt;</span>weight <span style=color:#f92672>=</span> <span style=color:#ae81ff>16</span>;
-...
-dev<span style=color:#f92672>-&gt;</span>stop <span style=color:#f92672>=</span> my_close;
-</code></pre></div></li><li><p>dev->poll() 의 스케쥴링
-이 예제는 인터럽트 핸들러에 수정을 가하였으며, NIC에서 패킷을 꺼내 스택으로 보내는 동작을 보여준다.</p><p>전통적인 B Becker 인터럽트 프로세서의 동작이 함께 소개되기 때문에 주요하다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span>
-   
-<span style=color:#a6e22e>netdevice_interrupt</span>(<span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id, <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>pt_regs</span> <span style=color:#f92672>*</span>regs) {
-   
-    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>)dev_instance;
-    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
-   
-   
-    <span style=color:#66d9ef>int</span> work_count <span style=color:#f92672>=</span> my_work_count;
-        status <span style=color:#f92672>=</span> read_interrupt_status_reg();
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Shared IRQ: not us */</span>
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xffff</span>)
-                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Hot unplug */</span>
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> error)
-        do_some_error_handling()
-
-    <span style=color:#66d9ef>do</span> {
-        acknowledge_ints_ASAP();
-   
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> link_interrupt) {
-            spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
-            do_some_link_stat_stuff();
-            spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
-        }
-   
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_interrupt) {
-            receive_packets(dev);
-        }
-   
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_nobufs) {
-            make_rx_buffs_avail();
-        }
-               
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> tx_related) {
-            spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
-            tx_ring_free(dev);
-            <span style=color:#66d9ef>if</span> (tx_died)
-                restart_tx();
-
-            spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock)    
-        }
-
-        status <span style=color:#f92672>=</span> read_interrupt_status_reg();    
-   
-    } <span style=color:#66d9ef>while</span> (<span style=color:#f92672>!</span>(status <span style=color:#f92672>&amp;</span> error) <span style=color:#f92672>||</span> more_work_to_be_done);
-}
-</code></pre></div></li></ol><h2 id=napi-를-활성화>NAPI 를 활성화</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span>
-
-<span style=color:#a6e22e>netdevice_interrupt</span>(<span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id, <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>pt_regs</span> <span style=color:#f92672>*</span>regs) {
-
-	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>)dev_instance;
-	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
-
-        status <span style=color:#f92672>=</span> read_interrupt_status_reg();
-
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Shared IRQ: not us */</span>
-
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xffff</span>)
-                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Hot unplug */</span>
-
-        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> error)
-		
-    do_some_error_handling();
-
-	<span style=color:#66d9ef>do</span> {
-
-<span style=color:#75715e>/************************ start note *********************************/</span>		
-
-		acknowledge_ints_ASAP();  <span style=color:#75715e>// dont ack rx and rxnobuff here
-</span><span style=color:#75715e></span>
-<span style=color:#75715e>/************************ end note *********************************/</span>		
-
-
-		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> link_interrupt) {
-			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
-			do_some_link_stat_stuff();
-			spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
-		}
-
-<span style=color:#75715e>/************************ start note *********************************/</span>		
-
-		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_interrupt <span style=color:#f92672>||</span> (status <span style=color:#f92672>&amp;</span> rx_nobuffs)) {
-			<span style=color:#66d9ef>if</span> (netif_rx_schedule_prep(dev)) {
-
-				<span style=color:#75715e>/* disable interrupts caused 
-</span><span style=color:#75715e>			         *	by arriving packets */</span>
-
-				disable_rx_and_rxnobuff_ints();
-
-				<span style=color:#75715e>/* tell system we have work to be done. */</span>
-
-				__netif_rx_schedule(dev);
-
-			} <span style=color:#66d9ef>else</span> {
-				printk(<span style=color:#e6db74>&#34;driver bug! interrupt while in poll</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-
-				<span style=color:#75715e>/* FIX by disabling interrupts  */</span>
-
-				disable_rx_and_rxnobuff_ints();
-			}
-
-		}
-
-<span style=color:#75715e>/************************ end note note *********************************/</span>		
-
-		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> tx_related) {
-			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
-			tx_ring_free(dev);
-
-			<span style=color:#66d9ef>if</span> (tx_died)
-				restart_tx();
-
-			spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
-		}
-
-		status <span style=color:#f92672>=</span> read_interrupt_status_reg();
-
-<span style=color:#75715e>/************************ start note *********************************/</span>		
-
-	} <span style=color:#66d9ef>while</span> (<span style=color:#f92672>!</span>(status <span style=color:#f92672>&amp;</span> error) <span style=color:#f92672>||</span> more_work_to_be_done(status));
-
-<span style=color:#75715e>/************************ end note note *********************************/</span>		
-
-}
-</code></pre></div><h2 id=위-로-부터-몇가지-내용을-확인-할-수-있다>위 로 부터 몇가지 내용을 확인 할 수 있다.</h2><ol><li><p>패킷의 수신으로 발생한 어떠한 인터럽트도 동작하지 않게끔 변경한다. .
+패킷의 총 수량은 dev->quota 보다 같거나 커질 수 없다.</p><p>dev->poll() 메서드는 시스템의 가장 높은 레벨에서 호출되며, 드라이버는 요청된 양의 패킷을 스택으로 보낼수 있다. 인터럽트 이후의 dev->poll() 에 관한 상세 내용은 아래에 기술된다.</p></li><li><p>registering dev->poll() method</p><p>dev->poll should be set in the dev->probe() method.</p><p>e.g:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=display:flex><span>dev<span style=color:#f92672>-&gt;</span>open <span style=color:#f92672>=</span> my_open;
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span><span style=color:#75715e>/* two new additions */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/* first register my poll method */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>dev<span style=color:#f92672>-&gt;</span>poll <span style=color:#f92672>=</span> my_poll;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/* next register my weight/quanta; can be overriden in /proc */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>dev<span style=color:#f92672>-&gt;</span>weight <span style=color:#f92672>=</span> <span style=color:#ae81ff>16</span>;
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>dev<span style=color:#f92672>-&gt;</span>stop <span style=color:#f92672>=</span> my_close;
+</span></span></code></pre></div></li><li><p>dev->poll() 의 스케쥴링
+이 예제는 인터럽트 핸들러에 수정을 가하였으며, NIC에서 패킷을 꺼내 스택으로 보내는 동작을 보여준다.</p><p>전통적인 B Becker 인터럽트 프로세서의 동작이 함께 소개되기 때문에 주요하다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>netdevice_interrupt</span>(<span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id, <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>pt_regs</span> <span style=color:#f92672>*</span>regs) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>)dev_instance;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> work_count <span style=color:#f92672>=</span> my_work_count;
+</span></span><span style=display:flex><span>        status <span style=color:#f92672>=</span> read_interrupt_status_reg();
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Shared IRQ: not us */</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xffff</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Hot unplug */</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> error)
+</span></span><span style=display:flex><span>		do_some_error_handling()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>do</span> {
+</span></span><span style=display:flex><span>		acknowledge_ints_ASAP();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> link_interrupt) {
+</span></span><span style=display:flex><span>			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
+</span></span><span style=display:flex><span>			do_some_link_stat_stuff();
+</span></span><span style=display:flex><span>			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_interrupt) {
+</span></span><span style=display:flex><span>			receive_packets(dev);
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_nobufs) {
+</span></span><span style=display:flex><span>			make_rx_buffs_avail();
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> tx_related) {
+</span></span><span style=display:flex><span>			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
+</span></span><span style=display:flex><span>			tx_ring_free(dev);
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (tx_died)
+</span></span><span style=display:flex><span>				restart_tx();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock)    
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		status <span style=color:#f92672>=</span> read_interrupt_status_reg();    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>while</span> (<span style=color:#f92672>!</span>(status <span style=color:#f92672>&amp;</span> error) <span style=color:#f92672>||</span> more_work_to_be_done);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ol><h2 id=napi-를-활성화>NAPI 를 활성화</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>netdevice_interrupt</span>(<span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id, <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>pt_regs</span> <span style=color:#f92672>*</span>regs) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>)dev_instance;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        status <span style=color:#f92672>=</span> read_interrupt_status_reg();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Shared IRQ: not us */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xffff</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span>;         <span style=color:#75715e>/* Hot unplug */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> error)
+</span></span><span style=display:flex><span>		
+</span></span><span style=display:flex><span>    do_some_error_handling();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>do</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ start note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		acknowledge_ints_ASAP();  <span style=color:#75715e>// dont ack rx and rxnobuff here
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ end note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> link_interrupt) {
+</span></span><span style=display:flex><span>			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
+</span></span><span style=display:flex><span>			do_some_link_stat_stuff();
+</span></span><span style=display:flex><span>			spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>link_lock);
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ start note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> rx_interrupt <span style=color:#f92672>||</span> (status <span style=color:#f92672>&amp;</span> rx_nobuffs)) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (netif_rx_schedule_prep(dev)) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				<span style=color:#75715e>/* disable interrupts caused 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>			         *	by arriving packets */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				disable_rx_and_rxnobuff_ints();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				<span style=color:#75715e>/* tell system we have work to be done. */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				__netif_rx_schedule(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>				printk(<span style=color:#e6db74>&#34;driver bug! interrupt while in poll</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				<span style=color:#75715e>/* FIX by disabling interrupts  */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>				disable_rx_and_rxnobuff_ints();
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ end note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (status <span style=color:#f92672>&amp;</span> tx_related) {
+</span></span><span style=display:flex><span>			spin_lock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
+</span></span><span style=display:flex><span>			tx_ring_free(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (tx_died)
+</span></span><span style=display:flex><span>				restart_tx();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			spin_unlock(<span style=color:#f92672>&amp;</span>tp<span style=color:#f92672>-&gt;</span>lock);
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		status <span style=color:#f92672>=</span> read_interrupt_status_reg();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ start note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>while</span> (<span style=color:#f92672>!</span>(status <span style=color:#f92672>&amp;</span> error) <span style=color:#f92672>||</span> more_work_to_be_done(status));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ end note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=위-로-부터-몇가지-내용을-확인-할-수-있다>위 로 부터 몇가지 내용을 확인 할 수 있다.</h2><ol><li><p>패킷의 수신으로 발생한 어떠한 인터럽트도 동작하지 않게끔 변경한다. .
 다음의 두가지 상태로 인해 하드웨어는 패킷이 수신되면 인터럽트를 유발한다. (NAPI 에서는 원하지 않는 동작)</p><p>첫째는, 패킷이 수신되고 (rxint) , 둘째는 패킷이 도착 했으나 가용한 DMA 영역이 없음을 발견 (rxnobuff) 했을때 이다. 이는 위의 두가지 상황에 대해 acknowledge_ints_ASAP() 호출로 status 레지스터를 비울 수 없음을 의미한다.NAPI를 사용하는 경우에는 work 가 어느 단계에서든 적절히 종료되면 언제든 status 레지스터를 비울 수 있다.</p><p>이에 관하여 poll() 및 refill_rx_ring() 은 아래에 논의 된다.
-netif_rx_schedule_prep() 는 장치가 폴링 리스트에 정상적으로 등록이 되고 동작 가능한 상태이면 1을 리턴한다.</p><p>0이 리턴되는 경우는 장치가 이미 추가 되었거나, 장치가 동작하지 않는 경우 등으로 추정 할 수 있다.</p><p>이러한 오류를 rx 와 rxnobuf 인터럽트를 비활성화 함으로서 미연에 방지 할 수 있게 된다.</p></li><li><p>receive_packets(dev) 와 make_rx_buffs_avail() 은 없어질 가능성이 있다. 아직은 존재하지만&mldr; (8년전 문서이기에 궁금하신 분은 최신 소스를 확인해 보시면 된다.</p><blockquote><p>사실, receive_packets(dev) 는 my_poll() 과 매우 비슷하며, make_rx_buffs_avail() 은 my_poll() 에서 호출한다.</p></blockquote></li><li><p>receive_packets() 을 dev->poll() 로 변환</p></li></ol><p>D Becker 의 전통적인 receive_packet(dev) 를 my_poll() 로 변환해 줄 필요가 있다.</p><p>일반적인 receive_packet() 을 보자.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#75715e>/* this is called by interrupt handler */</span>
-<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>receive_packets</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev) {
-
-	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
-
-	rx_ring <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>rx_ring;
-	cur_rx <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
-
-	<span style=color:#66d9ef>int</span> entry <span style=color:#f92672>=</span> cur_rx <span style=color:#f92672>%</span> RX_RING_SIZE;
-	<span style=color:#66d9ef>int</span> received <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-	<span style=color:#66d9ef>int</span> rx_work_limit <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>+</span> RX_RING_SIZE <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
-
-	<span style=color:#66d9ef>while</span> (rx_ring_not_empty) {
-		
-    u32 rx_status;
-
-		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> rx_size;
-		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> pkt_size;
-		<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>sk_buff</span> <span style=color:#f92672>*</span>skb;
-
-    <span style=color:#75715e>/* read size+status of next frame from DMA ring buffer */</span>
-    <span style=color:#75715e>/* the number 16 and 4 are just examples */</span>
-
-    rx_status <span style=color:#f92672>=</span> le32_to_cpu (<span style=color:#f92672>*</span>(u32 <span style=color:#f92672>*</span>) (rx_ring <span style=color:#f92672>+</span> ring_offset));
-    rx_size <span style=color:#f92672>=</span> rx_status <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>16</span>;
-    pkt_size <span style=color:#f92672>=</span> rx_size <span style=color:#f92672>-</span> <span style=color:#ae81ff>4</span>;
-
-		<span style=color:#75715e>/* process errors */</span>
-
-    <span style=color:#66d9ef>if</span> ((rx_size <span style=color:#f92672>&gt;</span> (MAX_ETH_FRAME_SIZE<span style=color:#f92672>+</span><span style=color:#ae81ff>4</span>)) <span style=color:#f92672>||</span>
-        (<span style=color:#f92672>!</span>(rx_status <span style=color:#f92672>&amp;</span> RxStatusOK))) {
-            netdrv_rx_err (rx_status, dev, tp, ioaddr);
-            <span style=color:#66d9ef>return</span>;
-    }
-
-    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>--</span>rx_work_limit <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-      <span style=color:#66d9ef>break</span>;
-
-
-    <span style=color:#75715e>/* grab a skb */</span>    
-
-    skb <span style=color:#f92672>=</span> dev_alloc_skb (pkt_size <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
-
-    <span style=color:#66d9ef>if</span> (skb) {
-			netif_rx (skb);
-    } <span style=color:#66d9ef>else</span> {  <span style=color:#75715e>/* OOM */</span>
-
-      <span style=color:#75715e>/*seems very driver specific ... some just pass
-</span><span style=color:#75715e>    	whatever is on the ring already. */</span>
-    }
-
-		<span style=color:#75715e>/* move to the next skb on the ring */</span>
-
-    entry <span style=color:#f92672>=</span> (<span style=color:#f92672>++</span>tp<span style=color:#f92672>-&gt;</span>cur_rx) <span style=color:#f92672>%</span> RX_RING_SIZE;
-    received<span style=color:#f92672>++</span> ;
-
-
-  }
-
-
-    <span style=color:#75715e>/* store current ring pointer state */</span>
-    tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
-
-    <span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
-    
-    refill_rx_ring();
-
-}
-</code></pre></div><hr><h2 id=새로운-파라메터에-주의하며-아래의-변경된-코드를-참조한다>새로운 파라메터에 주의하며 아래의 변경된 코드를 참조한다.</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#75715e>/* this is called by the network core */</span>
-<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>my_poll</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev, <span style=color:#66d9ef>int</span> <span style=color:#f92672>*</span>budget) {
-
-	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
-
-	rx_ring <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>rx_ring;
-	cur_rx <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
-
-  <span style=color:#66d9ef>int</span> entry <span style=color:#f92672>=</span> cur_rx <span style=color:#f92672>%</span> RX_BUF_LEN;
-	
-  <span style=color:#75715e>/* maximum packets to send to the stack */</span>
-  <span style=color:#75715e>/************************ note note *********************************/</span>		
-  
-  <span style=color:#66d9ef>int</span> rx_work_limit <span style=color:#f92672>=</span> dev<span style=color:#f92672>-&gt;</span>quota;
-
-  <span style=color:#75715e>/************************ end note note *********************************/</span>		
-  
-  <span style=color:#66d9ef>do</span> {  <span style=color:#75715e>// outer beggining loop starts here
-</span><span style=color:#75715e></span>	
-    clear_rx_status_register_bit();
-	
-    <span style=color:#66d9ef>while</span> (rx_ring_not_empty) {
-
-		u32 rx_status;
-		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> rx_size;
-		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> pkt_size;
-		<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>sk_buff</span> <span style=color:#f92672>*</span>skb;
-
-    <span style=color:#75715e>/* read size+status of next frame from DMA ring buffer */</span>
-		<span style=color:#75715e>/* the number 16 and 4 are just examples */</span>
-
-    rx_status <span style=color:#f92672>=</span> le32_to_cpu (<span style=color:#f92672>*</span>(u32 <span style=color:#f92672>*</span>) (rx_ring <span style=color:#f92672>+</span> ring_offset));
-    
-    rx_size <span style=color:#f92672>=</span> rx_status <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>16</span>;
-    pkt_size <span style=color:#f92672>=</span> rx_size <span style=color:#f92672>-</span> <span style=color:#ae81ff>4</span>;
-
-		<span style=color:#75715e>/* process errors */</span>
-
-    <span style=color:#66d9ef>if</span> ((rx_size <span style=color:#f92672>&gt;</span> (MAX_ETH_FRAME_SIZE<span style=color:#f92672>+</span><span style=color:#ae81ff>4</span>)) <span style=color:#f92672>||</span>
-        (<span style=color:#f92672>!</span>(rx_status <span style=color:#f92672>&amp;</span> RxStatusOK))) {
-          netdrv_rx_err (rx_status, dev, tp, ioaddr);
-          <span style=color:#66d9ef>return</span>;
-    }
-
-    <span style=color:#75715e>/************************ note note *********************************/</span>		
-
-    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>--</span>rx_work_limit <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>) { <span style=color:#75715e>/* we got packets, but no quota */</span>
-
-			<span style=color:#75715e>/* store current ring pointer state */</span>
-			tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
-
-			<span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
-			refill_rx_ring(dev);
-
-      <span style=color:#66d9ef>goto</span> not_done;
-		}
-
-    <span style=color:#75715e>/**********************  end note **********************************/</span>
-
-
-		<span style=color:#75715e>/* grab a skb */</span>
-
-    skb <span style=color:#f92672>=</span> dev_alloc_skb (pkt_size <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
-    
-    <span style=color:#66d9ef>if</span> (skb) {
-
-    <span style=color:#75715e>/************************ note note *********************************/</span>		
-
-			netif_receive_skb (skb);
-
-    <span style=color:#75715e>/**********************  end note **********************************/</span>
-
-
-    } <span style=color:#66d9ef>else</span> {  <span style=color:#75715e>/* OOM */</span>
-
-			<span style=color:#75715e>/*seems very driver specific ... common is just pass
-</span><span style=color:#75715e>			whatever is on the ring already. */</span>
-
-    }    
-	<span style=color:#75715e>/* move to the next skb on the ring */</span>
-	  entry <span style=color:#f92672>=</span> (<span style=color:#f92672>++</span>tp<span style=color:#f92672>-&gt;</span>cur_rx) <span style=color:#f92672>%</span> RX_RING_SIZE;
-		received<span style=color:#f92672>++</span> ;
-}
-	<span style=color:#75715e>/* store current ring pointer state */</span>
-        tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
-
-  <span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
-	refill_rx_ring(dev);
-
-	<span style=color:#75715e>/* no packets on ring; but new ones can arrive since we last 
-</span><span style=color:#75715e>    checked  */</span>
-
-	status <span style=color:#f92672>=</span> read_interrupt_status_reg();
-	<span style=color:#66d9ef>if</span> (rx status is not set) {
-
-    <span style=color:#75715e>/* If something arrives in this narrow window,
-</span><span style=color:#75715e>    an interrupt will be generated */</span>
-
-    <span style=color:#66d9ef>goto</span> done;
-	}
-
-	<span style=color:#75715e>/* done! at least thats what it looks like ;-&gt;
-</span><span style=color:#75715e>	if new packets came in after our last check on status bits
-</span><span style=color:#75715e>they&#39;ll be caught by the while check and we go back and clear them since we havent exceeded our quota */</span>
-
-  } <span style=color:#66d9ef>while</span> (rx_status_is_set); 
-
-done:
-
-<span style=color:#75715e>/************************ note note *********************************/</span>		
-
-  dev<span style=color:#f92672>-&gt;</span>quota <span style=color:#f92672>-=</span> received;
-  <span style=color:#f92672>*</span>budget <span style=color:#f92672>-=</span> received;
-
-  <span style=color:#75715e>/* If RX ring is not full we are out of memory. */</span>
-
-  <span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
-    <span style=color:#66d9ef>goto</span> oom;
-
-
-	<span style=color:#75715e>/* we are happy/done, no more packets on ring; put us back
-</span><span style=color:#75715e>	to where we can start processing interrupts again */</span>
-
-  netif_rx_complete(dev);
-  enable_rx_and_rxnobuf_ints();
-
-
-  <span style=color:#75715e>/* The last op happens after poll completion. Which means the following:
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * 1. it can race with disabling irqs in irq handler (which are done to * schedule polls)
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * 2. it can race with dis/enabling irqs in other poll threads
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * 3. if an irq raised after the begining of the outer  beginning * loop(marked in the code above), it will be immediately
-</span><span style=color:#75715e>  * triggered here.
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  *
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * Summarizing: the logic may results in some redundant irqs both
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * due to races in masking and due to too late acking of already
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  * processed irqs. The good news: no events are ever lost.
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>  */</span>
-  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;   <span style=color:#75715e>/* done */</span>    
-
-
-not_done:
-  <span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>&gt;</span> RX_RING_SIZE<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>||</span>
-    tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
-      refill_rx_ring(dev);
-
-  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>received) {
-    printk(<span style=color:#e6db74>&#34;received==0</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-    received <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
-  }
-
-  dev<span style=color:#f92672>-&gt;</span>quota <span style=color:#f92672>-=</span> received;
-  <span style=color:#f92672>*</span>budget <span style=color:#f92672>-=</span> received;
-  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;  <span style=color:#75715e>/* not_done */</span>
-
-oom:
-
-        <span style=color:#75715e>/* Start timer, stop polling, but do not enable rx interrupts. */</span>
-
-	start_poll_timer(dev);
-  
-  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;  <span style=color:#75715e>/* we&#39;ll take it from here so tell core &#34;done&#34;*/</span>
-
-<span style=color:#75715e>/************************ End note note *********************************/</span>		
-
-}
-</code></pre></div><p>위의 내용으로 인해 우리는,</p><ol><li>rx_work_limit = dev->quota refill_rx_ring() 은 정상적으로 동작하지 않게 될때 rxnobuff 비트를 지워줄 필요가 있다.</li><li>done / not_dont 상태가 있다.</li><li>netif_rx() 대신 netif_receive_skb() 가 skb 를 패스하기 위해 호출된다.</li><li>새로운 OOM ( Out of memory ) 조건을 가진다.</li><li>새로운 for 루프가 추가되었다. 이는 새로운 패킷의 유입의 확인, 모든 세팅의 정상 동작 및 패킷을 보내는 동안 qouta 를 초과하지 않기 위한 동작등이 포함된다.</li></ol><p>Poll 타이머 코드는 아래와 같다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>&gt;</span> RX_RING_SIZE<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>||</span> tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL) 
-  refill_rx_ring(dev);
-
-
-<span style=color:#75715e>/* If RX ring is not full we are still out of memory.
-</span><span style=color:#75715e>	 Restart the timer again. Else we re-add ourselves 
-</span><span style=color:#75715e>   to the master poll list.
-</span><span style=color:#75715e>*/</span>
-
-
-<span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
-    restart_timer();
-<span style=color:#66d9ef>else</span> <span style=color:#a6e22e>netif_rx_schedule</span>(dev);  <span style=color:#75715e>/* we are back on the poll list */</span>
-</code></pre></div><ol start=5><li><p>dev->close() , dev->suspend() 이슈</p><p>드라이버 개발자는 본 내용에 대해 신경쓰지 않아도 된다. 본 내용은 향후 채워진다.</p></li><li><p>/proc 에 새로운 스탯의 추가.</p><p>새로운 기능의 디버깅으로 인해 본 내용 역시 나중에 추가하기로 한다.</p></li></ol><h2 id=appendix-1--hw-fc-사용에-대한-논의>APPENDIX 1: HW FC 사용에 대한 논의</h2><p>대부분의 FC 칩들은 Rx buffer 에 더이상 공간이 없을때 pause packet 을 전송한다. NAPI 의 softirq 에 의해 DMA ring 에서 패킷을 빼 낼때, 패킷의 유입 량에 비해 시스템이 패킷을 가져오는 속도가 느린 경우 ( 시스템이 패킷을 지우는 속도 보다 유입되는 속도가 더 빠를때 ) 이론적으로 이와 같은 packet storm 으로 발생한 모든 패킷에 대해 단 1회의 rx 인터럽트를 호출 하여 해결 할 수 있다.</p><p>낮은 부하상태에서는, 패킷 당 1회의 인터럽트가 발생이 가능하다.</p><p>FC는 충분히 빠른 속도로 시스템이 패킷을 끄집어 내지 못할때에 대비하여 프로그램 되어야 한다. ( send a pause when out of rx buffers )</p><p>FC가 좋은 솔루션이긴 하지만, 너무 고가이다. (옛날 문서니까. 역자주)</p><p>APPENDIX 2: rotting packet / race-window avoidance 스키마</p><p>( 이 부분 번역은 생략. 쓰다보니 appendix 까지 번역해야 하는 생각이 스멀스멀.. )</p><p>here are two types of associations seen here</p><h2 id=statusint-which-honors-level-triggered-irq>status/int which honors level triggered IRQ</h2><p>If a status bit for receive or rxnobuff is set and the corresponding interrupt-enable bit is not on, then no interrupts will be generated. However, as soon as the &ldquo;interrupt-enable&rdquo; bit is unmasked, an immediate interrupt is generated. [assuming the status bit was not turned off].</p><p>Generally the concept of level triggered IRQs in association with a status and interrupt-enable CSR register set is used to avoid the race.</p><p>If we take the example of the tulip:</p><p>&ldquo;pending work&rdquo; is indicated by the status bit(CSR5 in tulip). the corresponding interrupt bit (CSR7 in tulip) might be turned off (but the CSR5 will continue to be turned on with new packet arrivals even if we clear it the first time)</p><p>Very important is the fact that if we turn on the interrupt bit on when tatus is set that an immediate irq is triggered.</p><p>If we cleared the rx ring and proclaimed there was &ldquo;no more work to be done&rdquo; and then went on to do a few other things; then when we enable interrupts, there is a possibility that a new packet might sneak in during this phase. It helps to look at the pseudo code for the tulip poll routine:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=color:#66d9ef>do</span> {
-    ACK;
-      <span style=color:#66d9ef>while</span> (ring_is_not_empty()) {
-        work<span style=color:#f92672>-</span>work<span style=color:#f92672>-</span>work
-        <span style=color:#66d9ef>if</span> quota is exceeded: exit, no touching irq status<span style=color:#f92672>/</span>mask
-      }
-
-      <span style=color:#75715e>/* No packets, but new can arrive while we are doing this*/</span>
-
-      CSR5 :<span style=color:#f92672>=</span> read
-      
-      <span style=color:#66d9ef>if</span> (CSR5 is not set) {
-
-      <span style=color:#75715e>/* If something arrives in this narrow window here,
-</span><span style=color:#75715e>
-</span><span style=color:#75715e>      *  where the comments are ;-&gt; irq will be generated */</span>
-
-        unmask irqs;
-        exit poll;
-        }
-
-} <span style=color:#66d9ef>while</span> (rx_status_is_set);
-</code></pre></div><p>CSR5 bit of interest is only the rx status.</p><p>If you look at the last if statement:</p><p>you just finished grabbing all the packets from the rx ring .. you check if status bit says theres more packets just in &mldr; it says none; you then enable rx interrupts again; if a new packet just came in during this check, we are counting that CSR5 will be set in that small window of opportunity and that by re-enabling interrupts, we would actually triger an interrupt to register the new packet for processing.</p><p>[The above description nay be very verbose, if you have better wording that will make this more understandable, please suggest it.]</p><h2 id=non-capable-hardware>non-capable hardware</h2><p>These do not generally respect level triggered IRQs. Normally, irqs may be lost while being masked and the only way to leave poll is to do a double check for new input after netif_rx_complete() is invoked and re-enable polling (after seeing this new input).</p><p>Sample code:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c>restart_poll:
-	<span style=color:#66d9ef>while</span> (ring_is_not_empty()) {
-		work<span style=color:#f92672>-</span>work<span style=color:#f92672>-</span>work
-		<span style=color:#66d9ef>if</span> quota is exceeded: exit, not touching irq status<span style=color:#f92672>/</span>mask
-	}
-
-	enable_rx_interrupts()
-	netif_rx_complete(dev);
-
-	<span style=color:#66d9ef>if</span> (ring_has_new_packet() <span style=color:#f92672>&amp;&amp;</span> netif_rx_reschedule(dev, received)) {
-
-		disable_rx_and_rxnobufs()
-		<span style=color:#66d9ef>goto</span> restart_poll
-	} <span style=color:#66d9ef>while</span> (rx_status_is_set);
-</code></pre></div><p>Basically netif_rx_complete() removes us from the poll list, but because a new packet which will never be caught due to the possibility of a race might come in, we attempt to re-add ourselves to the poll list.</p><hr><h1 id=relevant-sites>relevant sites:</h1><p><a href=ftp://robur.slu.se/pub/Linux/net-development/NAPI/>ftp://robur.slu.se/pub/Linux/net-development/NAPI/</a></p><hr><h2 id=todo-write-net-skeletonc-driver>TODO: Write net-skeleton.c driver.</h2><h1 id=authors>Authors:</h1><p>Alexey Kuznetsov <a href=mailto:kuznet@ms2.inr.ac.ru>kuznet@ms2.inr.ac.ru</a><br>Jamal Hadi Salim <a href=mailto:hadi@cyberus.ca>hadi@cyberus.ca</a><br>Robert Olsson <a href=mailto:Robert.Olsson@data.slu.se>Robert.Olsson@data.slu.se</a></p><h1 id=acknowledgements>Acknowledgements:</h1><p>People who made this document better:</p><p>Lennert Buytenhek <a href=mailto:buytenh@gnu.org>buytenh@gnu.org</a><br>Andrew Morton <a href=mailto:akpm@zip.com.au>akpm@zip.com.au</a><br>Manfred Spraul <a href=mailto:manfred@colorfullife.com>manfred@colorfullife.com</a><br>Donald Becker <a href=mailto:becker@scyld.com>becker@scyld.com</a><br>Jeff Garzik <a href=mailto:jgarzik@mandrakesoft.com>jgarzik@mandrakesoft.com</a></p><p>결국, 이런저런 내용이 많지만, NAPI 의 핵심은 다음의 몇가지로 압축 될 수 있다.</p><ol><li><p>고부하 상태건 저부하 상태건 패킷의 유입으로 인한 하드웨어로 부터 ( 하드웨어 드라이버로 부터)의 직접적인 인터럽트는 시스템에 심각한 부하를 일으킬 가능성이 있다.</p></li><li><p>따라서 이와 같은 인터럽트는 NAPI 및 기타 하드웨어 ( NIC )의 인터럽트 제어를 통해 부하율을 낮출 수 있으나, 다소간의 지연이 발생 할 수 있다.</p></li><li><p>NAPI 가 동작하는 기본적인 방식은 Polling 이며, 이를 쉽게 말하면 유입된 패킷이 발생할때 마다 인터럽트 하여
+netif_rx_schedule_prep() 는 장치가 폴링 리스트에 정상적으로 등록이 되고 동작 가능한 상태이면 1을 리턴한다.</p><p>0이 리턴되는 경우는 장치가 이미 추가 되었거나, 장치가 동작하지 않는 경우 등으로 추정 할 수 있다.</p><p>이러한 오류를 rx 와 rxnobuf 인터럽트를 비활성화 함으로서 미연에 방지 할 수 있게 된다.</p></li><li><p>receive_packets(dev) 와 make_rx_buffs_avail() 은 없어질 가능성이 있다. 아직은 존재하지만&mldr; (8년전 문서이기에 궁금하신 분은 최신 소스를 확인해 보시면 된다.</p><blockquote><p>사실, receive_packets(dev) 는 my_poll() 과 매우 비슷하며, make_rx_buffs_avail() 은 my_poll() 에서 호출한다.</p></blockquote></li><li><p>receive_packets() 을 dev->poll() 로 변환</p></li></ol><p>D Becker 의 전통적인 receive_packet(dev) 를 my_poll() 로 변환해 줄 필요가 있다.</p><p>일반적인 receive_packet() 을 보자.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#75715e>/* this is called by interrupt handler */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>receive_packets</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	rx_ring <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>rx_ring;
+</span></span><span style=display:flex><span>	cur_rx <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> entry <span style=color:#f92672>=</span> cur_rx <span style=color:#f92672>%</span> RX_RING_SIZE;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> received <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> rx_work_limit <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>+</span> RX_RING_SIZE <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>while</span> (rx_ring_not_empty) {
+</span></span><span style=display:flex><span>		
+</span></span><span style=display:flex><span>    u32 rx_status;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> rx_size;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> pkt_size;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>sk_buff</span> <span style=color:#f92672>*</span>skb;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* read size+status of next frame from DMA ring buffer */</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* the number 16 and 4 are just examples */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    rx_status <span style=color:#f92672>=</span> le32_to_cpu (<span style=color:#f92672>*</span>(u32 <span style=color:#f92672>*</span>) (rx_ring <span style=color:#f92672>+</span> ring_offset));
+</span></span><span style=display:flex><span>    rx_size <span style=color:#f92672>=</span> rx_status <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>16</span>;
+</span></span><span style=display:flex><span>    pkt_size <span style=color:#f92672>=</span> rx_size <span style=color:#f92672>-</span> <span style=color:#ae81ff>4</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* process errors */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> ((rx_size <span style=color:#f92672>&gt;</span> (MAX_ETH_FRAME_SIZE<span style=color:#f92672>+</span><span style=color:#ae81ff>4</span>)) <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>        (<span style=color:#f92672>!</span>(rx_status <span style=color:#f92672>&amp;</span> RxStatusOK))) {
+</span></span><span style=display:flex><span>            netdrv_rx_err (rx_status, dev, tp, ioaddr);
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>--</span>rx_work_limit <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* grab a skb */</span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    skb <span style=color:#f92672>=</span> dev_alloc_skb (pkt_size <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (skb) {
+</span></span><span style=display:flex><span>			netif_rx (skb);
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {  <span style=color:#75715e>/* OOM */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/*seems very driver specific ... some just pass
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    	whatever is on the ring already. */</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* move to the next skb on the ring */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    entry <span style=color:#f92672>=</span> (<span style=color:#f92672>++</span>tp<span style=color:#f92672>-&gt;</span>cur_rx) <span style=color:#f92672>%</span> RX_RING_SIZE;
+</span></span><span style=display:flex><span>    received<span style=color:#f92672>++</span> ;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* store current ring pointer state */</span>
+</span></span><span style=display:flex><span>    tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    refill_rx_ring();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><hr><h2 id=새로운-파라메터에-주의하며-아래의-변경된-코드를-참조한다>새로운 파라메터에 주의하며 아래의 변경된 코드를 참조한다.</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#75715e>/* this is called by the network core */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>my_poll</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>net_device</span> <span style=color:#f92672>*</span>dev, <span style=color:#66d9ef>int</span> <span style=color:#f92672>*</span>budget) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>tp <span style=color:#f92672>=</span> (<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>my_private</span> <span style=color:#f92672>*</span>)dev<span style=color:#f92672>-&gt;</span>priv;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	rx_ring <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>rx_ring;
+</span></span><span style=display:flex><span>	cur_rx <span style=color:#f92672>=</span> tp<span style=color:#f92672>-&gt;</span>cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> entry <span style=color:#f92672>=</span> cur_rx <span style=color:#f92672>%</span> RX_BUF_LEN;
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* maximum packets to send to the stack */</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/************************ note note *********************************/</span>		
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> rx_work_limit <span style=color:#f92672>=</span> dev<span style=color:#f92672>-&gt;</span>quota;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/************************ end note note *********************************/</span>		
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>do</span> {  <span style=color:#75715e>// outer beggining loop starts here
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	
+</span></span><span style=display:flex><span>    clear_rx_status_register_bit();
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> (rx_ring_not_empty) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		u32 rx_status;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> rx_size;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> pkt_size;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>sk_buff</span> <span style=color:#f92672>*</span>skb;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* read size+status of next frame from DMA ring buffer */</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* the number 16 and 4 are just examples */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    rx_status <span style=color:#f92672>=</span> le32_to_cpu (<span style=color:#f92672>*</span>(u32 <span style=color:#f92672>*</span>) (rx_ring <span style=color:#f92672>+</span> ring_offset));
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    rx_size <span style=color:#f92672>=</span> rx_status <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>16</span>;
+</span></span><span style=display:flex><span>    pkt_size <span style=color:#f92672>=</span> rx_size <span style=color:#f92672>-</span> <span style=color:#ae81ff>4</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* process errors */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> ((rx_size <span style=color:#f92672>&gt;</span> (MAX_ETH_FRAME_SIZE<span style=color:#f92672>+</span><span style=color:#ae81ff>4</span>)) <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>        (<span style=color:#f92672>!</span>(rx_status <span style=color:#f92672>&amp;</span> RxStatusOK))) {
+</span></span><span style=display:flex><span>          netdrv_rx_err (rx_status, dev, tp, ioaddr);
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/************************ note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>--</span>rx_work_limit <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>) { <span style=color:#75715e>/* we got packets, but no quota */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#75715e>/* store current ring pointer state */</span>
+</span></span><span style=display:flex><span>			tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
+</span></span><span style=display:flex><span>			refill_rx_ring(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>goto</span> not_done;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**********************  end note **********************************/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* grab a skb */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    skb <span style=color:#f92672>=</span> dev_alloc_skb (pkt_size <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (skb) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/************************ note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			netif_receive_skb (skb);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**********************  end note **********************************/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {  <span style=color:#75715e>/* OOM */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>			<span style=color:#75715e>/*seems very driver specific ... common is just pass
+</span></span></span><span style=display:flex><span><span style=color:#75715e>			whatever is on the ring already. */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    }    
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* move to the next skb on the ring */</span>
+</span></span><span style=display:flex><span>	  entry <span style=color:#f92672>=</span> (<span style=color:#f92672>++</span>tp<span style=color:#f92672>-&gt;</span>cur_rx) <span style=color:#f92672>%</span> RX_RING_SIZE;
+</span></span><span style=display:flex><span>		received<span style=color:#f92672>++</span> ;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* store current ring pointer state */</span>
+</span></span><span style=display:flex><span>        tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>=</span> cur_rx;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Refill the Rx ring buffers if they are needed */</span>
+</span></span><span style=display:flex><span>	refill_rx_ring(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* no packets on ring; but new ones can arrive since we last 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    checked  */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	status <span style=color:#f92672>=</span> read_interrupt_status_reg();
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (rx status is not set) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* If something arrives in this narrow window,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    an interrupt will be generated */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>goto</span> done;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* done! at least thats what it looks like ;-&gt;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	if new packets came in after our last check on status bits
+</span></span></span><span style=display:flex><span><span style=color:#75715e>they&#39;ll be caught by the while check and we go back and clear them since we havent exceeded our quota */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  } <span style=color:#66d9ef>while</span> (rx_status_is_set); 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>done:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  dev<span style=color:#f92672>-&gt;</span>quota <span style=color:#f92672>-=</span> received;
+</span></span><span style=display:flex><span>  <span style=color:#f92672>*</span>budget <span style=color:#f92672>-=</span> received;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* If RX ring is not full we are out of memory. */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>goto</span> oom;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* we are happy/done, no more packets on ring; put us back
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	to where we can start processing interrupts again */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  netif_rx_complete(dev);
+</span></span><span style=display:flex><span>  enable_rx_and_rxnobuf_ints();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* The last op happens after poll completion. Which means the following:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * 1. it can race with disabling irqs in irq handler (which are done to * schedule polls)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * 2. it can race with dis/enabling irqs in other poll threads
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * 3. if an irq raised after the begining of the outer  beginning * loop(marked in the code above), it will be immediately
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * triggered here.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  *
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * Summarizing: the logic may results in some redundant irqs both
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * due to races in masking and due to too late acking of already
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * processed irqs. The good news: no events are ever lost.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;   <span style=color:#75715e>/* done */</span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>not_done:
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>&gt;</span> RX_RING_SIZE<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>    tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
+</span></span><span style=display:flex><span>      refill_rx_ring(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>received) {
+</span></span><span style=display:flex><span>    printk(<span style=color:#e6db74>&#34;received==0</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    received <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  dev<span style=color:#f92672>-&gt;</span>quota <span style=color:#f92672>-=</span> received;
+</span></span><span style=display:flex><span>  <span style=color:#f92672>*</span>budget <span style=color:#f92672>-=</span> received;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;  <span style=color:#75715e>/* not_done */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>oom:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e>/* Start timer, stop polling, but do not enable rx interrupts. */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	start_poll_timer(dev);
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;  <span style=color:#75715e>/* we&#39;ll take it from here so tell core &#34;done&#34;*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/************************ End note note *********************************/</span>		
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>위의 내용으로 인해 우리는,</p><ol><li>rx_work_limit = dev->quota refill_rx_ring() 은 정상적으로 동작하지 않게 될때 rxnobuff 비트를 지워줄 필요가 있다.</li><li>done / not_dont 상태가 있다.</li><li>netif_rx() 대신 netif_receive_skb() 가 skb 를 패스하기 위해 호출된다.</li><li>새로운 OOM ( Out of memory ) 조건을 가진다.</li><li>새로운 for 루프가 추가되었다. 이는 새로운 패킷의 유입의 확인, 모든 세팅의 정상 동작 및 패킷을 보내는 동안 qouta 를 초과하지 않기 위한 동작등이 포함된다.</li></ol><p>Poll 타이머 코드는 아래와 같다.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>cur_rx <span style=color:#f92672>-</span> tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>&gt;</span> RX_RING_SIZE<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>||</span> tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL) 
+</span></span><span style=display:flex><span>  refill_rx_ring(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/* If RX ring is not full we are still out of memory.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 Restart the timer again. Else we re-add ourselves 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>   to the master poll list.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (tp<span style=color:#f92672>-&gt;</span>rx_buffers[tp<span style=color:#f92672>-&gt;</span>dirty_rx <span style=color:#f92672>%</span> RX_RING_SIZE].skb <span style=color:#f92672>==</span> NULL)
+</span></span><span style=display:flex><span>    restart_timer();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>else</span> <span style=color:#a6e22e>netif_rx_schedule</span>(dev);  <span style=color:#75715e>/* we are back on the poll list */</span>
+</span></span></code></pre></div><ol start=5><li><p>dev->close() , dev->suspend() 이슈</p><p>드라이버 개발자는 본 내용에 대해 신경쓰지 않아도 된다. 본 내용은 향후 채워진다.</p></li><li><p>/proc 에 새로운 스탯의 추가.</p><p>새로운 기능의 디버깅으로 인해 본 내용 역시 나중에 추가하기로 한다.</p></li></ol><h2 id=appendix-1--hw-fc-사용에-대한-논의>APPENDIX 1: HW FC 사용에 대한 논의</h2><p>대부분의 FC 칩들은 Rx buffer 에 더이상 공간이 없을때 pause packet 을 전송한다. NAPI 의 softirq 에 의해 DMA ring 에서 패킷을 빼 낼때, 패킷의 유입 량에 비해 시스템이 패킷을 가져오는 속도가 느린 경우 ( 시스템이 패킷을 지우는 속도 보다 유입되는 속도가 더 빠를때 ) 이론적으로 이와 같은 packet storm 으로 발생한 모든 패킷에 대해 단 1회의 rx 인터럽트를 호출 하여 해결 할 수 있다.</p><p>낮은 부하상태에서는, 패킷 당 1회의 인터럽트가 발생이 가능하다.</p><p>FC는 충분히 빠른 속도로 시스템이 패킷을 끄집어 내지 못할때에 대비하여 프로그램 되어야 한다. ( send a pause when out of rx buffers )</p><p>FC가 좋은 솔루션이긴 하지만, 너무 고가이다. (옛날 문서니까. 역자주)</p><p>APPENDIX 2: rotting packet / race-window avoidance 스키마</p><p>( 이 부분 번역은 생략. 쓰다보니 appendix 까지 번역해야 하는 생각이 스멀스멀.. )</p><p>here are two types of associations seen here</p><h2 id=statusint-which-honors-level-triggered-irq>status/int which honors level triggered IRQ</h2><p>If a status bit for receive or rxnobuff is set and the corresponding interrupt-enable bit is not on, then no interrupts will be generated. However, as soon as the &ldquo;interrupt-enable&rdquo; bit is unmasked, an immediate interrupt is generated. [assuming the status bit was not turned off].</p><p>Generally the concept of level triggered IRQs in association with a status and interrupt-enable CSR register set is used to avoid the race.</p><p>If we take the example of the tulip:</p><p>&ldquo;pending work&rdquo; is indicated by the status bit(CSR5 in tulip). the corresponding interrupt bit (CSR7 in tulip) might be turned off (but the CSR5 will continue to be turned on with new packet arrivals even if we clear it the first time)</p><p>Very important is the fact that if we turn on the interrupt bit on when tatus is set that an immediate irq is triggered.</p><p>If we cleared the rx ring and proclaimed there was &ldquo;no more work to be done&rdquo; and then went on to do a few other things; then when we enable interrupts, there is a possibility that a new packet might sneak in during this phase. It helps to look at the pseudo code for the tulip poll routine:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>do</span> {
+</span></span><span style=display:flex><span>    ACK;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span> (ring_is_not_empty()) {
+</span></span><span style=display:flex><span>        work<span style=color:#f92672>-</span>work<span style=color:#f92672>-</span>work
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> quota is exceeded: exit, no touching irq status<span style=color:#f92672>/</span>mask
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* No packets, but new can arrive while we are doing this*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      CSR5 :<span style=color:#f92672>=</span> read
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (CSR5 is not set) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* If something arrives in this narrow window here,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>      *  where the comments are ;-&gt; irq will be generated */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        unmask irqs;
+</span></span><span style=display:flex><span>        exit poll;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>} <span style=color:#66d9ef>while</span> (rx_status_is_set);
+</span></span></code></pre></div><p>CSR5 bit of interest is only the rx status.</p><p>If you look at the last if statement:</p><p>you just finished grabbing all the packets from the rx ring .. you check if status bit says theres more packets just in &mldr; it says none; you then enable rx interrupts again; if a new packet just came in during this check, we are counting that CSR5 will be set in that small window of opportunity and that by re-enabling interrupts, we would actually triger an interrupt to register the new packet for processing.</p><p>[The above description nay be very verbose, if you have better wording that will make this more understandable, please suggest it.]</p><h2 id=non-capable-hardware>non-capable hardware</h2><p>These do not generally respect level triggered IRQs. Normally, irqs may be lost while being masked and the only way to leave poll is to do a double check for new input after netif_rx_complete() is invoked and re-enable polling (after seeing this new input).</p><p>Sample code:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=display:flex><span>restart_poll:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>while</span> (ring_is_not_empty()) {
+</span></span><span style=display:flex><span>		work<span style=color:#f92672>-</span>work<span style=color:#f92672>-</span>work
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> quota is exceeded: exit, not touching irq status<span style=color:#f92672>/</span>mask
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	enable_rx_interrupts()
+</span></span><span style=display:flex><span>	netif_rx_complete(dev);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (ring_has_new_packet() <span style=color:#f92672>&amp;&amp;</span> netif_rx_reschedule(dev, received)) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		disable_rx_and_rxnobufs()
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> restart_poll
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>while</span> (rx_status_is_set);
+</span></span></code></pre></div><p>Basically netif_rx_complete() removes us from the poll list, but because a new packet which will never be caught due to the possibility of a race might come in, we attempt to re-add ourselves to the poll list.</p><hr><h1 id=relevant-sites>relevant sites:</h1><p><a href=ftp://robur.slu.se/pub/Linux/net-development/NAPI/>ftp://robur.slu.se/pub/Linux/net-development/NAPI/</a></p><hr><h2 id=todo-write-net-skeletonc-driver>TODO: Write net-skeleton.c driver.</h2><h1 id=authors>Authors:</h1><p>Alexey Kuznetsov <a href=mailto:kuznet@ms2.inr.ac.ru>kuznet@ms2.inr.ac.ru</a><br>Jamal Hadi Salim <a href=mailto:hadi@cyberus.ca>hadi@cyberus.ca</a><br>Robert Olsson <a href=mailto:Robert.Olsson@data.slu.se>Robert.Olsson@data.slu.se</a></p><h1 id=acknowledgements>Acknowledgements:</h1><p>People who made this document better:</p><p>Lennert Buytenhek <a href=mailto:buytenh@gnu.org>buytenh@gnu.org</a><br>Andrew Morton <a href=mailto:akpm@zip.com.au>akpm@zip.com.au</a><br>Manfred Spraul <a href=mailto:manfred@colorfullife.com>manfred@colorfullife.com</a><br>Donald Becker <a href=mailto:becker@scyld.com>becker@scyld.com</a><br>Jeff Garzik <a href=mailto:jgarzik@mandrakesoft.com>jgarzik@mandrakesoft.com</a></p><p>결국, 이런저런 내용이 많지만, NAPI 의 핵심은 다음의 몇가지로 압축 될 수 있다.</p><ol><li><p>고부하 상태건 저부하 상태건 패킷의 유입으로 인한 하드웨어로 부터 ( 하드웨어 드라이버로 부터)의 직접적인 인터럽트는 시스템에 심각한 부하를 일으킬 가능성이 있다.</p></li><li><p>따라서 이와 같은 인터럽트는 NAPI 및 기타 하드웨어 ( NIC )의 인터럽트 제어를 통해 부하율을 낮출 수 있으나, 다소간의 지연이 발생 할 수 있다.</p></li><li><p>NAPI 가 동작하는 기본적인 방식은 Polling 이며, 이를 쉽게 말하면 유입된 패킷이 발생할때 마다 인터럽트 하여
 가져오는 것이 아니라 드라이버가 원하는 때에 적절한 스케줄링을 통하여 폴링으로 한꺼번에 가져온다.</p></li><li><p>따라서 이러한 패킷을 저장하기 위한 공간이 필요하며, 이러한 공간이 포화가 된 경우/ 또는 시스템에서 처리
 불가능한 경우 등에 대한 대비가 필요하다.</p></li><li><p>NAPI 는 기본적으로 rx ring 에 동작한다.</p></li></ol><p>로 압축 할 수 있겠다.</p><p>번역한 문서가 아주 옛날 버전이기는 하지만, 최신 문서 소개해 봐야 다 기본 내용은 거기서 거기.</p><p>실제 netpipe 등과 같은 툴을 통해 packet storming 이나 하드웨어 레벨의 테스팅을 하다 보면 쉽게 접하고 튜닝이 가능한 부분이며, 힘들어하는 시스템에 idle 을 조금이나마 안겨 줄 수 있는 방법이라 하겠다. 배포판 또는 드라이버별로 적용이 되고 안되는 등의 차이가 있는 듯 하니 궁금하면 dmesg 를 확인 해 보길 바란다.</p><p>오늘은 이만..</p><div class=footer></div><a href=about/>About this blog</a><br>Younjin JEONG: <a href="mailto: younjin.jeong@gmail.com">younjin.jeong@gmail.com</a><br>Powered by <a href=https://gohugo.io/>Hugo</a> with
-<a href=https://github.com/mrmierzejewski/hugo-theme-console/>Console Theme</a>.<br><a href=https://opensource.org/licenses/LGPL-3.0>Terms and Conditions</a></br></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-LF5W12M5RW')</script></div></body></html>
+<a href=https://github.com/mrmierzejewski/hugo-theme-console/>Console Theme</a>.<br><a href=https://opensource.org/licenses/LGPL-3.0>Terms and Conditions</a></br></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW")</script></div></body></html>
