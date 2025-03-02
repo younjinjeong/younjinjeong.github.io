@@ -1,7 +1,7 @@
 ---
 title: "Phrack magazine Vol7 Issue51 File Descriptor Hijacking"
 date: 2021-03-07T16:21:21+08:00
-draft: false
+draft: true
 tags: [phrack,file descriptor]
 authors:
   - younjinjeong
