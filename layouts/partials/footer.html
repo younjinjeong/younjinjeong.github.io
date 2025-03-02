@@ -1,0 +1,27 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 포스트 페이지인지 확인
+  const postContent = document.querySelector('.post-content');
+  if (postContent) {
+    // 이미 터미널 커서가 있는지 확인
+    if (!document.querySelector('.terminal-prompt')) {
+      // 터미널 커서 요소 생성
+      const terminalPrompt = document.createElement('div');
+      terminalPrompt.className = 'terminal-prompt';
+      
+      const promptSymbol = document.createElement('span');
+      promptSymbol.className = 'prompt-symbol';
+      promptSymbol.textContent = '_>';
+      
+      const terminalCursor = document.createElement('span');
+      terminalCursor.className = 'terminal-cursor';
+      
+      terminalPrompt.appendChild(promptSymbol);
+      terminalPrompt.appendChild(terminalCursor);
+      
+      // 포스트 콘텐츠 뒤에 추가
+      postContent.parentNode.insertBefore(terminalPrompt, postContent.nextSibling);
+    }
+  }
+});
+</script> 

@@ -26,6 +26,7 @@ Distributed Computing, Cloud, and Open source.
 - ex-DBS Bank, SVP C2E/T&O  
 - ex-Pivot, Principal Technologist 
 - ex-Amazonian, Solutions Architect 
+- ex-Cafe24 Tech Research Lab 
 - RC, Cycle, Music, Driving 
 
 ## Books

@@ -34,7 +34,6 @@ If you want to learn more about him, feel free to check the links below:
 More K-pop singer introductions are coming soon!
 
 
-# 한국말 
 
 기술 포스팅을 하나 할까 하다가 최근 다양한 원인으로 머리도 복잡하고 해서 음악을 틀었다. 나이가 좀 있다보니 아무래도 듣는 음악이 좀 오래된 것들이 많은데, 여자친구가 이런 취향을 참 싫어하더라. 어쨌든 뭐 나는 좋으니까 또 해외의 많은 다른 사람들도 좋아하지 않을까 해서 부담스럽게 길지 않은 포스팅을 끄적. 
 

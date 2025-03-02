@@ -1,5 +1,5 @@
-<div class="boot-screen">
-  <h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+<div class="boot-screen" id="bootScreen">
+  <h1>RYONGJIN INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
   <div class="boot-text" id="bootText">
     <p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
     <p>-SERVER 1-</p>
@@ -14,9 +14,28 @@
   </div>
 </div>
 
+<!-- Pip-Boy 캐릭터 애니메이션 -->
+<div class="pipboy-character" id="pipboyCharacter"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  const bootScreen = document.getElementById('bootScreen');
   const bootText = document.getElementById('bootText');
+  const pipboyCharacter = document.getElementById('pipboyCharacter');
+  
+  // 세션 스토리지 확인 - 이미 방문했는지 체크
+  const hasVisited = sessionStorage.getItem('hasVisited');
+  
+  if (hasVisited) {
+    // 이미 방문한 경우 부트 화면 숨김
+    bootScreen.style.display = 'none';
+    pipboyCharacter.style.display = 'none';
+    return;
+  }
+  
+  // 첫 방문 표시
+  sessionStorage.setItem('hasVisited', 'true');
+  
   const lines = bootText.querySelectorAll('p');
   
   lines.forEach((line, index) => {
@@ -30,9 +49,26 @@ document.addEventListener('DOMContentLoaded', function() {
       lines[currentLine].style.display = 'block';
       currentLine++;
       setTimeout(showNextLine, 400);
+    } else {
+      // 모든 텍스트가 표시된 후 캐릭터 표시
+      setTimeout(() => {
+        pipboyCharacter.style.display = 'block';
+      }, 1000);
     }
   }
   
   showNextLine();
+  
+  // 부트 화면이 사라진 후 캐릭터 숨기기
+  setTimeout(() => {
+    pipboyCharacter.style.display = 'none';
+  }, 8000); // 8초 후 캐릭터 숨김
+  
+  // 부트 화면 애니메이션 완료 후 숨김
+  // CSS의 animation-delay(4s)와 일치하도록 설정
+  // 추가 시간(1초)을 더해 부드럽게 전환
+  setTimeout(() => {
+    bootScreen.style.display = 'none';
+  }, 5000);
 });
 </script>

@@ -1,0 +1,71 @@
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-content">
+    <div class="loading-character">
+      <img src="/images/pipboy-character.gif" alt="Pip-Boy Character">
+    </div>
+    <div class="loading-text">LOADING...</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+    <div class="loading-percentage" id="loadingPercentage">0%</div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const loadingBar = document.getElementById('loadingBar');
+  const loadingPercentage = document.getElementById('loadingPercentage');
+  const links = document.querySelectorAll('a:not([target="_blank"])');
+  
+  // 초기에는 로딩 화면 숨김
+  loadingScreen.style.display = 'none';
+  console.log('Loading screen initialized and hidden');
+  
+  links.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+        e.preventDefault();
+        console.log('Link clicked: ' + href);
+        
+        // 클릭 사운드 재생
+        const clickSound = new Audio('/sounds/tv-channel-change.mp3');
+        clickSound.play();
+        
+        // 로딩 화면 표시
+        loadingScreen.style.display = 'flex';
+        console.log('Loading screen displayed');
+        
+        // 로딩 바 애니메이션
+        let progress = 0;
+        const totalTime = 1200; // 1.2초
+        const interval = 20; // 업데이트 간격 (ms)
+        const steps = totalTime / interval;
+        const increment = 100 / steps;
+        
+        loadingBar.style.width = '0%';
+        loadingPercentage.textContent = '0%';
+        
+        const progressInterval = setInterval(() => {
+          progress += increment;
+          const roundedProgress = Math.min(Math.round(progress), 100);
+          
+          loadingBar.style.width = roundedProgress + '%';
+          loadingPercentage.textContent = roundedProgress + '%';
+          
+          if (roundedProgress >= 100) {
+            clearInterval(progressInterval);
+            console.log('Loading complete, navigating to: ' + href);
+            
+            // 로딩 완료 후 페이지 이동
+            setTimeout(() => {
+              window.location.href = href;
+            }, 100);
+          }
+        }, interval);
+      }
+    });
+  });
+});
+</script> 
