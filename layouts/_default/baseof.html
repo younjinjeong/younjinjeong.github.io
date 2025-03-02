@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en-us" }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  {{ partial "boot-screen.html" . }}
+  
+  <div class="container">
+    <header>
+      <h1 class="site-title">
+        <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        <span class="cursor"></span>
+      </h1>
+      {{ partial "nav.html" . }}
+    </header>
+    
+    <main>
+      {{ block "main" . }}{{ end }}
+    </main>
+    
+    <footer>
+      <p>© {{ now.Format "2006" }} {{ .Site.Title }} | POWERED BY HUGO</p>
+      <p>ROBCO INDUSTRIES TERMINAL INTERFACE V2.3.0</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<div class="boot-screen">
+  <h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+  <div class="boot-text" id="bootText">
+    <p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+    <p>-SERVER 1-</p>
+    <p>>INITIATING BOOT SEQUENCE...</p>
+    <p>>LOADING KERNEL...</p>
+    <p>>MOUNTING FILE SYSTEMS...</p>
+    <p>>CHECKING HARDWARE COMPATIBILITY...</p>
+    <p>>INITIALIZING NETWORK INTERFACES...</p>
+    <p>>LOADING BLOG CONTENT...</p>
+    <p>>WELCOME TO YOUNJINJEONG'S TERMINAL</p>
+    <p>>BOOT COMPLETE.</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const bootText = document.getElementById('bootText');
+  const lines = bootText.querySelectorAll('p');
+  
+  lines.forEach((line, index) => {
+    line.style.display = 'none';
+  });
+  
+  let currentLine = 0;
+  
+  function showNextLine() {
+    if (currentLine < lines.length) {
+      lines[currentLine].style.display = 'block';
+      currentLine++;
+      setTimeout(showNextLine, 400);
+    }
+  }
+  
+  showNextLine();
+});
+</script>

@@ -1,0 +1,197 @@
+:root {
+  --pipboy-green: #4caf50;
+  --pipboy-dark-green: #1b5e20;
+  --pipboy-light-green: #a5d6a7;
+  --pipboy-black: #0a0a0a;
+  --pipboy-bg: #0a0f0d;
+  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', monospace;
+  --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
+}
+
+body {
+  background-color: var(--pipboy-bg);
+  color: var(--pipboy-green);
+  font-family: var(--pipboy-terminal-font);
+  line-height: 1.5;
+  text-shadow: var(--pipboy-glow);
+  margin: 0;
+  padding: 0;
+}
+
+/* 스캔라인 효과 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(10, 15, 13, 0.1) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* CRT 화면 효과 */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 15, 13, 0) 0%,
+    rgba(10, 15, 13, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: 1001;
+}
+
+a {
+  color: var(--pipboy-light-green);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: white;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--pipboy-light-green);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--pipboy-green);
+  padding-bottom: 5px;
+}
+
+pre, code {
+  background-color: var(--pipboy-dark-green);
+  border: 1px solid var(--pipboy-green);
+  border-radius: 3px;
+  font-family: var(--pipboy-terminal-font);
+  padding: 2px 5px;
+}
+
+pre {
+  padding: 10px;
+  overflow-x: auto;
+}
+
+blockquote {
+  border-left: 4px solid var(--pipboy-green);
+  padding-left: 20px;
+  margin-left: 0;
+  font-style: italic;
+}
+
+/* 네비게이션 메뉴 */
+nav {
+  border-bottom: 2px solid var(--pipboy-green);
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav li {
+  margin: 0 15px;
+}
+
+/* 포스트 목록 */
+.post-list article {
+  border: 1px solid var(--pipboy-green);
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: rgba(10, 15, 13, 0.7);
+  transition: all 0.3s ease;
+}
+
+.post-list article:hover {
+  box-shadow: var(--pipboy-glow);
+  transform: translateY(-3px);
+}
+
+/* 푸터 */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 2px solid var(--pipboy-green);
+  font-size: 0.9em;
+}
+
+/* 깜빡이는 커서 효과 */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1em;
+  background-color: var(--pipboy-green);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 부트업 애니메이션 */
+.boot-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--pipboy-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeOut 3s forwards;
+  animation-delay: 4s;
+}
+
+.boot-screen h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  border: none;
+}
+
+.boot-text {
+  width: 80%;
+  max-width: 800px;
+  height: 300px;
+  overflow: hidden;
+  font-family: var(--pipboy-terminal-font);
+  color: var(--pipboy-green);
+}
+
+.boot-text p {
+  margin: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 0.1s steps(1);
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+} 
