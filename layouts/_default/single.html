@@ -25,6 +25,10 @@
     {{ .Content }}
   </div>
   
-  {{ partial "terminal-cursor.html" . }}
+  <!-- 직접 터미널 커서 추가 -->
+  <div class="terminal-prompt">
+    <span class="prompt-symbol">_></span>
+    <span class="terminal-cursor"></span>
+  </div>
 </article>
 {{ end }} 

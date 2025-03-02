@@ -1,25 +1,28 @@
 {{ define "main" }}
 
-<h1>Latest posts</h1>
+<h1 class="site-title">RYONGJIN TERMINAL</h1>
 
-<div class="posts-list">
-{{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" (slice "posts")) }}
+<div class="post-list">
+{{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
 {{ range $paginator.Pages }}
-    <div class="post">
-        <p>
-            <div class="date">{{ .PublishDate.Format "Jan. 2, 2006" }}</div>
-            <h1><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h1>
-            {{ if .Params.tags }}
-            <div class="tags">
-                {{ range .Params.tags }}
-                <span class="tag">{{ . }}</span>
-                {{ end }}
-            </div>
-            {{ end }}
-            {{ .Summary }}
-        </p>
-    </div>    
+  <article>
+    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    
+    <!-- 날짜 표시 추가 -->
+    <div class="post-date">{{ .Date.Format "2006-01-02" }}</div>
+    
+    <div class="post-summary">
+      {{ if .Description }}
+        {{ .Description }}
+      {{ else }}
+        {{ .Summary }}
+      {{ end }}
+    </div>
+    <a href="{{ .RelPermalink }}" class="read-more">READ MORE &gt;</a>
+  </article>
 {{ end }}
+
+{{ template "_internal/pagination.html" . }}
 </div>
 
 

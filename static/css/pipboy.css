@@ -261,26 +261,9 @@ footer p {
   border: none;
 }
 
-/* Pip-Boy 캐릭터 애니메이션 */
+/* Pip-Boy 캐릭터 애니메이션 - 사용하지 않음 */
 .pipboy-character {
-  position: fixed;
-  bottom: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
-  width: 150px;
-  height: 200px;
-  background-image: url('/images/pipboy-character.gif');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 100;
-  opacity: 0.8;
-  display: none;
-}
-
-@keyframes walkAcross {
-  0% { left: 50%; transform: translate(-50%, 50%); }
-  100% { left: 50%; transform: translate(-50%, 50%); }
+  display: none; /* 항상 숨김 처리 */
 }
 
 /* 메뉴 스타일 업데이트 */
@@ -553,4 +536,44 @@ footer p {
 .post-content a[href*="youtu.be"] img:hover {
   transform: scale(1.02);
   box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+}
+
+/* 포스트 날짜 스타일 */
+.post-date {
+  font-size: 1em;
+  color: var(--pipboy-light-green);
+  margin-bottom: 10px;
+  font-family: var(--pipboy-terminal-font);
+  display: flex;
+  align-items: center;
+}
+
+.post-date::before {
+  content: ">";
+  margin-right: 5px;
+  color: var(--pipboy-green);
+}
+
+/* 포스트 요약 스타일 개선 */
+.post-summary {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* 더 읽기 링크 스타일 */
+.read-more {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: var(--pipboy-dark-green);
+  color: var(--pipboy-light-green);
+  border: 1px solid var(--pipboy-green);
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+.read-more:hover {
+  background-color: var(--pipboy-green);
+  color: var(--pipboy-bg);
+  text-shadow: none;
 }

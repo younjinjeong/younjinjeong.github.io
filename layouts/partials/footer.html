@@ -1,10 +1,12 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // 포스트 페이지인지 확인
-  const postContent = document.querySelector('.post-content');
-  if (postContent) {
+  // 모든 페이지에서 .post-content 또는 article 요소 찾기
+  const contentElements = document.querySelectorAll('.post-content, article .content');
+  
+  contentElements.forEach(function(contentElement) {
     // 이미 터미널 커서가 있는지 확인
-    if (!document.querySelector('.terminal-prompt')) {
+    const existingCursor = contentElement.parentNode.querySelector('.terminal-prompt');
+    if (!existingCursor) {
       // 터미널 커서 요소 생성
       const terminalPrompt = document.createElement('div');
       terminalPrompt.className = 'terminal-prompt';
@@ -19,9 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
       terminalPrompt.appendChild(promptSymbol);
       terminalPrompt.appendChild(terminalCursor);
       
-      // 포스트 콘텐츠 뒤에 추가
-      postContent.parentNode.insertBefore(terminalPrompt, postContent.nextSibling);
+      // 콘텐츠 요소 뒤에 추가
+      contentElement.parentNode.insertBefore(terminalPrompt, contentElement.nextSibling);
+      
+      console.log('Terminal cursor added to', contentElement);
     }
-  }
+  });
 });
 </script> 
