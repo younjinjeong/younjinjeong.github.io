@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://webfontworld.github.io/DungGeunMo/DungGeunMo.css'); /* 둥근모꼴 - 레트로 게임 스타일 */
 
 :root {
   --pipboy-green: #4caf50;
@@ -6,14 +9,14 @@
   --pipboy-light-green: #a5d6a7;
   --pipboy-black: #0a0a0a;
   --pipboy-bg: #0a0f0d;
-  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'Nanum Gothic Coding', monospace;
+  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'DungGeunMo', 'Nanum Gothic Coding', monospace;
   --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
 }
 
 body {
   background-color: var(--pipboy-bg);
   color: var(--pipboy-green);
-  font-family: var(--pipboy-terminal-font);
+  font-family: var(--pipboy-terminal-font), 'Courier New', '굴림체', monospace;
   line-height: 1.5;
   text-shadow: var(--pipboy-glow);
   margin: 0;
@@ -21,9 +24,28 @@ body {
   font-size: 18px;
 }
 
-/* 한글 폰트 크기 조정 - 제거 또는 수정 */
+/* 한글 폰트 최적화 */
 :lang(ko) {
-  font-size: 1em; /* 영문과 동일한 크기로 설정 */
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
+  letter-spacing: -0.02em; /* 한글 자간 조정 */
+  word-break: keep-all; /* 단어 단위 줄바꿈 */
+}
+
+/* 한글 제목 스타일 */
+h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
+  font-family: 'DungGeunMo', 'Black Han Sans', var(--pipboy-terminal-font);
+  letter-spacing: -0.03em;
+}
+
+/* 포스트 내용 한글 최적화 */
+.post-content:lang(ko) {
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
+  line-height: 1.7; /* 한글 줄간격 조정 */
+}
+
+/* 터미널 프롬프트 한글 스타일 */
+.terminal-prompt:lang(ko) {
+  font-family: 'DungGeunMo', monospace;
 }
 
 /* 스캔라인 효과 */
