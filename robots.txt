@@ -1,0 +1,14 @@
+User-agent: *
+
+Allow: /
+Sitemap: https://blog.younjinjeong.io/sitemap.xml
+
+# Disallow admin and other system paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+
+# Optional: Prevent indexing of search results pages
+Disallow: /search/
+

