@@ -1,7 +1,7 @@
 ---
 title: "errno(3) - Linux manual page"
 date: 2021-04-16T15:04:51+08:00
-draft: false
+draft: true
 categories:
   - Linux Manual Page
   - errno(3)

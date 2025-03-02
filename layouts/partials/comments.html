@@ -1,0 +1,32 @@
+{{ if .Site.Params.comments }}
+
+    {{ if .Site.Params.giscus }}
+    <!-- 로컬 테스트용 메시지 -->
+    {{ if not hugo.IsProduction }}
+    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+        <p>💡 댓글 시스템 (Giscus)은 프로덕션 환경에서만 표시됩니다.</p>
+        <p>설정된 값:</p>
+        <ul>
+            <li>Repository: {{ .Site.Params.giscus.repo }}</li>
+            <li>Category: {{ .Site.Params.giscus.category }}</li>
+        </ul>
+    </div>
+    {{ end }}
+
+    <script src="https://giscus.app/client.js"
+            data-repo="{{ .Site.Params.giscus.repo }}"
+            data-repo-id="{{ .Site.Params.giscus.repoId }}"
+            data-category="{{ .Site.Params.giscus.category }}"
+            data-category-id="{{ .Site.Params.giscus.categoryId }}"
+            data-mapping="{{ .Site.Params.giscus.mapping }}"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="{{ .Site.Params.giscus.theme }}"
+            data-lang="{{ .Site.Params.giscus.lang }}"
+            crossorigin="anonymous"
+            async>
+    </script>
+    {{ end }}
+{{ end }} 

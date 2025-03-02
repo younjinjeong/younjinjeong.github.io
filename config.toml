@@ -2,9 +2,9 @@ baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
 title = "YJ Blog"
 theme = "hugo-theme-console" 
-pagigate = 15 
+paginate = 15 
 googleAnalytics = "G-LF5W12M5RW"
-enableRobots = "true"
+enableRobotsTXT = true
 
 [markup]
   defaultMarkdownHandler = "goldmark"
@@ -70,3 +70,20 @@ enableRobots = "true"
     endLevel = 3
     ordered = false
     startLevel = 2
+
+[params]
+description = "Younjin Jeong's Blog"
+author = "Younjin JEONG"
+comments = true
+
+[params.giscus]
+  repo = "younjinjeong/younjinjeong.github.io"
+  repoId = "MDEwOlJlcG9zaXRvcnkzNDQ3NjYwNTc="
+  category = "Comments"
+  categoryId = "DIC_kwDOFIy2ac4CnfFh"
+  mapping = "pathname"
+  theme = "preferred_color_scheme"
+  lang = "ko"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]

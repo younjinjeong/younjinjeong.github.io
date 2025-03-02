@@ -4,9 +4,6 @@ date: 2021-03-06T01:37:04+08:00
 draft: false
 authors:
   - younjinjeong
-categories:
-  - Linux
-  - Network
 tags: [linux, networking, interrupts]
 ---
 

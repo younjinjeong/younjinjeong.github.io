@@ -4,40 +4,34 @@ date: 2021-04-15T19:56:20+08:00
 draft: false
 authors:
   - younjinjeong
-categories:
-  - K-pop
-  - Introduction 
-  - DiveDeep 
 tags: [k-pop, introduction, HyunwooHa]
 ---
 
+While listening to my favorite Korean music today, I decided to write a post about Korean pop. There are many famous K-pop stars and artists out there, but I thought it would be nice to introduce some lesser-known yet amazing singers.
 
-While I listen to my favorite Korean music today, I made up my mind to write a Korean pop post. Many famous k-pop stars and artists are out there, but I thought it would be good to introduce non-famous but great singers. 
-
-Today, the singer is  HA Hyun Woo, who's a frontman of Guckkasten band in Korea. In the band, his role is a leader, vocal, and guitar. 
-
-One of the greatest songs he sang, "Don't Cry" in the show "King of Mask Singer". 
-
-The video link target is the song "Don't Cry." The video don't have English subtitle, but I strongly suggest you listen to his music even if you don't understand Korean. 
+Today’s featured singer is Ha Hyun-woo, the frontman of the Korean band Guckkasten. In the band, he serves as the leader, vocalist, and guitarist.
+One of the greatest songs he performed is "Don’t Cry," which he sang on the show King of Mask Singer.
+Check out the video below. It doesn’t have English subtitles, but I strongly recommend giving it a listen even if you don’t understand Korean.
 
 [![](http://img.youtube.com/vi/0rxs29zVnys/0.jpg)](https://youtu.be/0rxs29zVnys?t=473 "Don't cry by Hyunwoo HA")
 
-And if you want to understand what the lyric means, you can click the link below. 
+If you’d like to understand the lyrics, you can watch the version with English subtitles here:
 
 [![](http://img.youtube.com/vi/LAyAlbbGk7w/0.jpg)](http://www.youtube.com/watch?v=LAyAlbbGk7w "Don't cry by Hyunwoo HA with ENG Sub") 
 
-If you are a big fan of K-drama, then you might hear about "Itaewon Class." And yes, Hyunwoo HA is the singer of "Diamond".
+If you’re a big fan of K-dramas, you might have heard of Itaewon Class. Yes, Ha Hyun-woo is the singer of “Diamond.”
 
 [![](http://img.youtube.com/vi/U1Fxt5wCqAg/0.jpg)](http://www.youtube.com/watch?v=U1Fxt5wCqAg "Diamond by Hyunwoo HA with ENG Sub")
 
-As you heard, his voice is crazy. His falsetto, head voice, chest voice, all quality of voice make fantastic emotions. It pierced whole my body. While I listen to "Don't Cry," I always drop my tears. What a bad song! 
+As you’ll hear, his voice is incredible. His falsetto, head voice, and chest voice all come together to create a phenomenal emotional impact—it resonates through your entire body. Whenever I listen to “Don’t Cry,” I’m moved to tears. What a powerful song!
 
-If you want to know more about him, then please check the links below. 
+If you want to learn more about him, feel free to check the links below:
+
 
 - [Wikipedia](https://en.wikipedia.org/wiki/Ha_Hyun-woo) 
-- [Namu Wiki](https://namu.wiki/w/%ED%95%98%ED%98%84%EC%9A%B0) - Use Google Translater for English 
+- [Namu Wiki](https://namu.wiki/w/%ED%95%98%ED%98%84%EC%9A%B0) - Use Google Translater for English
 
-More K-pop singers coming soon! 
+More K-pop singer introductions are coming soon!
 
 
 # 한국말 

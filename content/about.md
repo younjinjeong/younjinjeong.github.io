@@ -21,8 +21,9 @@ Distributed Computing, Cloud, and Open source.
 
 
 ## Younjin Jeong  
-- Cloud Architect @DBS Bank ltd. 
-- South Korean in Singapore 
+- MegazoneCloud, Tech Advisor to CEO  
+- ex-Focusmedia Korea, CTO  
+- ex-DBS Bank, SVP C2E/T&O  
 - ex-Pivot, Principal Technologist 
 - ex-Amazonian, Solutions Architect 
 - RC, Cycle, Music, Driving 
