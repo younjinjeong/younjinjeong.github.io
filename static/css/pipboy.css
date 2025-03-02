@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap');
+
 :root {
   --pipboy-green: #4caf50;
   --pipboy-dark-green: #1b5e20;
   --pipboy-light-green: #a5d6a7;
   --pipboy-black: #0a0a0a;
   --pipboy-bg: #0a0f0d;
-  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', monospace;
+  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'Nanum Gothic Coding', monospace;
   --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
 }
 
@@ -16,6 +18,12 @@ body {
   text-shadow: var(--pipboy-glow);
   margin: 0;
   padding: 0;
+  font-size: 18px;
+}
+
+/* 한글 폰트 크기 조정 - 제거 또는 수정 */
+:lang(ko) {
+  font-size: 1em; /* 영문과 동일한 크기로 설정 */
 }
 
 /* 스캔라인 효과 */
@@ -71,12 +79,20 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 5px;
 }
 
+/* 콘텐츠 영역 폰트 크기 조정 */
+main {
+  min-height: 70vh;
+  font-size: 1.1em; /* 콘텐츠 영역 폰트 크기 증가 */
+}
+
+/* 코드 블록 폰트 크기 조정 */
 pre, code {
   background-color: var(--pipboy-dark-green);
   border: 1px solid var(--pipboy-green);
   border-radius: 3px;
   font-family: var(--pipboy-terminal-font);
   padding: 2px 5px;
+  font-size: 0.9em; /* 코드 블록 폰트 크기 조정 */
 }
 
 pre {
@@ -126,10 +142,28 @@ nav li {
 /* 푸터 */
 footer {
   text-align: center;
-  margin-top: 30px;
-  padding: 20px 0;
-  border-top: 2px solid var(--pipboy-green);
+  margin-top: 20px;
+  padding: 10px 0;
   font-size: 0.9em;
+  position: relative;
+}
+
+.footer-title {
+  font-size: 2em;
+  margin-bottom: 0.2em;
+  border-bottom: none;
+}
+
+.site-url {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  color: var(--pipboy-green);
+}
+
+footer p {
+  margin: 0.3em 0;
 }
 
 /* 깜빡이는 커서 효과 */
@@ -148,7 +182,7 @@ footer {
   50% { opacity: 0; }
 }
 
-/* 부트업 애니메이션 */
+/* 부트업 애니메이션 수정 */
 .boot-screen {
   position: fixed;
   top: 0;
@@ -161,8 +195,9 @@ footer {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  animation: fadeOut 3s forwards;
-  animation-delay: 4s;
+  /* 애니메이션을 JavaScript로 제어하기 위해 제거 */
+  /* animation: fadeOut 3s forwards; */
+  /* animation-delay: 4s; */
 }
 
 .boot-screen h1 {
@@ -194,4 +229,306 @@ footer {
 
 @keyframes fadeOut {
   to { opacity: 0; visibility: hidden; }
-} 
+}
+
+/* 사이트 제목 스타일 */
+.site-title {
+  font-size: 3.5em;
+  text-align: center;
+  margin-bottom: 0;
+  border: none;
+}
+
+/* Pip-Boy 캐릭터 애니메이션 */
+.pipboy-character {
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 150px;
+  height: 200px;
+  background-image: url('/images/pipboy-character.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 100;
+  opacity: 0.8;
+  display: none;
+}
+
+@keyframes walkAcross {
+  0% { left: 50%; transform: translate(-50%, 50%); }
+  100% { left: 50%; transform: translate(-50%, 50%); }
+}
+
+/* 메뉴 스타일 업데이트 */
+.pipboy-nav {
+  background-color: var(--pipboy-dark-green);
+  border-bottom: 2px solid var(--pipboy-green);
+  padding: 15px 0;
+  margin-bottom: 30px;
+}
+
+.pipboy-nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pipboy-nav li {
+  margin: 0;
+  position: relative;
+}
+
+.pipboy-nav a {
+  display: block;
+  padding: 10px 15px;
+  font-size: 1.8em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: bold;
+}
+
+.pipboy-nav a:hover {
+  background-color: var(--pipboy-green);
+  color: var(--pipboy-bg);
+  text-shadow: none;
+}
+
+.pipboy-nav a::before {
+  content: ">";
+  position: absolute;
+  left: -10px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.pipboy-nav a:hover::before {
+  opacity: 1;
+  left: 0;
+}
+
+/* 로딩 화면 스타일 */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--pipboy-bg);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-character {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.loading-character::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--pipboy-bg);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.loading-character img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: brightness(0.9) hue-rotate(5deg);
+  background-color: var(--pipboy-bg);
+}
+
+.loading-text {
+  font-size: 2em;
+  color: var(--pipboy-green);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.loading-bar-container {
+  width: 300px;
+  height: 20px;
+  background-color: var(--pipboy-dark-green);
+  border: 2px solid var(--pipboy-green);
+  margin: 0 auto 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--pipboy-green);
+  transition: width 0.05s linear;
+}
+
+.loading-percentage {
+  font-size: 1.2em;
+  color: var(--pipboy-green);
+}
+
+/* 페이지 전환 효과 수정 - 로딩 화면과 함께 사용 */
+.page-transition {
+  display: none; /* 로딩 화면을 사용하므로 기존 전환 효과는 숨김 */
+}
+
+/* 컨테이너 스타일 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 터미널 프롬프트 스타일 */
+.terminal-prompt {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--pipboy-green);
+  font-family: var(--pipboy-terminal-font);
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+.prompt-symbol {
+  color: var(--pipboy-green);
+  margin-right: 5px;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 12px;
+  height: 20px;
+  background-color: var(--pipboy-green);
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 포스트 콘텐츠 영역 폰트 크기 통일 */
+.post-content {
+  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+  line-height: 1.6;
+}
+
+/* 포스트 제목 크기 증가 */
+.post h1 {
+  font-size: 1.7em;
+  margin-bottom: 0.5em;
+}
+
+/* 포스트 내 헤딩 크기 조정 */
+.post-content h2 {
+  font-size: 1.5em;
+}
+
+.post-content h3 {
+  font-size: 1.3em;
+}
+
+.post-content h4 {
+  font-size: 1.1em;
+}
+
+/* 포스트 메타 정보 스타일 */
+.post-meta {
+  font-size: 1.1em;
+  margin-bottom: 2em;
+  color: var(--pipboy-light-green);
+}
+
+/* 한글과 영문 폰트 크기 균형 조정 - 제거 또는 수정 */
+.post-content:lang(en) {
+  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+}
+
+.post-content:lang(ko) {
+  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+}
+
+/* YouTube 임베드 비디오 스타일 */
+.post-content iframe[src*="youtube.com"],
+.post-content iframe[src*="youtu.be"],
+.post-content img[src*="youtube.com"],
+.post-content a[href*="youtube.com"] img,
+.post-content a[href*="youtu.be"] img {
+  display: block;
+  margin: 2em auto;
+  max-width: 100%;
+  height: auto;
+  border: 2px solid var(--pipboy-green);
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* YouTube 임베드 비디오 컨테이너 (반응형) */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 2em auto;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--pipboy-green);
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+}
+
+/* YouTube 링크 스타일 */
+.post-content a[href*="youtube.com"],
+.post-content a[href*="youtu.be"] {
+  display: block;
+  text-align: center;
+  margin: 1.5em auto;
+  color: var(--pipboy-light-green);
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.post-content a[href*="youtube.com"]:hover,
+.post-content a[href*="youtu.be"]:hover {
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* YouTube 섬네일 호버 효과 */
+.post-content a[href*="youtube.com"] img:hover,
+.post-content a[href*="youtu.be"] img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+}
