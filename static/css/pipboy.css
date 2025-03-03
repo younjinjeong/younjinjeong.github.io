@@ -27,7 +27,7 @@ body {
   text-shadow: var(--pipboy-glow);
   margin: 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* 한글 폰트 최적화 */
@@ -591,7 +591,7 @@ nav,
 .nav-links,
 .nav-links a,
 .pipboy-nav a {
-    font-size: 18px !important;
+    font-size: 1.125em !important;
 }
 
 /* 포스트/페이지 제목 통합 - 16px */
@@ -600,7 +600,7 @@ nav,
 .post h1,
 article.post header h1,
 .about header h1 {
-    font-size: 16px !important;
+    font-size: 1em !important;
     margin-bottom: 1em;
     color: var(--pipboy-light-green);
     text-transform: uppercase;
@@ -611,6 +611,6 @@ article.post header h1,
 /* 포스트 내용 통합 - 14px */
 .post-content,
 article.post .post-content {
-    font-size: 14px;
+    font-size: 0.875em;
     line-height: 1.6;
 }
