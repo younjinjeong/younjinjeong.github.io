@@ -1,0 +1,30 @@
+{
+  "colors": {
+    "accent": "#2bc52b",
+    "accentFg": "#000000",
+    "border": "#2bc52b",
+    "button": {
+      "bg": "#000000",
+      "border": "#2bc52b",
+      "fg": "#2bc52b",
+      "hoverBg": "#2bc52b",
+      "hoverFg": "#000000"
+    },
+    "buttonFg": "#2bc52b",
+    "fg": "#2bc52b",
+    "fgLight": "#2bc52b",
+    "headerBg": "#000000",
+    "headerFg": "#2bc52b",
+    "input": {
+      "bg": "#000000",
+      "border": "#2bc52b",
+      "fg": "#2bc52b",
+      "placeHolderFg": "#2bc52b"
+    },
+    "main": {
+      "bg": "#000000",
+      "fg": "#2bc52b",
+      "fgLight": "#2bc52b"
+    }
+  }
+} 
