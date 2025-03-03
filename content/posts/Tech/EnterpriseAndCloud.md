@@ -5,10 +5,9 @@ draft: true
 authors:
   - younjinjeong
 categories:
-  - Management
   - Cloud
-  - Transformation
 tags: [Cloud, Managements, Cloud, Transformation]
+layout: "post"
 ---
 
 

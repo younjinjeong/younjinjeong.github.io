@@ -1,10 +1,12 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
-title = "YJ Blog"
-theme = "hugo-theme-console" 
-paginate = 15 
+title = "RYONGJIN's Blog"
+theme = "hugo-theme-console"
 googleAnalytics = "G-LF5W12M5RW"
 enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 15
 
 [markup]
   defaultMarkdownHandler = "goldmark"
@@ -82,8 +84,15 @@ comments = true
   category = "Comments"
   categoryId = "DIC_kwDOFIy2ac4CnfFh"
   mapping = "pathname"
-  theme = "preferred_color_scheme"
+  theme = "dark"
   lang = "ko"
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
+
+[permalinks]
+  posts = "/:year/:month/:title/"
+
+[taxonomies]
+  tag = "tags"
+  author = "authors"
