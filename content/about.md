@@ -7,17 +7,11 @@ draft: false
 tags: [about,news]
 ---
 
-
+## Short description
 This is a new version of ["System Complete" blog](https://kerberosj.tistory.com/).  
-[System Compleat](https://kerberosj.tistory.com/) 블로그의 새로운 버전. 
 
+Based on my hobby of Remote Control, I work on various toy projects while studying and organizing related topics such as Robotics, Cloud, Distributed Computing, and Open Source. There may occasionally be some personal stories.
 
-Distributed Computing, Cloud, and Open source.   
-이 블로그는 클라우드 및 분산 컴퓨팅, 그리고 오픈소스에 대한 주제를 주로 다룹니다.  
-
-
-
-# About me
 
 
 ## Younjin Jeong  
@@ -26,7 +20,7 @@ Distributed Computing, Cloud, and Open source.
 - ex-DBS Bank, SVP C2E/T&O  
 - ex-Pivot, Principal Technologist 
 - ex-Amazonian, Solutions Architect 
-- ex-Cafe24 Tech Research Lab 
+- ex-Cafe24 Tech Researcher 
 - RC, Cycle, Music, Driving 
 
 ## Books
