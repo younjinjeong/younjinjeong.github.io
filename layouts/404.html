@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="kernel-panic" style="font-family: monospace; background: #000; color: #fff; padding: 20px; white-space: pre-wrap;">
+<div class="kernel-panic">
 Kernel panic - not syncing: Blog page not found at address 0x404
 
 CPU: 0 PID: 404 Comm: blog_server Not tainted 6.1.0-blog #1
@@ -20,7 +20,7 @@ System state:
 
 Possible solutions:
  1. Check the URL for typos
- 2. Return to <a href="/" style="color: #0f0;">HOME</a>
+ 2. Return to <a href="/">HOME</a>
  3. Use search function to find content
  4. Contact system administrator
 
@@ -33,16 +33,98 @@ Press any key to return to homepage...
 </div>
 
 <style>
-.kernel-panic {
-    font-size: 14px;
-    line-height: 1.5;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,255,0,0.2);
+:root {
+  --pipboy-green: #4caf50;
+  --pipboy-dark-green: #1b5e20;
+  --pipboy-light-green: #a5d6a7;
+  --pipboy-black: #0a0a0a;
+  --pipboy-bg: #0a0f0d;
+  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding', 'Share Tech Mono', 'VT323', monospace;
+  --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
 }
+
+body {
+  background-color: var(--pipboy-bg) !important;
+  margin: 0;
+  padding: 0;
+}
+
+.kernel-panic {
+  font-family: var(--pipboy-terminal-font) !important;
+  background: var(--pipboy-black) !important;
+  color: var(--pipboy-green) !important;
+  padding: 20px;
+  white-space: pre-wrap;
+  font-size: 18px !important;
+  line-height: 1.5;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+  text-shadow: var(--pipboy-glow);
+  margin: 50px auto;
+  max-width: 800px;
+}
+
+.kernel-panic a {
+  color: var(--pipboy-light-green) !important;
+  text-decoration: none;
+}
+
 .kernel-panic a:hover {
-    text-decoration: none;
-    color: #0f0;
-    background: #030;
+  text-decoration: none;
+  color: white !important;
+  background: var(--pipboy-dark-green);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* 스캔라인 효과 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(10, 15, 13, 0.1) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* CRT 화면 효과 */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 15, 13, 0) 0%,
+    rgba(10, 15, 13, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: 1001;
+}
+
+/* 모바일 환경에서 더 큰 폰트 */
+@media screen and (max-width: 768px) {
+  .kernel-panic {
+    font-size: 22px !important;
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .kernel-panic {
+    font-size: 26px !important;
+    padding: 10px;
+    margin: 20px auto;
+  }
 }
 </style>
 {{ end }}
