@@ -1,4 +1,4 @@
-[![Deploy Hugo site to Pages](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml/badge.svg)](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml)
+[![Deploy RYONGJIN's Blog to Pages](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml/badge.svg)](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml)
 
 This is a toy project blog built with Hugo.
 
@@ -8,8 +8,7 @@ This is a ToyProject blog that uses
 
 - Github Pages 
 - Hugo 
-- hugo-theme-terminal
-- XtermJS
+
 
 
 <!--

@@ -27,7 +27,7 @@ body {
   text-shadow: var(--pipboy-glow);
   margin: 0;
   padding: 0;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 /* 한글 폰트 최적화 */
@@ -443,7 +443,7 @@ footer p {
 
 /* 포스트 콘텐츠 영역 폰트 크기 통일 */
 .post-content {
-  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -582,4 +582,28 @@ footer p {
   background-color: var(--pipboy-green);
   color: var(--pipboy-bg);
   text-shadow: none;
+}
+
+/* 네비게이션 영역 폰트 크기 */
+nav, 
+.nav-links,
+.nav-links a {
+    font-size: 18px !important;
+}
+
+/* 포스트 제목 폰트 크기 */
+.post header h1 {
+    font-size: 16px !important;
+    margin-bottom: 1em;
+}
+
+/* about 페이지 제목도 동일하게 적용 (필요한 경우) */
+.about header h1 {
+    font-size: 16px !important;
+    margin-bottom: 1em;
+}
+
+/* 포스트 내용은 기본 사이즈 유지 */
+.post-content {
+    font-size: 14px;
 }

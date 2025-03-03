@@ -84,8 +84,8 @@ comments = true
   category = "Comments"
   categoryId = "DIC_kwDOFIy2ac4CnfFh"
   mapping = "pathname"
-  theme = "https://blog.younjinjeong.io/giscus/giscus-theme.json"
-  lang = "ko"
+  theme = "https://blog.younjinjeong.io/giscus/giscus-pipboy-theme.json"
+  lang = "en"
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
