@@ -15,7 +15,7 @@
   --pipboy-light-green: #a5d6a7;
   --pipboy-black: #0a0a0a;
   --pipboy-bg: #0a0f0d;
-  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding', 'Share Tech Mono', 'VT323', monospace;
+  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding','Share Tech Mono',  'VT323', monospace;
   --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
   font-size: 16px !important;
 }
@@ -28,7 +28,7 @@ body {
   background-color: var(--pipboy-bg);
   color: var(--pipboy-green);
   font-family: 'DungGeunMo', monospace;
-  line-height: 1.5;
+  line-height: 1.6;
   text-shadow: var(--pipboy-glow);
   margin: 0;
   padding: 0;
@@ -226,9 +226,6 @@ footer p {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  /* 애니메이션을 JavaScript로 제어하기 위해 제거 */
-  /* animation: fadeOut 3s forwards; */
-  /* animation-delay: 4s; */
 }
 
 .boot-screen h1 {
@@ -735,24 +732,9 @@ article.post .post-content,
 /* 반응형 디자인 */
 /* 태블릿 크기 (768px 이하) */
 @media screen and (max-width: 768px) {
-  nav,
-  .nav-links,
-  .nav-links a,
-  .pipboy-nav a,
-  .pipboy-nav li a {
-    font-size: 22px !important;  /* 네비게이션 크기 증가 */
-  }
-  
-  .container {
-    width: 95% !important;
-    padding: 0 10px !important;
-  }
-}
-
-/* 모바일 크기 (480px 이하) */
-@media screen and (max-width: 480px) {
-  html, body {
-    font-size: 18px !important;  /* 기본 크기 증가 */
+  /* 폰트 변경 - 더 가독성 높은 폰트로 */
+  body, p, div, span, h1, h2, h3, h4, h5, h6, nav, a {
+    font-family: 'Nanum Gothic', sans-serif !important;
   }
   
   nav,
@@ -760,7 +742,7 @@ article.post .post-content,
   .nav-links a,
   .pipboy-nav a,
   .pipboy-nav li a {
-    font-size: 24px !important;  /* 네비게이션 크기 더 증가 */
+    font-size: 28px !important;  /* 네비게이션 크기 대폭 증가 */
   }
   
   .post header h1,
@@ -770,7 +752,7 @@ article.post .post-content,
   .about header h1,
   .post-list article h2,
   .post-list .post-title {
-    font-size: 22px !important;  /* 제목 크기 더 증가 */
+    font-size: 26px !important;  /* 제목 크기 대폭 증가 */
   }
   
   .post-content,
@@ -779,13 +761,65 @@ article.post .post-content,
   .post-content li,
   .post-list .post-summary,
   .post-list article p {
-    font-size: 20px !important;  /* 본문 크기 더 증가 */
+    font-size: 22px !important;  /* 본문 크기 대폭 증가 */
+    line-height: 1.8 !important;  /* 줄 간격 증가 */
+  }
+  
+  .container {
+    width: 95% !important;
+    padding: 0 15px !important;
+  }
+  
+  /* 코드 블록 */
+  pre, code {
+    font-size: 20px !important;
+  }
+}
+
+/* 모바일 크기 (480px 이하) */
+@media screen and (max-width: 480px) {
+  /* 폰트 변경 - 더 가독성 높은 폰트로 */
+  body, p, div, span, h1, h2, h3, h4, h5, h6, nav, a {
+    font-family: 'Nanum Gothic', sans-serif !important;
+  }
+  
+  html, body {
+    font-size: 24px !important;  /* 기본 크기 대폭 증가 */
+  }
+  
+  nav,
+  .nav-links,
+  .nav-links a,
+  .pipboy-nav a,
+  .pipboy-nav li a {
+    font-size: 32px !important;  /* 네비게이션 크기 3배 증가 */
+  }
+  
+  .post header h1,
+  .post-title,
+  .post h1,
+  article.post header h1,
+  .about header h1,
+  .post-list article h2,
+  .post-list .post-title {
+    font-size: 30px !important;  /* 제목 크기 3배 증가 */
+    margin-bottom: 0.8em !important;
+  }
+  
+  .post-content,
+  article.post .post-content,
+  .post-content p,
+  .post-content li,
+  .post-list .post-summary,
+  .post-list article p {
+    font-size: 26px !important;  /* 본문 크기 3배 증가 */
+    line-height: 1.8 !important;  /* 줄 간격 증가 */
   }
   
   /* 여백 조정 */
   .container {
     width: 100% !important;
-    padding: 0 12px !important;
+    padding: 0 20px !important;
   }
   
   /* 이미지 크기 조정 */
@@ -796,7 +830,12 @@ article.post .post-content,
   
   /* 코드 블록 */
   pre, code {
-    font-size: 18px !important;  /* 코드 블록 크기 증가 */
+    font-size: 24px !important;  /* 코드 블록 크기 증가 */
+  }
+  
+  /* 메타 정보 */
+  .post-meta {
+    font-size: 22px !important;
   }
 }
 

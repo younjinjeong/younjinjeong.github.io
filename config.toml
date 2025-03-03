@@ -3,6 +3,7 @@ languageCode = "en-us"
 title = "RYONGJIN's Blog"
 googleAnalytics = "G-LF5W12M5RW"
 enableRobotsTXT = true
+baseFontSize = 16
 
 [pagination]
   pagerSize = 15
