@@ -1,17 +1,6 @@
 {{ if .Site.Params.comments }}
 
     {{ if .Site.Params.giscus }}
-    <!-- 로컬 테스트용 메시지 -->
-    {{ if not hugo.IsProduction }}
-    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-        <p>💡 댓글 시스템 (Giscus)은 프로덕션 환경에서만 표시됩니다.</p>
-        <p>설정된 값:</p>
-        <ul>
-            <li>Repository: {{ .Site.Params.giscus.repo }}</li>
-            <li>Category: {{ .Site.Params.giscus.category }}</li>
-        </ul>
-    </div>
-    {{ end }}
 
     <script src="https://giscus.app/client.js"
             data-repo="{{ .Site.Params.giscus.repo }}"
