@@ -1,4 +1,4 @@
-[![Deploy Hugo site to Pages](https://github.com/[username]/[repository]/actions/workflows/hugo.yml/badge.svg)](https://github.com/[username]/[repository]/actions/workflows/hugo.yml)
+[![Deploy Hugo site to Pages](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml/badge.svg)](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml)
 
 This is a toy project blog built with Hugo.
 
