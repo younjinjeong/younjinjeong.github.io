@@ -17,6 +17,7 @@
   --pipboy-bg: #0a0f0d;
   --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'DungGeunMo', 'Nanum Gothic Coding', monospace;
   --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
+  font-size: 16px;
 }
 
 body {
@@ -593,6 +594,7 @@ nav,
 .pipboy-nav a,
 .pipboy-nav li a {
     font-size: 18px !important;
+    font-size: 1.125rem !important;
 }
 
 /* 포스트/페이지 제목 통합 - 16px */
@@ -604,6 +606,7 @@ article.post header h1,
 .post-list article h2,
 .post-list .post-title {
     font-size: 16px !important;
+    font-size: 1rem !important;
     margin-bottom: 1em;
     color: var(--pipboy-light-green);
     text-transform: uppercase;
@@ -619,7 +622,8 @@ article.post .post-content,
 .post-list .post-summary,
 .post-list article p {
     font-size: 14px !important;
-    line-height: 1.6;
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
 }
 
 /* 포스트 메타 정보 스타일 */
@@ -627,15 +631,9 @@ article.post .post-content,
 .post-list .post-meta,
 .post-date {
     font-size: 14px !important;
+    font-size: 0.875rem !important;
     margin-bottom: 2em;
     color: var(--pipboy-light-green);
-}
-
-/* 포스트 목록의 제목 - 16px */
-.post-list article h2,
-.post-list .post-title {
-    font-size: 16px !important;
-    margin-bottom: 1em;
 }
 
 /* 포스트 상세 페이지 제목 - 20px로 증가 */
@@ -645,6 +643,7 @@ article.post .post-content,
 article.post header h1,
 .about header h1 {
     font-size: 20px !important;
+    font-size: 1.25rem !important;
     margin-bottom: 1em;
     font-weight: bold;
     letter-spacing: 0.05em;
@@ -658,7 +657,8 @@ article.post .post-content,
 .post-list .post-summary,
 .post-list article p {
     font-size: 14px !important;
-    line-height: 1.6;
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
 }
 
 /* 포스트 메타 정보 - 14px */
@@ -666,6 +666,12 @@ article.post .post-content,
 .post-list .post-meta,
 .post-date {
     font-size: 14px !important;
+    font-size: 0.875rem !important;
     margin-bottom: 2em;
     color: var(--pipboy-light-green);
+}
+
+/* 추가: 모든 기본 텍스트 요소에 대한 최소 폰트 크기 보장 */
+p, li, span, div {
+    font-size: min(14px, 0.875rem) !important;
 }
