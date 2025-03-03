@@ -84,7 +84,7 @@ comments = true
   category = "Comments"
   categoryId = "DIC_kwDOFIy2ac4CnfFh"
   mapping = "pathname"
-  theme = "dark"
+  theme = "/css/giscus-theme.css"
   lang = "ko"
 
 [outputs]
