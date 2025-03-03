@@ -110,7 +110,6 @@ h1, h2, h3, h4, h5, h6 {
 /* 콘텐츠 영역 폰트 크기 조정 */
 main {
   min-height: 70vh;
-  font-size: 1.1em; /* 콘텐츠 영역 폰트 크기 증가 */
 }
 
 /* 코드 블록 폰트 크기 조정 */
@@ -468,18 +467,21 @@ footer p {
 
 /* 포스트 메타 정보 스타일 */
 .post-meta {
-  font-size: 1.1em;
+  font-size: 14px;
   margin-bottom: 2em;
   color: var(--pipboy-light-green);
 }
 
-/* 한글과 영문 폰트 크기 균형 조정 - 제거 또는 수정 */
-.post-content:lang(en) {
-  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+/* 언어별 설정 수정 - 폰트 크기는 제거하고 다른 스타일만 유지 */
+.post-content:lang(ko) {
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
 }
 
-.post-content:lang(ko) {
-  font-size: 1.2em; /* 모든 언어에 대해 동일한 크기 */
+.post-content:lang(en) {
+  font-family: var(--pipboy-terminal-font);
 }
 
 /* YouTube 임베드 비디오 스타일 */
@@ -587,23 +589,28 @@ footer p {
 /* 네비게이션 영역 폰트 크기 */
 nav, 
 .nav-links,
-.nav-links a {
+.nav-links a,
+.pipboy-nav a {
     font-size: 18px !important;
 }
 
-/* 포스트 제목 폰트 크기 */
-.post header h1 {
-    font-size: 16px !important;
-    margin-bottom: 1em;
-}
-
-/* about 페이지 제목도 동일하게 적용 (필요한 경우) */
+/* 포스트/페이지 제목 통합 - 16px */
+.post header h1,
+.post-title,
+.post h1,
+article.post header h1,
 .about header h1 {
     font-size: 16px !important;
     margin-bottom: 1em;
+    color: var(--pipboy-light-green);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--pipboy-green);
+    padding-bottom: 5px;
 }
 
-/* 포스트 내용은 기본 사이즈 유지 */
-.post-content {
+/* 포스트 내용 통합 - 14px */
+.post-content,
+article.post .post-content {
     font-size: 14px;
+    line-height: 1.6;
 }
