@@ -1,7 +1,6 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
 title = "RYONGJIN's Blog"
-#theme = "hugo-theme-console"
 googleAnalytics = "G-LF5W12M5RW"
 enableRobotsTXT = true
 
@@ -84,7 +83,7 @@ comments = true
   category = "Comments"
   categoryId = "DIC_kwDOFIy2ac4CnfFh"
   mapping = "pathname"
-  theme = "https://blog.younjinjeong.io/giscus/giscus-pipboy-theme.json"
+  theme = "transparent_dark"
   lang = "en"
 
 [outputs]

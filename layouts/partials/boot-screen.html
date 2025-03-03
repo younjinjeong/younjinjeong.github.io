@@ -14,9 +14,6 @@
   </div>
 </div>
 
-<!-- Pip-Boy 캐릭터 애니메이션 - 제거 -->
-<!-- <div class="pipboy-character" id="pipboyCharacter"></div> -->
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const bootScreen = document.getElementById('bootScreen');
@@ -48,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
       currentLine++;
       setTimeout(showNextLine, 400);
     }
-    // Pip-Boy 캐릭터 관련 코드 제거
   }
   
   showNextLine();
@@ -56,6 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // 부트 화면 애니메이션 완료 후 숨김
   setTimeout(() => {
     bootScreen.style.display = 'none';
-  }, 7000); // 부트 화면 표시 시간 조정
+  }, 3500); // 부트 화면 표시 시간 조정
 });
 </script>

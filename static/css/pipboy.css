@@ -15,9 +15,13 @@
   --pipboy-light-green: #a5d6a7;
   --pipboy-black: #0a0a0a;
   --pipboy-bg: #0a0f0d;
-  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'DungGeunMo', 'Nanum Gothic Coding', monospace;
+  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding', 'Share Tech Mono', 'VT323', monospace;
   --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
-  font-size: 16px;
+  font-size: 16px !important;
+}
+
+html, body {
+  font-size: 16px !important;
 }
 
 body {
@@ -28,7 +32,6 @@ body {
   text-shadow: var(--pipboy-glow);
   margin: 0;
   padding: 0;
-  font-size: 16px;
 }
 
 /* 한글 폰트 최적화 */
@@ -120,7 +123,7 @@ pre, code {
   border-radius: 3px;
   font-family: var(--pipboy-terminal-font);
   padding: 2px 5px;
-  font-size: 0.9em; /* 코드 블록 폰트 크기 조정 */
+  font-size: 16px !important;
 }
 
 pre {
@@ -443,32 +446,32 @@ footer p {
 
 /* 포스트 콘텐츠 영역 폰트 크기 통일 */
 .post-content {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
 /* 포스트 제목 크기 증가 */
 .post h1 {
-  font-size: 1.7em;
+  font-size: 18px;
   margin-bottom: 0.5em;
 }
 
 /* 포스트 내 헤딩 크기 조정 */
 .post-content h2 {
-  font-size: 1.5em;
+  font-size: 18px;
 }
 
 .post-content h3 {
-  font-size: 1.3em;
+  font-size: 18px;
 }
 
 .post-content h4 {
-  font-size: 1.1em;
+  font-size: 16px;
 }
 
 /* 포스트 메타 정보 스타일 */
 .post-meta {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 2em;
   color: var(--pipboy-light-green);
 }
@@ -593,8 +596,7 @@ nav,
 .nav-links a,
 .pipboy-nav a,
 .pipboy-nav li a {
-    font-size: 18px !important;
-    font-size: 1.125rem !important;
+    font-size: 20px !important;
 }
 
 /* 포스트/페이지 제목 통합 - 16px */
@@ -605,8 +607,7 @@ article.post header h1,
 .about header h1,
 .post-list article h2,
 .post-list .post-title {
-    font-size: 16px !important;
-    font-size: 1rem !important;
+    font-size: 18px !important;
     margin-bottom: 1em;
     color: var(--pipboy-light-green);
     text-transform: uppercase;
@@ -614,15 +615,14 @@ article.post header h1,
     padding-bottom: 5px;
 }
 
-/* 포스트 내용 통합 - 14px */
+/* 포스트 내용 통합 - 16px */
 .post-content,
 article.post .post-content,
 .post-content p,
 .post-content li,
 .post-list .post-summary,
 .post-list article p {
-    font-size: 14px !important;
-    font-size: 0.875rem !important;
+    font-size: 16px !important;
     line-height: 1.6 !important;
 }
 
@@ -630,8 +630,7 @@ article.post .post-content,
 .post-meta,
 .post-list .post-meta,
 .post-date {
-    font-size: 14px !important;
-    font-size: 0.875rem !important;
+    font-size: 16px !important;
     margin-bottom: 2em;
     color: var(--pipboy-light-green);
 }
@@ -649,16 +648,41 @@ article.post header h1,
     letter-spacing: 0.05em;
 }
 
-/* 포스트 내용 - 14px */
+/* 포스트 내용 - 16px */
 .post-content,
 article.post .post-content,
 .post-content p,
 .post-content li,
 .post-list .post-summary,
 .post-list article p {
-    font-size: 14px !important;
-    font-size: 0.875rem !important;
-    line-height: 1.6 !important;
+    font-family: 'DungGeunMo', monospace;
+    font-size: 16px !important;
+    line-height: 1.6;  /* line-height는 유지 */
+}
+
+/* 포스트 내 헤딩 크기 통일 */
+.post-content h1,
+.post h1 {
+    font-size: 18px !important;
+}
+
+.post-content h2 {
+    font-size: 18px !important;
+}
+
+.post-content h3 {
+    font-size: 18px !important;
+}
+
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    font-size: 16px !important;
+}
+
+/* 포스트 요약 */
+.post-summary {
+    margin-bottom: 15px;
 }
 
 /* 포스트 메타 정보 - 14px */
@@ -666,7 +690,6 @@ article.post .post-content,
 .post-list .post-meta,
 .post-date {
     font-size: 14px !important;
-    font-size: 0.875rem !important;
     margin-bottom: 2em;
     color: var(--pipboy-light-green);
 }
@@ -674,4 +697,36 @@ article.post .post-content,
 /* 추가: 모든 기본 텍스트 요소에 대한 최소 폰트 크기 보장 */
 p, li, span, div {
     font-size: min(14px, 0.875rem) !important;
+}
+
+/* 네비게이션 - 20px */
+nav,
+.nav-links,
+.nav-links a,
+.pipboy-nav a {
+    font-family: 'DungGeunMo',monospace;
+    font-size: 20px; 
+}
+
+/* 포스트 제목 - 18px */
+.post header h1,
+.post-title,
+.post h1,
+article.post header h1,
+.about header h1,
+.post-list article h2,
+.post-list .post-title {
+    font-family: 'DungGeunMo', monospace;
+    font-size: 18px !important;
+}
+
+/* 포스트 내용 - 16px */
+.post-content,
+article.post .post-content,
+.post-content p,
+.post-content li,
+.post-list .post-summary,
+.post-list article p {
+    font-family: 'DungGeunMo', monospace;
+    font-size: 16px !important;
 }
