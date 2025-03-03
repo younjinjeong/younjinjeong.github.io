@@ -1,7 +1,7 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
 title = "RYONGJIN's Blog"
-theme = "hugo-theme-console"
+#theme = "hugo-theme-console"
 googleAnalytics = "G-LF5W12M5RW"
 enableRobotsTXT = true
 

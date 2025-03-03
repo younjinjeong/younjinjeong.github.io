@@ -25,14 +25,21 @@
     {{ .Content }}
   </div>
   
-  <!-- 직접 터미널 커서 추가 -->
+  <!-- 터미널 커서 스크립트 추가 -->
+  <script src="/js/cursor.js"></script>
+  
+  <!-- 터미널 커서 -->
   <div class="terminal-prompt">
     <span class="prompt-symbol">_></span>
     <span class="terminal-cursor"></span>
   </div>
 
-  <!-- Giscus 댓글 시스템 추가 -->
-  {{ partial "comments.html" . }}
-
+  <!-- Giscus 댓글 -->
+  {{ if ne .Params.comments false }}
+    {{ partial "comments.html" . }}
+  {{ end }}
 </article>
+
+<!-- 필요한 경우 추가 스크립트나 스타일 -->
+<link rel="stylesheet" href="/css/pipboy.css">
 {{ end }} 

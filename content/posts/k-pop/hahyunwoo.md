@@ -3,6 +3,7 @@ title: "Dive deep to K-pop Singers #1"
 url: "/2021/04/dive-deep-to-k-pop-singers-1/"
 date: 2021-04-15T19:56:20+08:00
 draft: false
+comments: true
 authors:
   - younjinjeong
 tags: [k-pop, introduction, HyunwooHa]
