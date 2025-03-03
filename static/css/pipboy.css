@@ -590,8 +590,9 @@ footer p {
 nav, 
 .nav-links,
 .nav-links a,
-.pipboy-nav a {
-    font-size: 1.125em !important;
+.pipboy-nav a,
+.pipboy-nav li a {
+    font-size: 18px !important;
 }
 
 /* 포스트/페이지 제목 통합 - 16px */
@@ -599,8 +600,10 @@ nav,
 .post-title,
 .post h1,
 article.post header h1,
-.about header h1 {
-    font-size: 1em !important;
+.about header h1,
+.post-list article h2,
+.post-list .post-title {
+    font-size: 16px !important;
     margin-bottom: 1em;
     color: var(--pipboy-light-green);
     text-transform: uppercase;
@@ -610,7 +613,59 @@ article.post header h1,
 
 /* 포스트 내용 통합 - 14px */
 .post-content,
-article.post .post-content {
-    font-size: 0.875em;
+article.post .post-content,
+.post-content p,
+.post-content li,
+.post-list .post-summary,
+.post-list article p {
+    font-size: 14px !important;
     line-height: 1.6;
+}
+
+/* 포스트 메타 정보 스타일 */
+.post-meta,
+.post-list .post-meta,
+.post-date {
+    font-size: 14px !important;
+    margin-bottom: 2em;
+    color: var(--pipboy-light-green);
+}
+
+/* 포스트 목록의 제목 - 16px */
+.post-list article h2,
+.post-list .post-title {
+    font-size: 16px !important;
+    margin-bottom: 1em;
+}
+
+/* 포스트 상세 페이지 제목 - 20px로 증가 */
+.post header h1,
+.post-title,
+.post h1,
+article.post header h1,
+.about header h1 {
+    font-size: 20px !important;
+    margin-bottom: 1em;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+/* 포스트 내용 - 14px */
+.post-content,
+article.post .post-content,
+.post-content p,
+.post-content li,
+.post-list .post-summary,
+.post-list article p {
+    font-size: 14px !important;
+    line-height: 1.6;
+}
+
+/* 포스트 메타 정보 - 14px */
+.post-meta,
+.post-list .post-meta,
+.post-date {
+    font-size: 14px !important;
+    margin-bottom: 2em;
+    color: var(--pipboy-light-green);
 }
