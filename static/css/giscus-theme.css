@@ -1,0 +1,88 @@
+/* Giscus Theme CSS based on the Pipboy theme */
+:root {
+  /* Main colors */
+  --color-bg: #000000;
+  --color-fg: #2bc52b;
+  --color-accent: #2bc52b;
+  --color-border: #2bc52b;
+}
+
+/* Main container */
+.gsc-main {
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+}
+
+/* Header */
+.gsc-header {
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+}
+
+/* Buttons */
+.gsc-button {
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.gsc-button:hover {
+  background-color: var(--color-accent) !important;
+  color: var(--color-bg) !important;
+}
+
+/* Input fields */
+.gsc-input {
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.gsc-input::placeholder {
+  color: var(--color-fg) !important;
+  opacity: 0.7;
+}
+
+/* Comments */
+.gsc-comment {
+  border-color: var(--color-border) !important;
+}
+
+.gsc-comment-header {
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg) !important;
+}
+
+.gsc-comment-content {
+  color: var(--color-fg) !important;
+}
+
+/* Links */
+.gsc-link {
+  color: var(--color-accent) !important;
+}
+
+.gsc-link:hover {
+  text-decoration: underline;
+}
+
+/* Loading states */
+.gsc-loading {
+  color: var(--color-fg) !important;
+}
+
+/* Reactions */
+.gsc-reactions {
+  border-color: var(--color-border) !important;
+}
+
+.gsc-reaction-button {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-fg) !important;
+}
+
+.gsc-reaction-button:hover {
+  background-color: var(--color-accent) !important;
+  color: var(--color-bg) !important;
+} 
