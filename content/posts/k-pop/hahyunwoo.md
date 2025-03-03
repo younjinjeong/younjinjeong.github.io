@@ -5,6 +5,7 @@ draft: false
 authors:
   - younjinjeong
 tags: [k-pop, introduction, HyunwooHa]
+url: /posts/k-pop/hahyunwoo
 ---
 
 While listening to my favorite Korean music today, I decided to write a post about Korean pop. There are many famous K-pop stars and artists out there, but I thought it would be nice to introduce some lesser-known yet amazing singers.
