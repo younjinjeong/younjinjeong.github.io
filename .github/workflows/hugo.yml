@@ -52,6 +52,18 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+      
+      # 이전 public 디렉토리 정리
+      - name: Clean public directory
+        run: |
+          if [ -d "./public" ]; then
+            echo "Cleaning previous build artifacts..."
+            rm -rf ./public/*
+          else
+            echo "Creating public directory..."
+            mkdir -p ./public
+          fi
+      
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -71,6 +83,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
+          # 이전 아티팩트 삭제 옵션 추가
+          retention-days: 1
 
   # Deployment job
   deploy:
@@ -82,4 +96,9 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
+        with:
+          # 항상 새로운 배포로 처리
+          artifact_name: github-pages
+          # 이전 배포 삭제
+          cleanup_on_failure: true 
