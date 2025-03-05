@@ -1,5 +1,6 @@
 {{ define "main" }}
-<div class="kernel-panic">
+<!-- 데스크톱 버전 -->
+<div class="kernel-panic desktop-version">
 Kernel panic - not syncing: Blog page not found at address 0x404
 
 CPU: 0 PID: 404 Comm: blog_server Not tainted 6.1.0-blog #1
@@ -32,6 +33,34 @@ Technical information:
 Press any key to return to homepage...
 </div>
 
+<!-- 모바일 전용 버전 -->
+<div class="mobile-error mobile-version">
+  <div class="mobile-screen">
+    <div class="status-bar">
+      <span class="time">{{ now.Format "15:04" }}</span>
+      <span class="icons">
+        <span class="signal">📶</span>
+        <span class="battery">🔋</span>
+      </span>
+    </div>
+    
+    <div class="error-content">
+      <div class="error-icon">⚠️</div>
+      <h1>404</h1>
+      <p class="error-message">페이지를 찾을 수 없습니다</p>
+      <p class="error-details">요청하신 URL은 이 서버에 존재하지 않습니다.</p>
+      <div class="error-path">{{ .RelPermalink }}</div>
+      
+      <div class="mobile-buttons">
+        <a href="/" class="home-button">홈으로</a>
+        <a href="javascript:history.back()" class="back-button">뒤로</a>
+      </div>
+    </div>
+    
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
 <style>
 :root {
   --pipboy-green: #4caf50;
@@ -49,6 +78,7 @@ body {
   padding: 0;
 }
 
+/* 데스크톱 버전 스타일 */
 .kernel-panic {
   font-family: var(--pipboy-terminal-font) !important;
   background: var(--pipboy-black) !important;
@@ -74,6 +104,109 @@ body {
   color: white !important;
   background: var(--pipboy-dark-green);
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* 모바일 버전 스타일 */
+.mobile-error {
+  display: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--pipboy-bg);
+}
+
+.mobile-screen {
+  position: relative;
+  max-width: 375px;
+  height: 100%;
+  margin: 0 auto;
+  background: var(--pipboy-black);
+  color: var(--pipboy-green);
+  display: flex;
+  flex-direction: column;
+  text-shadow: var(--pipboy-glow);
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-size: 14px;
+  background: rgba(0,0,0,0.8);
+}
+
+.error-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.error-content h1 {
+  font-size: 60px !important;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.error-message {
+  font-size: 24px !important;
+  margin: 0 0 20px 0;
+}
+
+.error-details {
+  font-size: 16px !important;
+  margin: 0 0 30px 0;
+  opacity: 0.8;
+}
+
+.error-path {
+  font-family: monospace;
+  background: rgba(0,0,0,0.3);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  font-size: 14px !important;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+.mobile-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.mobile-buttons a {
+  display: inline-block;
+  padding: 12px 20px;
+  background: var(--pipboy-dark-green);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px !important;
+}
+
+.mobile-buttons a:hover {
+  background: var(--pipboy-green);
+}
+
+.home-indicator {
+  height: 5px;
+  width: 40%;
+  background: rgba(255,255,255,0.5);
+  border-radius: 3px;
+  margin: 10px auto;
 }
 
 /* 스캔라인 효과 */
@@ -111,20 +244,15 @@ body::after {
   z-index: 1001;
 }
 
-/* 모바일 환경에서 더 큰 폰트 */
-@media screen and (max-width: 768px) {
-  .kernel-panic {
-    font-size: 22px !important;
-    padding: 15px;
-  }
+/* 반응형 디자인 */
+@media screen and (min-width: 769px) {
+  .desktop-version { display: block; }
+  .mobile-version { display: none; }
 }
 
-@media screen and (max-width: 480px) {
-  .kernel-panic {
-    font-size: 26px !important;
-    padding: 10px;
-    margin: 20px auto;
-  }
+@media screen and (max-width: 768px) {
+  .desktop-version { display: none; }
+  .mobile-version { display: block; }
 }
 </style>
 {{ end }}

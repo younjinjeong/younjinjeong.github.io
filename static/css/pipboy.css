@@ -778,3 +778,119 @@ pre, code {
     font-size: 18px !important;
   }
 }
+
+/* 모바일 환경에서 폰트 크기 2배로 증가 */
+@media screen and (max-width: 768px) {
+  /* 네비게이션 - 44px (2배) */
+  nav,
+  .nav-links,
+  .nav-links a,
+  .pipboy-nav a,
+  .pipboy-nav li a,
+  .menu a,
+  header nav a {
+    font-size: 44px !important;
+  }
+  
+  /* 포스트 제목 - 40px (2배) */
+  .post header h1,
+  .post-title,
+  .post h1,
+  article.post header h1,
+  .about header h1,
+  .post-list article h2,
+  .post-list .post-title,
+  .single-title,
+  .list-title,
+  .term-title {
+    font-size: 40px !important;
+  }
+  
+  /* 포스트 내용 - 36px (2배) */
+  .post-content,
+  article.post .post-content,
+  .post-content p,
+  .post-content li,
+  .post-list .post-summary,
+  .post-list article p,
+  .content p,
+  .content li,
+  article p,
+  article li,
+  .about p,
+  .about li {
+    font-size: 36px !important;
+    line-height: 1.6 !important;
+  }
+  
+  /* 포스트 내 헤딩 */
+  .post-content h1 { font-size: 40px !important; }
+  .post-content h2 { font-size: 40px !important; }
+  .post-content h3 { font-size: 40px !important; }
+  .post-content h4 { font-size: 36px !important; }
+  .post-content h5 { font-size: 36px !important; }
+  .post-content h6 { font-size: 36px !important; }
+  
+  /* 메타 정보 */
+  .post-meta {
+    font-size: 36px !important;
+  }
+  
+  /* 코드 블록 */
+  pre, code {
+    font-size: 32px !important;
+  }
+  
+  /* Giscus 영역 */
+  .giscus {
+    font-size: 36px !important;
+  }
+  
+  .giscus .gsc-header {
+    font-size: 40px !important;
+  }
+  
+  .giscus .gsc-comment-box-textarea,
+  .giscus .gsc-comment-content {
+    font-size: 36px !important;
+  }
+  
+  /* 컨테이너 여백 조정 */
+  .container, main, article {
+    padding: 0 15px !important;
+  }
+  
+  /* 버튼 크기 조정 */
+  button, .button, input[type="submit"] {
+    font-size: 36px !important;
+    padding: 15px 25px !important;
+  }
+}
+
+/* 작은 모바일 화면에서 약간 축소 */
+@media screen and (max-width: 480px) {
+  /* 네비게이션 - 40px */
+  nav,
+  .nav-links,
+  .nav-links a,
+  .pipboy-nav a,
+  .pipboy-nav li a,
+  .menu a,
+  header nav a {
+    font-size: 40px !important;
+  }
+  
+  /* 포스트 제목 - 36px */
+  .post header h1,
+  .post-title,
+  .post h1,
+  article.post header h1,
+  .about header h1,
+  .post-list article h2,
+  .post-list .post-title,
+  .single-title,
+  .list-title,
+  .term-title {
+    font-size: 36px !important;
+  }
+}
