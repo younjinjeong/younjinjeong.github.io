@@ -1,57 +1,244 @@
-<div class="boot-screen" id="bootScreen">
-  <h1>RYONGJIN INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
-  <div class="boot-text" id="bootText">
-    <p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
-    <p>-SERVER 1-</p>
-    <p>>INITIATING BOOT SEQUENCE...</p>
-    <p>>LOADING KERNEL...</p>
-    <p>>MOUNTING FILE SYSTEMS...</p>
-    <p>>CHECKING HARDWARE COMPATIBILITY...</p>
-    <p>>INITIALIZING NETWORK INTERFACES...</p>
-    <p>>LOADING BLOG CONTENT...</p>
-    <p>>WELCOME TO YOUNJINJEONG'S TERMINAL</p>
-    <p>>BOOT COMPLETE.</p>
+<div class="boot-screen">
+  <div class="boot-header">
+    <h1 class="boot-logo">RYONGJIN INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+    <div class="boot-content">
+      <div class="boot-image-container">
+        <img src="images/fan-art-i-made-for-the-show-i-absolutely-loved-it.png" alt="Fan Art" class="boot-image">
+      </div>
+      <div class="boot-text">
+        <div class="boot-line">COPYRIGHT 2077 RYONGJIN INDUSTRIES</div>
+        <div class="boot-line">LOADER V4.1.0</div>
+        <div class="boot-line">EXEC VERSION 9.3.1</div>
+        <div class="boot-line">64K RAM SYSTEM</div>
+        <div class="boot-line">38911 BYTES FREE</div>
+        <div class="boot-line">NO HOLOTAPE FOUND</div>
+        <div class="boot-line">LOAD ROM(1): DEITRIX 303</div>
+        <div class="boot-line">...</div>
+        <div class="boot-line">INITIALIZING SYSTEM...</div>
+        <div class="boot-line">...</div>
+        <div class="boot-line">CHECKING MEMORY.......DONE</div>
+        <div class="boot-line">CHECKING STORAGE.....DONE</div>
+        <div class="boot-line">CHECKING NETWORK.....DONE</div>
+        <div class="boot-line">...</div>
+        <div class="boot-line">SYSTEM READY</div>
+        <div class="boot-line">PRESS ANY KEY TO CONTINUE</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const bootScreen = document.getElementById('bootScreen');
-  const bootText = document.getElementById('bootText');
-  
-  // 세션 스토리지 확인 - 이미 방문했는지 체크
-  const hasVisited = sessionStorage.getItem('hasVisited');
-  
-  if (hasVisited) {
-    // 이미 방문한 경우 부트 화면 숨김
-    bootScreen.style.display = 'none';
-    return;
+<style>
+  .boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--pipboy-bg);
+    color: var(--pipboy-green);
+    font-family: var(--pipboy-terminal-font);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
-  
-  // 첫 방문 표시
-  sessionStorage.setItem('hasVisited', 'true');
-  
-  const lines = bootText.querySelectorAll('p');
-  
-  lines.forEach((line, index) => {
-    line.style.display = 'none';
-  });
-  
-  let currentLine = 0;
-  
-  function showNextLine() {
-    if (currentLine < lines.length) {
-      lines[currentLine].style.display = 'block';
-      currentLine++;
-      setTimeout(showNextLine, 400);
+
+  .boot-header {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .boot-logo {
+    font-size: 32px;
+    text-align: left;
+    margin: 20px 0 40px 0;
+    text-shadow: var(--pipboy-glow);
+    font-weight: bold;
+    width: 100%;
+    font-family: var(--pipboy-terminal-font);
+  }
+
+  .boot-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .boot-image-container {
+    flex: 0 0 auto;
+    margin-right: 30px;
+  }
+
+  .boot-image {
+    max-width: 400px;
+    height: auto;
+    border: 2px solid var(--pipboy-green);
+    box-shadow: var(--pipboy-glow);
+  }
+
+  .boot-text {
+    flex: 1 1 auto;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .boot-line {
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 0;
+    animation: typewriter 0.1s forwards;
+  }
+
+  @keyframes typewriter {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 100%;
+      opacity: 1;
     }
   }
-  
-  showNextLine();
-  
-  // 부트 화면 애니메이션 완료 후 숨김
-  setTimeout(() => {
-    bootScreen.style.display = 'none';
-  }, 3500); // 부트 화면 표시 시간 조정
-});
+
+  /* 각 줄마다 애니메이션 지연 설정 */
+  .boot-line:nth-child(1) { animation-delay: 0.5s; }
+  .boot-line:nth-child(2) { animation-delay: 0.8s; }
+  .boot-line:nth-child(3) { animation-delay: 1.1s; }
+  .boot-line:nth-child(4) { animation-delay: 1.4s; }
+  .boot-line:nth-child(5) { animation-delay: 1.7s; }
+  .boot-line:nth-child(6) { animation-delay: 2.0s; }
+  .boot-line:nth-child(7) { animation-delay: 2.3s; }
+  .boot-line:nth-child(8) { animation-delay: 2.6s; }
+  .boot-line:nth-child(9) { animation-delay: 2.9s; }
+  .boot-line:nth-child(10) { animation-delay: 3.2s; }
+  .boot-line:nth-child(11) { animation-delay: 3.5s; }
+  .boot-line:nth-child(12) { animation-delay: 3.8s; }
+  .boot-line:nth-child(13) { animation-delay: 4.1s; }
+  .boot-line:nth-child(14) { animation-delay: 4.4s; }
+  .boot-line:nth-child(15) { animation-delay: 4.7s; }
+  .boot-line:nth-child(16) { animation-delay: 5.0s; }
+
+  /* 모바일 화면 레이아웃 */
+  @media screen and (max-width: 768px) {
+    .boot-screen {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .boot-header {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    
+    .boot-logo {
+      font-size: 32px;
+      text-align: center;
+      margin: 20px 0;
+      padding: 0 15px;
+      order: 1;
+    }
+    
+    .boot-content {
+      flex-direction: column;
+      height: calc(100vh - 80px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .boot-image-container {
+      margin: 0;
+      width: 100%;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      order: 2;
+      overflow: hidden;
+    }
+    
+    .boot-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    
+    .boot-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40vh;
+      font-size: 24px;
+      background-color: rgba(10, 15, 13, 0.8);
+      padding: 15px;
+      overflow-y: auto;
+      text-align: center;
+      order: 3;
+      
+      /* 스크롤 애니메이션 */
+      animation: scroll-up 15s linear forwards;
+      transform: translateY(100%);
+    }
+    
+    @keyframes scroll-up {
+      0% {
+        transform: translateY(100%);
+      }
+      10% {
+        transform: translateY(90%);
+      }
+      100% {
+        transform: translateY(0%);
+      }
+    }
+  }
+
+  /* 작은 모바일 화면 */
+  @media screen and (max-width: 480px) {
+    .boot-logo {
+      font-size: 24px;
+    }
+    
+    .boot-text {
+      font-size: 20px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bootScreen = document.querySelector('.boot-screen');
+    
+    // 아무 키나 누르면 부트 화면 닫기
+    document.addEventListener('keydown', function() {
+      bootScreen.style.display = 'none';
+    });
+    
+    // 화면 터치/클릭해도 부트 화면 닫기
+    bootScreen.addEventListener('click', function() {
+      bootScreen.style.display = 'none';
+    });
+    
+    // 6초 후 자동으로 부트 화면 닫기
+    setTimeout(function() {
+      bootScreen.style.display = 'none';
+    }, 6000);
+  });
 </script>
