@@ -1,6 +1,6 @@
-<div class="boot-screen">
+<div id="boot-screen" class="boot-screen">
   <div class="boot-header">
-    <h1 class="boot-logo">RYONGJIN INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+    <h1 class="boot-logo">RYONGJIN INDUSTRIES OPERATING SYSTEM</h1>
     <div class="boot-content">
       <div class="boot-image-container">
         <img src="images/fan-art-i-made-for-the-show-i-absolutely-loved-it.png" alt="Fan Art" class="boot-image">
@@ -224,21 +224,33 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const bootScreen = document.querySelector('.boot-screen');
+    const bootScreen = document.getElementById('boot-screen');
+    const hasVisited = sessionStorage.getItem('hasVisited');
     
-    // 아무 키나 누르면 부트 화면 닫기
-    document.addEventListener('keydown', function() {
+    // 첫 방문 시에만 부트 스크린 표시
+    if (!hasVisited) {
+      bootScreen.style.display = 'flex';
+      
+      // 방문 기록 저장
+      sessionStorage.setItem('hasVisited', 'true');
+      
+      // 아무 키나 누르면 부트 화면 닫기
+      document.addEventListener('keydown', function() {
+        bootScreen.style.display = 'none';
+      });
+      
+      // 화면 터치/클릭해도 부트 화면 닫기
+      bootScreen.addEventListener('click', function() {
+        bootScreen.style.display = 'none';
+      });
+      
+      // 6초 후 자동으로 부트 화면 닫기
+      setTimeout(function() {
+        bootScreen.style.display = 'none';
+      }, 6000);
+    } else {
+      // 이미 방문한 경우 부트 스크린 숨김
       bootScreen.style.display = 'none';
-    });
-    
-    // 화면 터치/클릭해도 부트 화면 닫기
-    bootScreen.addEventListener('click', function() {
-      bootScreen.style.display = 'none';
-    });
-    
-    // 6초 후 자동으로 부트 화면 닫기
-    setTimeout(function() {
-      bootScreen.style.display = 'none';
-    }, 6000);
+    }
   });
 </script>

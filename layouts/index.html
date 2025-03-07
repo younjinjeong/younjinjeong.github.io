@@ -1,29 +1,53 @@
 {{ define "main" }}
+<main>
+  <div class="container">
+    {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{ $latestPost := index $pages 0 }}
+    
+    <article class="post">
+      <header>
+        <h1 class="post-title">{{ $latestPost.Title }}</h1>
+        <div class="post-meta">
+          {{ $latestPost.Date.Format "2006-01-02" }}
+          {{ with $latestPost.Params.tags }}
+          <span class="post-tags">
+            {{ range . }}
+            <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+            {{ end }}
+          </span>
+          {{ end }}
+        </div>
+      </header>
+      
+      <div class="post-content">
+        {{ $latestPost.Content }}
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-navigation">
+          <a href="{{ "posts/" | relURL }}" class="button">모든 포스트 보기</a>
+        </div>
+      </footer>
+    </article>
+
+    <!-- 터미널 커서 스크립트 추가 -->
+    <script type="application/javascript" src="/js/cursor.js"></script>
+  
+    <!-- 터미널 커서 -->
+    <div class="terminal-prompt">
+      <span class="prompt-symbol">_></span>
+      <span class="terminal-cursor"></span>
+    </div>
+    
+    <!-- Giscus 댓글 추가 -->
+    {{ if ne .Params.comments false }}
+      {{ partial "comments.html" . }}
+    {{ end }}
+  </div>
+</main>
 
 <h1 class="site-title">RYONGJIN TERMINAL</h1>
 
-<div class="post-list">
-{{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
-{{ range $paginator.Pages }}
-  <article>
-    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-    
-    <!-- 날짜 표시 추가 -->
-    <div class="post-date">{{ .Date.Format "2006-01-02" }}</div>
-    
-    <div class="post-summary">
-      {{ if .Description }}
-        {{ .Description }}
-      {{ else }}
-        {{ .Summary }}
-      {{ end }}
-    </div>
-    <a href="{{ .RelPermalink }}" class="read-more">READ MORE &gt;</a>
-  </article>
-{{ end }}
-
-{{ template "_internal/pagination.html" . }}
-</div>
 
 
 <!-- Remove Photo feature for a while  
