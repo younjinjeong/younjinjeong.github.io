@@ -7,8 +7,19 @@
   {{ partial "boot-screen.html" . }}
   {{ partial "loading-screen.html" . }}
   
+  <!-- Mobile menu toggle -->
+  <button class="mobile-menu-toggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay"></div>
+  
   <div class="container">
     <header>
+      {{ partial "site-header.html" . }}
       {{ partial "nav.html" . }}
     </header>
     
@@ -31,6 +42,7 @@
   
   <!-- 터미널 커서 스크립트 - 모든 페이지에서 로드 -->
   <script type="application/javascript" src="/js/cursor.js"></script>
+  <script type="application/javascript" src="/js/mobile.js"></script>
   
   <!-- 터미널 단축키 힌트 -->
   <div class="terminal-shortcut-hint">

@@ -363,7 +363,7 @@ Press Shift+T to focus terminal.
 
 `;
     
-    // Keyboard shortcut handler for Shift+T
+    // Keyboard shortcut handler for Shift+T (desktop only)
     document.addEventListener('keydown', function(e) {
         if (e.shiftKey && e.key === 'T') {
             e.preventDefault();
@@ -375,6 +375,30 @@ Press Shift+T to focus terminal.
             }, 300);
         }
     });
+    
+    // Mobile terminal improvements
+    if ('ontouchstart' in window) {
+        // Make terminal more touch-friendly
+        terminalPrompt.style.padding = '15px 10px';
+        terminalPrompt.style.cursor = 'pointer';
+        
+        // Add touch feedback
+        terminalPrompt.addEventListener('touchstart', () => {
+            terminalPrompt.style.backgroundColor = 'rgba(65, 255, 0, 0.1)';
+        });
+        
+        terminalPrompt.addEventListener('touchend', () => {
+            setTimeout(() => {
+                terminalPrompt.style.backgroundColor = '';
+            }, 100);
+        });
+        
+        // Adjust input for mobile
+        commandInput.style.fontSize = '16px'; // Prevent zoom on iOS
+        commandInput.setAttribute('autocapitalize', 'off');
+        commandInput.setAttribute('autocorrect', 'off');
+        commandInput.setAttribute('spellcheck', 'false');
+    }
     
     // Visual hint when terminal is focused
     commandInput.addEventListener('focus', function() {

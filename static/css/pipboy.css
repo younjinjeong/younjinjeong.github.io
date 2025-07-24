@@ -10,28 +10,64 @@
 }
 
 :root {
-  --pipboy-green: #4caf50;
-  --pipboy-dark-green: #1b5e20;
-  --pipboy-light-green: #a5d6a7;
-  --pipboy-black: #0a0a0a;
-  --pipboy-bg: #0a0f0d;
+  /* Authentic Pipboy colors from the GIF */
+  --pipboy-green: #41ff00;        /* Bright phosphor green */
+  --pipboy-dark-green: #29a000;   /* Darker shade for borders/accents */
+  --pipboy-light-green: #5fff1f;  /* Lighter shade for highlights */
+  --pipboy-amber: #ffb000;        /* Amber variant */
+  --pipboy-black: #000000;        /* Pure black background */
+  --pipboy-bg: #000000;           /* Main background */
+  --pipboy-bg-alt: #001100;       /* Slight green tint for panels */
   --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding','Share Tech Mono',  'VT323', monospace;
-  --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
-  font-size: 18px !important;
+  --pipboy-glow: 0 0 15px rgba(65, 255, 0, 0.8);
+  --pipboy-glow-intense: 0 0 25px rgba(65, 255, 0, 1);
+  
+  /* Typography Scale - Desktop */
+  --font-size-base: 16px;
+  --font-size-small: 0.875rem;  /* 14px */
+  --font-size-body: 1rem;       /* 16px */
+  --font-size-h6: 1.125rem;     /* 18px */
+  --font-size-h5: 1.25rem;      /* 20px */
+  --font-size-h4: 1.5rem;       /* 24px */
+  --font-size-h3: 1.75rem;      /* 28px */
+  --font-size-h2: 2rem;         /* 32px */
+  --font-size-h1: 2.5rem;       /* 40px */
+  --font-size-hero: 3rem;       /* 48px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-base: 1.6;
+  --line-height-relaxed: 1.8;
 }
 
-html, body {
-  font-size: 18px !important;
+html {
+  font-size: var(--font-size-base);
+}
+
+body {
+  font-size: var(--font-size-body);
 }
 
 body {
   background-color: var(--pipboy-bg);
   color: var(--pipboy-green);
   font-family: 'DungGeunMo', monospace;
-  line-height: 1.6;
-  text-shadow: var(--pipboy-glow);
+  line-height: var(--line-height-base);
+  text-shadow: 
+    0 0 3px var(--pipboy-green),
+    0 0 10px rgba(65, 255, 0, 0.8),
+    0 0 20px rgba(65, 255, 0, 0.4);
   margin: 0;
   padding: 0;
+  /* Add subtle flicker animation for authenticity */
+  animation: textFlicker 120s infinite;
+}
+
+@keyframes textFlicker {
+  0%, 100% { opacity: 1; }
+  95% { opacity: 1; }
+  96% { opacity: 0.98; }
+  97% { opacity: 1; }
 }
 
 /* 한글 폰트 최적화 */
@@ -58,7 +94,7 @@ h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
   font-family: 'DungGeunMo', monospace;
 }
 
-/* 스캔라인 효과 */
+/* 스캔라인 효과 - Enhanced CRT effect */
 body::before {
   content: "";
   position: fixed;
@@ -67,16 +103,22 @@ body::before {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    rgba(10, 15, 13, 0.1) 50%,
-    rgba(0, 0, 0, 0.2) 50%
+    transparent 50%,
+    rgba(0, 0, 0, 0.25) 50%
   );
-  background-size: 100% 4px;
+  background-size: 100% 3px;
   z-index: 1000;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.4;
+  animation: scanlines 8s linear infinite;
 }
 
-/* CRT 화면 효과 */
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 10px; }
+}
+
+/* CRT 화면 효과 - Vignette and glow */
 body::after {
   content: "";
   position: fixed;
@@ -84,13 +126,12 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(10, 15, 13, 0) 0%,
-    rgba(10, 15, 13, 0.8) 100%
-  );
+  background: 
+    radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.7) 100%),
+    radial-gradient(ellipse at center, rgba(65, 255, 0, 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: 1001;
+  mix-blend-mode: multiply;
 }
 
 a {
@@ -100,35 +141,67 @@ a {
 }
 
 a:hover {
-  color: white;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  color: var(--pipboy-light-green);
+  text-shadow: var(--pipboy-glow-intense);
+  filter: brightness(1.2);
 }
 
+/* Typography Hierarchy */
 h1, h2, h3, h4, h5, h6 {
   color: var(--pipboy-light-green);
   text-transform: uppercase;
   border-bottom: 2px solid var(--pipboy-green);
-  padding-bottom: 5px;
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: var(--line-height-tight);
+  font-weight: bold;
 }
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-h4); }
+h5 { font-size: var(--font-size-h5); }
+h6 { font-size: var(--font-size-h6); }
 
 /* 콘텐츠 영역 폰트 크기 조정 */
 main {
   min-height: 70vh;
 }
 
-/* 코드 블록 폰트 크기 조정 */
-pre, code {
-  background-color: var(--pipboy-dark-green);
-  border: 1px solid var(--pipboy-green);
-  border-radius: 3px;
+/* 코드 블록 */
+code {
+  background-color: var(--pipboy-bg-alt);
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
   font-family: var(--pipboy-terminal-font);
-  padding: 2px 5px;
-  font-size: 18px !important;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+  color: var(--pipboy-light-green);
 }
 
 pre {
-  padding: 10px;
+  background-color: var(--pipboy-bg-alt);
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
+  font-family: var(--pipboy-terminal-font);
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+  box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
+}
+
+pre {
+  padding: 1rem;
   overflow-x: auto;
+  margin: 1rem 0;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
 }
 
 blockquote {
@@ -157,17 +230,20 @@ nav li {
 
 /* 포스트 목록 */
 .post-list article {
-  border: 1px solid var(--pipboy-green);
+  border: 1px solid var(--pipboy-dark-green);
   margin-bottom: 20px;
   padding: 15px;
-  border-radius: 5px;
-  background-color: rgba(10, 15, 13, 0.7);
+  border-radius: 2px;
+  background-color: var(--pipboy-bg-alt);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .post-list article:hover {
-  box-shadow: var(--pipboy-glow);
-  transform: translateY(-3px);
+  box-shadow: var(--pipboy-glow-intense);
+  transform: translateY(-2px);
+  border-color: var(--pipboy-green);
+  background-color: rgba(65, 255, 0, 0.05);
 }
 
 /* 푸터 */
@@ -187,10 +263,11 @@ footer {
 
 .site-url {
   text-align: center;
-  font-size: 1.2em;
+  font-size: var(--font-size-h5);
   margin-top: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 1rem;
   color: var(--pipboy-green);
+  opacity: 0.8;
 }
 
 footer p {
@@ -255,12 +332,20 @@ footer p {
   to { opacity: 0; visibility: hidden; }
 }
 
-/* 사이트 제목 스타일 */
-.site-title {
-  font-size: 3.5em;
+/* 사이트 헤더 스타일 */
+.site-header {
   text-align: center;
-  margin-bottom: 0;
+  padding: 2rem 0;
+}
+
+.site-title {
+  font-size: var(--font-size-hero);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
   border: none;
+  word-break: break-word;
+  line-height: 1.1;
 }
 
 /* Pip-Boy 캐릭터 애니메이션 - 사용하지 않음 */
@@ -270,10 +355,11 @@ footer p {
 
 /* 메뉴 스타일 업데이트 */
 .pipboy-nav {
-  background-color: var(--pipboy-dark-green);
+  background-color: var(--pipboy-bg-alt);
   border-bottom: 2px solid var(--pipboy-green);
   padding: 15px 0;
   margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(65, 255, 0, 0.3);
 }
 
 .pipboy-nav ul {
@@ -304,8 +390,9 @@ footer p {
 
 .pipboy-nav a:hover {
   background-color: var(--pipboy-green);
-  color: var(--pipboy-bg);
+  color: var(--pipboy-black);
   text-shadow: none;
+  box-shadow: 0 0 20px rgba(65, 255, 0, 0.8);
 }
 
 .pipboy-nav a::before {
@@ -409,11 +496,11 @@ footer p {
 
 /* 터미널 프롬프트 스타일 */
 .terminal-prompt {
-  margin-top: 30px;
-  padding-top: 10px;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
   border-top: 1px dashed var(--pipboy-green);
   font-family: var(--pipboy-terminal-font);
-  font-size: 1.2em;
+  font-size: var(--font-size-body);
   display: flex;
   align-items: center;
   cursor: text;
@@ -447,9 +534,9 @@ footer p {
 
 /* 터미널 출력 */
 .terminal-output {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(76, 175, 80, 0.3);
-  border-radius: 4px;
+  background: var(--pipboy-bg-alt);
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
   padding: 15px;
   margin-bottom: 20px;
   margin-top: 20px;
@@ -460,6 +547,7 @@ footer p {
   max-height: 300px;
   overflow-y: auto;
   white-space: pre-wrap;
+  box-shadow: inset 0 0 30px rgba(65, 255, 0, 0.1);
 }
 
 .terminal-output::-webkit-scrollbar {
@@ -467,11 +555,11 @@ footer p {
 }
 
 .terminal-output::-webkit-scrollbar-track {
-  background: rgba(76, 175, 80, 0.1);
+  background: rgba(65, 255, 0, 0.1);
 }
 
 .terminal-output::-webkit-scrollbar-thumb {
-  background: rgba(76, 175, 80, 0.5);
+  background: rgba(65, 255, 0, 0.5);
   border-radius: 4px;
 }
 
@@ -481,8 +569,8 @@ footer p {
 
 /* Terminal focus states */
 .terminal-focused {
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-  background: rgba(76, 175, 80, 0.05);
+  box-shadow: 0 0 30px rgba(65, 255, 0, 0.6);
+  background: rgba(65, 255, 0, 0.05);
 }
 
 @keyframes terminal-flash {
@@ -490,7 +578,7 @@ footer p {
     background: transparent;
   }
   50% { 
-    background: rgba(76, 175, 80, 0.1);
+    background: rgba(65, 255, 0, 0.15);
   }
 }
 
@@ -514,36 +602,32 @@ footer p {
 }
 
 
-/* 포스트 콘텐츠 영역 폰트 크기 통일 */
+/* 포스트 콘텐츠 영역 */
 .post-content {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-relaxed);
 }
 
-/* 포스트 제목 크기 증가 */
+/* 포스트 제목 */
 .post h1 {
-  font-size: 20px;
-  margin-bottom: 0.5em;
+  font-size: var(--font-size-h1);
+  margin-bottom: 1rem;
 }
 
-/* 포스트 내 헤딩 크기 조정 */
-.post-content h2 {
-  font-size: 20px;
-}
-
-.post-content h3 {
-  font-size: 20px;
-}
-
-.post-content h4 {
-  font-size: 18px;
-}
+/* 포스트 내 헤딩 */
+.post-content h1 { font-size: var(--font-size-h2); }
+.post-content h2 { font-size: var(--font-size-h3); }
+.post-content h3 { font-size: var(--font-size-h4); }
+.post-content h4 { font-size: var(--font-size-h5); }
+.post-content h5 { font-size: var(--font-size-h6); }
+.post-content h6 { font-size: var(--font-size-body); }
 
 /* 포스트 메타 정보 스타일 */
 .post-meta {
-  font-size: 18px;
-  margin-bottom: 2em;
+  font-size: var(--font-size-small);
+  margin-bottom: 2rem;
   color: var(--pipboy-light-green);
+  opacity: 0.9;
 }
 
 /* 언어별 설정 수정 - 폰트 크기는 제거하고 다른 스타일만 유지 */
@@ -569,7 +653,7 @@ footer p {
   max-width: 100%;
   height: auto;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
   transition: all 0.3s ease;
 }
 
@@ -592,7 +676,7 @@ footer p {
   width: 100%;
   height: 100%;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
 }
 
 /* YouTube 링크 스타일 */
@@ -617,17 +701,18 @@ footer p {
 .post-content a[href*="youtube.com"] img:hover,
 .post-content a[href*="youtu.be"] img:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+  box-shadow: 0 0 25px rgba(65, 255, 0, 0.9);
 }
 
 /* 포스트 날짜 스타일 */
 .post-date {
-  font-size: 1em;
+  font-size: var(--font-size-small);
   color: var(--pipboy-light-green);
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
   font-family: var(--pipboy-terminal-font);
   display: flex;
   align-items: center;
+  opacity: 0.9;
 }
 
 .post-date::before {
@@ -660,47 +745,50 @@ footer p {
   text-shadow: none;
 }
 
-/* 네비게이션 영역 폰트 크기 */
-nav, 
-.nav-links,
-.nav-links a,
-.pipboy-nav a,
-.pipboy-nav li a {
-    font-size: 22px !important;
+/* 네비게이션 영역 */
+.pipboy-nav a {
+    font-size: var(--font-size-h5);
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 
-/* 포스트/페이지 제목 통합 - 20px */
+/* 포스트 제목 */
 .post header h1,
-.post-title,
-.post h1,
-article.post header h1,
-.about header h1,
-.post-list article h2,
-.post-list .post-title {
-    font-size: 20px !important;
-    margin-bottom: 1em;
+.post-title {
+    font-size: var(--font-size-h2);
+    margin-bottom: 1rem;
     color: var(--pipboy-light-green);
     text-transform: uppercase;
     border-bottom: 2px solid var(--pipboy-green);
-    padding-bottom: 5px;
+    padding-bottom: 0.5rem;
 }
 
-/* 포스트 내용 통합 - 18px */
-.post-content,
-article.post .post-content,
+/* 포스트 목록 제목 */
+.post-list article h2,
+.post-list .post-title {
+    font-size: var(--font-size-h4);
+    margin-bottom: 0.75rem;
+}
+
+/* 포스트 내용 */
 .post-content p,
-.post-content li,
-.post-list .post-summary,
-.post-list article p {
-    font-size: 18px !important;
-    line-height: 1.6 !important;
+.post-content li {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: 1rem;
+}
+
+/* 포스트 요약 */
+.post-list .post-summary {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-base);
+    opacity: 0.9;
 }
 
 /* 포스트 메타 정보 스타일 */
 .post-meta,
 .post-list .post-meta,
 .post-date {
-    font-size: 18px !important;
     margin-bottom: 2em;
     color: var(--pipboy-light-green);
 }
@@ -711,8 +799,6 @@ article.post .post-content,
 .post h1,
 article.post header h1,
 .about header h1 {
-    font-size: 20px !important;
-    font-size: 1.25rem !important;
     margin-bottom: 1em;
     font-weight: bold;
     letter-spacing: 0.05em;
@@ -726,46 +812,19 @@ article.post .post-content,
 .post-list .post-summary,
 .post-list article p {
     font-family: 'DungGeunMo', monospace;
-    font-size: 18px !important;
     line-height: 1.6;  /* line-height는 유지 */
 }
 
-/* 포스트 내 헤딩 크기 통일 */
-.post-content h1,
-.post h1 {
-    font-size: 20px !important;
-}
-
-.post-content h2 {
-    font-size: 20px !important;
-}
-
-.post-content h3 {
-    font-size: 20px !important;
-}
-
-.post-content h4,
-.post-content h5,
-.post-content h6 {
-    font-size: 18px !important;
-}
+/* 포스트 내 헤딩 크기 통일 - CSS 변수 사용 중 (line 588-593) */
 
 /* 포스트 요약 */
 .post-summary {
     margin-bottom: 15px;
 }
 
-/* 포스트 메타 정보 - 14px */
-.post-meta,
-.post-list .post-meta,
-.post-date {
-    font-size: 14px !important;
-}
+/* 포스트 메타 정보 - CSS 변수 사용 중 */
 
-/* 추가: 모든 기본 텍스트 요소에 대한 최소 폰트 크기 보장 */
-p, li, span, div {
-    font-size: min(14px, 0.875rem) !important;
-}
+/* 추가: 모든 기본 텍스트 요소에 대한 최소 폰트 크기 보장 - CSS 변수 사용 권장 */
 
 /* 네비게이션 - 22px */
 nav,
@@ -775,60 +834,28 @@ nav,
 .pipboy-nav li a,
 .menu a,
 header nav a {
-    font-size: 22px !important;
+    font-size: var(--font-size-h4);
 }
 
-/* 포스트 제목 - 20px */
-.post header h1,
-.post-title,
-.post h1,
-article.post header h1,
-.about header h1,
-.post-list article h2,
-.post-list .post-title,
-.single-title,
-.list-title,
-.term-title {
-    font-size: 20px !important;
-}
+/* 포스트 제목 - 20px - CSS 변수 사용 중 */
 
-/* 포스트 내용 - 18px */
-.post-content,
-article.post .post-content,
-.post-content p,
-.post-content li,
-.post-list .post-summary,
-.post-list article p,
-.content p,
-.content li,
-article p,
-article li,
-.about p,
-.about li {
-    font-size: 18px !important;
-}
+/* 포스트 내용 - 18px - CSS 변수 사용 중 */
 
-/* 포스트 내 헤딩 */
-.post-content h1 { font-size: 20px !important; }
-.post-content h2 { font-size: 20px !important; }
-.post-content h3 { font-size: 20px !important; }
-.post-content h4 { font-size: 18px !important; }
-.post-content h5 { font-size: 18px !important; }
-.post-content h6 { font-size: 18px !important; }
+/* 포스트 내 헤딩 - CSS 변수 사용 중 (line 588-593) */
 
 /* 메타 정보 */
 .post-meta {
-  font-size: 18px !important;
+  font-size: var(--font-size-h6);
 }
 
 /* 코드 블록 */
 pre, code {
-  font-size: 18px !important;
+  font-size: var(--font-size-h6);
 }
 
 /* Giscus 영역 */
 .giscus {
-  font-size: 18px !important;
+  font-size: var(--font-size-h6);
 }
 
 .giscus-frame {
@@ -836,135 +863,407 @@ pre, code {
 }
 
 .giscus .gsc-header {
-  font-size: 20px !important;
+  font-size: var(--font-size-h5);
 }
 
 .giscus .gsc-comment-box-textarea,
 .giscus .gsc-comment-content {
-  font-size: 18px !important;
+  font-size: var(--font-size-h6);
 }
 
-/* 모바일 환경에서도 동일한 크기 유지 */
+/* Mobile Navigation Toggle */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--pipboy-dark-green);
+  border: 2px solid var(--pipboy-green);
+  cursor: pointer;
+  z-index: 1100;
+  padding: 0;
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: var(--pipboy-green);
+  margin: 5px auto;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Responsive Design */
 @media screen and (max-width: 768px) {
-  /* 모든 요소의 폰트 크기 유지 */
-  :root, html, body {
-    font-size: 18px !important;
+  /* Adjust base font size for mobile */
+  :root {
+    --font-size-base: 16px;
+    /* Slightly reduce scale for mobile */
+    --font-size-small: 0.875rem;  /* 14px */
+    --font-size-body: 1rem;       /* 16px */
+    --font-size-h6: 1.125rem;     /* 18px */
+    --font-size-h5: 1.25rem;      /* 20px */
+    --font-size-h4: 1.375rem;     /* 22px */
+    --font-size-h3: 1.5rem;       /* 24px */
+    --font-size-h2: 1.75rem;      /* 28px */
+    --font-size-h1: 2rem;         /* 32px */
+    --font-size-hero: 2.25rem;    /* 36px */
   }
-}
-
-/* 모바일 환경에서 폰트 크기 2배로 증가 */
-@media screen and (max-width: 768px) {
-  /* 네비게이션 - 44px (2배) */
-  nav,
-  .nav-links,
-  .nav-links a,
-  .pipboy-nav a,
-  .pipboy-nav li a,
-  .menu a,
-  header nav a {
-    font-size: 44px !important;
+  /* Mobile Menu Toggle */
+  .mobile-menu-toggle {
+    display: block;
   }
   
-  /* 포스트 제목 - 40px (2배) */
+  /* Hide scanline effect on mobile for performance */
+  body::before,
+  body::after {
+    display: none;
+  }
+  
+  /* Mobile Navigation */
+  .pipboy-nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: var(--pipboy-bg);
+    border-right: 2px solid var(--pipboy-green);
+    z-index: 1050;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    padding-top: 80px;
+  }
+  
+  .pipboy-nav.mobile-active {
+    left: 0;
+  }
+  
+  .pipboy-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+  
+  .pipboy-nav li {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .pipboy-nav a {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: var(--font-size-h5);
+  }
+  
+  /* Mobile overlay */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+  }
+  
+  .mobile-overlay.active {
+    display: block;
+  }
+  
+  /* Site Title */
+  .site-title {
+    font-size: var(--font-size-hero);
+    margin: 1rem 0;
+    padding: 0 1rem;
+  }
+  
+  .site-url {
+    font-size: var(--font-size-body);
+  }
+  
+  /* Container adjustments */
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  main {
+    margin-top: 60px;
+  }
+  /* Typography adjustments for mobile */
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Post title on mobile */
   .post header h1,
-  .post-title,
-  .post h1,
-  article.post header h1,
-  .about header h1,
-  .post-list article h2,
-  .post-list .post-title,
-  .single-title,
-  .list-title,
-  .term-title {
-    font-size: 40px !important;
+  .post-title {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-tight);
   }
   
-  /* 포스트 내용 - 36px (2배) */
-  .post-content,
-  article.post .post-content,
+  /* Post content remains readable */
+  .post-content {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-base);
+  }
+  
   .post-content p,
-  .post-content li,
-  .post-list .post-summary,
-  .post-list article p,
-  .content p,
-  .content li,
-  article p,
-  article li,
-  .about p,
-  .about li {
-    font-size: 36px !important;
-    line-height: 1.6 !important;
+  .post-content li {
+    margin-bottom: 0.875rem;
   }
   
-  /* 포스트 내 헤딩 */
-  .post-content h1 { font-size: 40px !important; }
-  .post-content h2 { font-size: 40px !important; }
-  .post-content h3 { font-size: 40px !important; }
-  .post-content h4 { font-size: 36px !important; }
-  .post-content h5 { font-size: 36px !important; }
-  .post-content h6 { font-size: 36px !important; }
+  /* Post list adjustments */
+  .post-list article {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
   
-  /* 메타 정보 */
+  .post-list .post-title {
+    font-size: var(--font-size-h4);
+    margin-bottom: 0.5rem;
+  }
+  
   .post-meta {
-    font-size: 36px !important;
+    font-size: var(--font-size-small);
+    flex-direction: column;
+    gap: 0.25rem;
   }
   
-  /* 코드 블록 */
-  pre, code {
-    font-size: 32px !important;
+  .post-summary {
+    font-size: var(--font-size-body);
   }
   
-  /* Giscus 영역 */
-  .giscus {
-    font-size: 36px !important;
+  /* Code blocks */
+  pre {
+    font-size: var(--font-size-small);
+    padding: 10px;
+    overflow-x: auto;
   }
   
-  .giscus .gsc-header {
-    font-size: 40px !important;
+  code {
+    font-size: var(--font-size-small);
   }
   
-  .giscus .gsc-comment-box-textarea,
-  .giscus .gsc-comment-content {
-    font-size: 36px !important;
+  /* Terminal adjustments */
+  .terminal-prompt {
+    font-size: var(--font-size-body);
+    margin-top: 1.5rem;
   }
   
-  /* 컨테이너 여백 조정 */
-  .container, main, article {
-    padding: 0 15px !important;
+  .terminal-input {
+    font-size: var(--font-size-body);
+    width: 100%;
+    max-width: 100%;
   }
   
-  /* 버튼 크기 조정 */
-  button, .button, input[type="submit"] {
-    font-size: 36px !important;
-    padding: 15px 25px !important;
+  .terminal-output {
+    font-size: var(--font-size-small);
+    max-height: 200px;
+    padding: 0.75rem;
+  }
+  
+  /* Terminal shortcut hint */
+  .terminal-shortcut-hint {
+    display: none;
+  }
+  
+  /* Footer adjustments */
+  footer {
+    padding: 20px 15px;
+  }
+  
+  .footer-title {
+    font-size: 1.5em;
+  }
+  
+  .site-url {
+    font-size: 1em;
+  }
+  
+  /* Boot screen adjustments */
+  .boot-screen {
+    padding: 20px;
+  }
+  
+  .boot-screen h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+  
+  .boot-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .status-container {
+    width: 100%;
+  }
+  
+  .system-panel,
+  .hardware-panel {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .system-panel h3,
+  .hardware-panel h3 {
+    font-size: 18px;
+  }
+  
+  .status-item {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  
+  .progress-bar-container {
+    height: 15px;
+  }
+  
+  .network-status {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .boot-text {
+    width: 90%;
+    font-size: 14px;
+  }
+  
+  /* Tags and categories */
+  .post-tags a {
+    font-size: var(--font-size-small);
+    padding: 2px 8px;
+  }
+  
+  /* Giscus comments */
+  .giscus-frame {
+    width: 100% !important;
+  }
+  
+  /* Images and videos responsive */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Video container responsive */
+  .video-container {
+    margin: 1em 0;
+  }
+  
+  /* Tables responsive */
+  table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+  
+  /* Blockquotes */
+  blockquote {
+    margin-left: 0;
+    padding-left: 15px;
   }
 }
 
-/* 작은 모바일 화면에서 약간 축소 */
+/* Small mobile screens */
 @media screen and (max-width: 480px) {
-  /* 네비게이션 - 40px */
-  nav,
-  .nav-links,
-  .nav-links a,
-  .pipboy-nav a,
-  .pipboy-nav li a,
-  .menu a,
-  header nav a {
-    font-size: 40px !important;
+  :root {
+    /* Further reduce for very small screens */
+    --font-size-hero: 1.75rem;    /* 28px */
+    --font-size-h1: 1.5rem;       /* 24px */
+    --font-size-h2: 1.375rem;     /* 22px */
+    --font-size-h3: 1.25rem;      /* 20px */
+    --font-size-h4: 1.125rem;     /* 18px */
   }
   
-  /* 포스트 제목 - 36px */
-  .post header h1,
-  .post-title,
-  .post h1,
-  article.post header h1,
-  .about header h1,
-  .post-list article h2,
-  .post-list .post-title,
-  .single-title,
-  .list-title,
-  .term-title {
-    font-size: 36px !important;
+  /* Site title */
+  .site-title {
+    font-size: var(--font-size-hero);
+  }
+  
+  /* Navigation */
+  .pipboy-nav {
+    width: 90%;
+  }
+  
+  .pipboy-nav a {
+    font-size: var(--font-size-h5);
+    padding: 0.875rem;
+  }
+  
+  /* Post list */
+  .post-list article {
+    padding: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .post-list .post-title {
+    font-size: var(--font-size-h5);
+  }
+  
+  /* Terminal */
+  .terminal-prompt,
+  .terminal-input,
+  .terminal-output {
+    font-size: var(--font-size-small);
+  }
+  
+  /* Boot screen */
+  .boot-container {
+    padding: 10px;
+  }
+  
+  .system-panel h3,
+  .hardware-panel h3 {
+    font-size: var(--font-size-body);
+  }
+  
+  .status-item {
+    font-size: 12px;
+  }
+  
+  /* Hide some boot screen elements on very small screens */
+  .hardware-panel {
+    display: none;
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  a, button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .pipboy-nav a {
+    padding: 15px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  a:hover {
+    color: var(--pipboy-light-green);
+    text-shadow: var(--pipboy-glow);
   }
 }
 
@@ -982,17 +1281,18 @@ pre, code {
 }
 
 .posts-page .post-item {
-  background: rgba(76, 175, 80, 0.05);
-  border: 1px solid rgba(76, 175, 80, 0.3);
-  border-radius: 4px;
+  background: var(--pipboy-bg-alt);
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
   padding: 25px;
   margin-bottom: 20px;
   transition: all 0.3s ease;
 }
 
 .posts-page .post-item:hover {
-  background: rgba(76, 175, 80, 0.1);
-  box-shadow: var(--pipboy-glow);
+  background: rgba(65, 255, 0, 0.05);
+  box-shadow: var(--pipboy-glow-intense);
+  border-color: var(--pipboy-green);
 }
 
 .posts-page .post-item .post-title {
