@@ -142,6 +142,7 @@ function initializeTerminal(terminalPrompt) {
   help, ?     - Show this help message
   ls          - List all posts (Date | Title | Category)
   find <term> - Search for posts containing <term>
+  grep <pattern> - Full-text search in all posts (supports regex)
   go <url>    - Navigate to post by URL (e.g., go /2025/03/hugo-blog/)
   go <number> - Navigate to post by number (current page only)
   clear       - Clear terminal output
@@ -255,9 +256,23 @@ function initializeTerminal(terminalPrompt) {
                 return 'Usage: go <url>\nExample: go /2025/03/hugo-blog/';
             }
             
-            // If it's a number, try to get from current page
+            // If it's a number, check grep results first, then current page
             const num = parseInt(args);
             if (!isNaN(num)) {
+                // Check if we have grep results
+                if (terminalPrompt._grepResults && terminalPrompt._grepResults.length > 0) {
+                    if (num < 1 || num > terminalPrompt._grepResults.length) {
+                        return `Invalid result number. Grep found ${terminalPrompt._grepResults.length} results.`;
+                    }
+                    const result = terminalPrompt._grepResults[num - 1];
+                    outputArea.innerHTML += `Navigating to: ${result.title}...\n`;
+                    setTimeout(() => {
+                        window.location.href = result.url;
+                    }, 500);
+                    return '';
+                }
+                
+                // Otherwise check posts on current page
                 const posts = getAllPosts();
                 if (num < 1 || num > posts.length) {
                     return `Invalid post number. Use 'ls' to see available posts.`;
@@ -295,6 +310,113 @@ Terminal OS v4.1.0
 Powered by Hugo Static Site Generator
 
 Type 'help' for available commands.`;
+        },
+        
+        grep: (args) => {
+            if (!args) {
+                return 'Usage: grep <pattern>\nExample: grep "hugo.*blog"';
+            }
+            
+            // Show loading message
+            outputArea.innerHTML += 'Searching...\n';
+            
+            // Fetch search index
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/searchindex.json', false);
+            try {
+                xhr.send();
+                if (xhr.status === 200) {
+                    const searchIndex = JSON.parse(xhr.responseText);
+                    let pattern;
+                    
+                    // Try to create regex pattern
+                    try {
+                        // Check if it's already a regex pattern (starts and ends with /)
+                        if (args.startsWith('/') && args.endsWith('/')) {
+                            pattern = new RegExp(args.slice(1, -1), 'gi');
+                        } else {
+                            // Treat as literal string but make it case-insensitive
+                            pattern = new RegExp(args, 'gi');
+                        }
+                    } catch (e) {
+                        return `Invalid regex pattern: ${args}\n${e.message}`;
+                    }
+                    
+                    // Search through posts
+                    const results = [];
+                    searchIndex.forEach(post => {
+                        const fullText = `${post.title} ${post.content} ${post.summary || ''}`;
+                        const matches = fullText.match(pattern);
+                        
+                        if (matches) {
+                            // Find line contexts
+                            const lines = post.content.split('\n');
+                            const matchingLines = [];
+                            
+                            lines.forEach((line, lineNum) => {
+                                if (pattern.test(line)) {
+                                    matchingLines.push({
+                                        lineNum: lineNum + 1,
+                                        line: line.trim().substring(0, 80) + (line.length > 80 ? '...' : '')
+                                    });
+                                }
+                            });
+                            
+                            results.push({
+                                title: post.title,
+                                url: post.url,
+                                date: post.date,
+                                matchCount: matches.length,
+                                matchingLines: matchingLines.slice(0, 3) // Show max 3 lines per post
+                            });
+                        }
+                    });
+                    
+                    // Clear the "Searching..." message
+                    const lines = outputArea.innerHTML.split('\n');
+                    lines.pop(); // Remove "Searching..."
+                    lines.pop(); // Remove empty line
+                    outputArea.innerHTML = lines.join('\n');
+                    
+                    if (results.length === 0) {
+                        return `No matches found for pattern: ${args}`;
+                    }
+                    
+                    // Format output like grep
+                    let output = `Found ${results.length} post(s) matching /${args}/\n\n`;
+                    
+                    results.forEach((result, index) => {
+                        output += `[${index + 1}] ${result.title}\n`;
+                        output += `    Date: ${result.date} | Matches: ${result.matchCount}\n`;
+                        output += `    URL: ${result.url}\n`;
+                        
+                        if (result.matchingLines.length > 0) {
+                            output += '    Sample matches:\n';
+                            result.matchingLines.forEach(match => {
+                                output += `      L${match.lineNum}: ${match.line}\n`;
+                            });
+                        }
+                        output += '\n';
+                    });
+                    
+                    output += `\nUse 'go <number>' to navigate to a result`;
+                    
+                    // Store grep results for navigation
+                    terminalPrompt._grepResults = results;
+                    
+                    return output;
+                }
+            } catch (e) {
+                // Clear the "Searching..." message
+                const lines = outputArea.innerHTML.split('\n');
+                lines.pop();
+                lines.pop();
+                outputArea.innerHTML = lines.join('\n');
+                
+                return `Error loading search index: ${e.message}\nMake sure the site has been built with searchindex support.`;
+            }
+            
+            return 'Search index not available.';
         }
     };
     

@@ -89,7 +89,13 @@ mainSections = ["posts"]
   lang = "en"
 
 [outputs]
-home = ["HTML", "RSS", "JSON"]
+home = ["HTML", "RSS", "JSON", "SearchIndex"]
+
+[outputFormats.SearchIndex]
+mediaType = "application/json"
+baseName = "searchindex"
+isPlainText = true
+notAlternative = true
 
 [permalinks]
   posts = "/:year/:month/:title/"
