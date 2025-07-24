@@ -4,7 +4,8 @@
   {{ partial "head.html" . }}
 </head>
 <body>
-  {{ partial "boot-screen.html" . }}
+  <!-- Using React Boot Screen instead -->
+  <!-- {{ partial "boot-screen.html" . }} -->
   {{ partial "loading-screen.html" . }}
   
   <!-- Mobile menu toggle -->
@@ -39,6 +40,9 @@
   <audio id="clickSound" preload="auto" style="display: none;">
     <source src="/sounds/tv-channel-change.mp3" type="audio/mpeg">
   </audio>
+  
+  <!-- Boot Screen Component -->
+  <script type="application/javascript" src="/js/boot-screen.js"></script>
   
   <!-- 터미널 커서 스크립트 - 모든 페이지에서 로드 -->
   <script type="application/javascript" src="/js/cursor.js"></script>
