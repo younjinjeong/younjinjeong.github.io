@@ -1,27 +1,40 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
+<main>
+  <div class="container">
+    <h1 class="page-title">{{ .Title }}</h1>
 
-<div class="post-list">
-  {{ $paginator := .Paginate .Pages.ByPublishDate.Reverse }}
-  {{ range $paginator.Pages }}
-  <article>
-    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-    
-    <!-- 날짜 표시 추가 -->
-    <div class="post-date">{{ .Date.Format "2006-01-02" }}</div>
-    
-    <div class="post-summary">
-      {{ if .Description }}
-        {{ .Description }}
-      {{ else }}
-        {{ .Summary }}
+    <div class="post-list">
+      {{ $paginator := .Paginate .Pages.ByPublishDate.Reverse }}
+      {{ range $paginator.Pages }}
+      <article class="post-item">
+        <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        
+        <!-- 날짜 표시 추가 -->
+        <div class="post-meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          {{ with .Params.tags }}
+          <span class="post-tags">
+            {{ range . }}
+            <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}/">#{{ . }}</a>
+            {{ end }}
+          </span>
+          {{ end }}
+        </div>
+        
+        <div class="post-summary">
+          {{ if .Description }}
+            {{ .Description }}
+          {{ else }}
+            {{ .Summary }}
+          {{ end }}
+        </div>
+        <a href="{{ .RelPermalink }}" class="read-more">READ MORE &gt;</a>
+      </article>
       {{ end }}
+      
+      <!-- 페이지네이션 추가 -->
+      {{ template "_internal/pagination.html" . }}
     </div>
-    <a href="{{ .RelPermalink }}" class="read-more">READ MORE &gt;</a>
-  </article>
-  {{ end }}
-  
-  <!-- 페이지네이션 추가 -->
-  {{ template "_internal/pagination.html" . }}
-</div>
+  </div>
+</main>
 {{ end }} 

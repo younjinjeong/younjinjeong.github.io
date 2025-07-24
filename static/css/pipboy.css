@@ -208,10 +208,6 @@ footer p {
   margin-left: 5px;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
 
 /* 부트업 애니메이션 수정 */
 .boot-screen {
@@ -420,6 +416,8 @@ footer p {
   font-size: 1.2em;
   display: flex;
   align-items: center;
+  cursor: text;
+  width: 100%;
 }
 
 .prompt-symbol {
@@ -427,19 +425,94 @@ footer p {
   margin-right: 5px;
 }
 
-.terminal-cursor {
-  display: inline-block;
-  width: 12px;
-  height: 20px;
-  background-color: var(--pipboy-green);
-  animation: blink 1s step-end infinite;
+/* Terminal cursor removed - using native input cursor instead */
+
+/* 터미널 입력 */
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: var(--pipboy-green);
+  font-family: var(--pipboy-terminal-font);
+  font-size: inherit;
+  outline: none;
+  text-shadow: var(--pipboy-glow);
+  width: auto;
+  min-width: 300px;
+  max-width: 80%;
+  padding: 0;
+  margin: 0;
   vertical-align: middle;
+  caret-color: var(--pipboy-green);
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+/* 터미널 출력 */
+.terminal-output {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-shadow: var(--pipboy-glow);
+  font-family: var(--pipboy-terminal-font);
+  font-size: 0.9em;
+  line-height: 1.6;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
 }
+
+.terminal-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: rgba(76, 175, 80, 0.5);
+  border-radius: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+  background: var(--pipboy-green);
+}
+
+/* Terminal focus states */
+.terminal-focused {
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+  background: rgba(76, 175, 80, 0.05);
+}
+
+@keyframes terminal-flash {
+  0%, 100% { 
+    background: transparent;
+  }
+  50% { 
+    background: rgba(76, 175, 80, 0.1);
+  }
+}
+
+/* Keyboard shortcut hint */
+.terminal-shortcut-hint {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--pipboy-green);
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+}
+
+.terminal-shortcut-hint:hover {
+  opacity: 1;
+}
+
 
 /* 포스트 콘텐츠 영역 폰트 크기 통일 */
 .post-content {
@@ -893,4 +966,89 @@ pre, code {
   .term-title {
     font-size: 36px !important;
   }
+}
+
+/* 포스트 목록 페이지 개선된 스타일 */
+.posts-page .page-title {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: var(--pipboy-glow);
+  letter-spacing: 2px;
+}
+
+.posts-page .post-list {
+  margin-bottom: 40px;
+}
+
+.posts-page .post-item {
+  background: rgba(76, 175, 80, 0.05);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 4px;
+  padding: 25px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.posts-page .post-item:hover {
+  background: rgba(76, 175, 80, 0.1);
+  box-shadow: var(--pipboy-glow);
+}
+
+.posts-page .post-item .post-title {
+  font-size: 24px;
+  margin: 0 0 15px 0;
+}
+
+.posts-page .post-item .post-title a {
+  color: var(--pipboy-green);
+  text-decoration: none;
+  transition: text-shadow 0.3s ease;
+}
+
+.posts-page .post-item .post-title a:hover {
+  text-shadow: var(--pipboy-glow);
+}
+
+.posts-page .post-item .post-meta {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.posts-page .post-item .post-tags {
+  display: flex;
+  gap: 10px;
+}
+
+.posts-page .post-item .post-tags a {
+  color: var(--pipboy-light-green);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.posts-page .post-item .post-tags a:hover {
+  color: var(--pipboy-green);
+  text-shadow: var(--pipboy-glow);
+}
+
+.posts-page .post-item .post-summary {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.posts-page .post-item .read-more {
+  color: var(--pipboy-green);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  transition: text-shadow 0.3s ease;
+}
+
+.posts-page .post-item .read-more:hover {
+  text-shadow: var(--pipboy-glow);
 }

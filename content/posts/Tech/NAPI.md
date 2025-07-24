@@ -5,6 +5,7 @@ draft: true
 authors:
   - younjinjeong
 tags: [linux, networking, interrupts]
+categories: [Tech]
 ---
 
 

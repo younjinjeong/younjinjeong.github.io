@@ -1,27 +1,87 @@
 <div id="boot-screen" class="boot-screen">
-  <div class="boot-header">
-    <h1 class="boot-logo">RYONGJIN INDUSTRIES OPERATING SYSTEM</h1>
-    <div class="boot-content">
-      <div class="boot-image-container">
-        <img src="images/fan-art-i-made-for-the-show-i-absolutely-loved-it.png" alt="Fan Art" class="boot-image">
+  <div class="boot-container">
+    <div class="boot-header">
+      <div class="boot-title">
+        <span class="boot-logo-text">RYONGJIN</span>
+        <span class="boot-logo-sub">TERMINAL OS v4.1.0</span>
       </div>
-      <div class="boot-text">
-        <div class="boot-line">COPYRIGHT 2077 RYONGJIN INDUSTRIES</div>
-        <div class="boot-line">LOADER V4.1.0</div>
-        <div class="boot-line">EXEC VERSION 9.3.1</div>
-        <div class="boot-line">64K RAM SYSTEM</div>
-        <div class="boot-line">38911 BYTES FREE</div>
-        <div class="boot-line">NO HOLOTAPE FOUND</div>
-        <div class="boot-line">LOAD ROM(1): DEITRIX 303</div>
-        <div class="boot-line">...</div>
-        <div class="boot-line">INITIALIZING SYSTEM...</div>
-        <div class="boot-line">...</div>
-        <div class="boot-line">CHECKING MEMORY.......DONE</div>
-        <div class="boot-line">CHECKING STORAGE.....DONE</div>
-        <div class="boot-line">CHECKING NETWORK.....DONE</div>
-        <div class="boot-line">...</div>
-        <div class="boot-line">SYSTEM READY</div>
-        <div class="boot-line">PRESS ANY KEY TO CONTINUE</div>
+      <div class="boot-status-bar">
+        <span class="status-item">SECURE CONNECTION</span>
+        <span class="status-divider">|</span>
+        <span class="status-item">SEOUL-KR</span>
+        <span class="status-divider">|</span>
+        <span class="status-item" id="boot-time">2077.01.01</span>
+      </div>
+    </div>
+    
+    <div class="boot-main">
+      <div class="boot-left-panel">
+        <div class="system-info">
+          <h2 class="panel-title">SYSTEM STATUS</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">MEMORY</span>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+              <span class="info-value">85%</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">STORAGE</span>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 62%"></div>
+              </div>
+              <span class="info-value">62%</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">NETWORK</span>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+              <span class="info-value">ONLINE</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="boot-image-container">
+          <img src="/images/pipboy-character.gif" alt="Pipboy" class="boot-image">
+        </div>
+      </div>
+      
+      <div class="boot-right-panel">
+        <h2 class="panel-title">BOOT SEQUENCE</h2>
+        <div class="boot-terminal">
+          <div class="boot-line">> RYONGJIN INDUSTRIES (C) 2077</div>
+          <div class="boot-line">> BOOT LOADER v4.1.0</div>
+          <div class="boot-line">> </div>
+          <div class="boot-line">> CHECKING SYSTEM INTEGRITY...</div>
+          <div class="boot-line">  [■■■■■■■■■■] 100% COMPLETE</div>
+          <div class="boot-line">> </div>
+          <div class="boot-line">> LOADING KERNEL MODULES...</div>
+          <div class="boot-line">  └─ pipboy_driver.ko [OK]</div>
+          <div class="boot-line">  └─ terminal_ui.ko [OK]</div>
+          <div class="boot-line">  └─ blog_engine.ko [OK]</div>
+          <div class="boot-line">> </div>
+          <div class="boot-line">> INITIALIZING SERVICES...</div>
+          <div class="boot-line">  └─ Content Management [READY]</div>
+          <div class="boot-line">  └─ Comment System [READY]</div>
+          <div class="boot-line">  └─ Analytics [READY]</div>
+          <div class="boot-line">> </div>
+          <div class="boot-line">> SYSTEM READY</div>
+          <div class="boot-line">> </div>
+          <div class="boot-line blink">> PRESS ANY KEY TO CONTINUE_</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="boot-footer">
+      <div class="footer-hints">
+        <span class="hint-item">[SPACE] Continue</span>
+        <span class="hint-item">[ESC] Skip</span>
+      </div>
+      <div class="loading-indicator">
+        <span class="loading-text">Loading</span>
+        <span class="loading-dots">...</span>
       </div>
     </div>
   </div>
@@ -34,190 +94,330 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--pipboy-bg);
+    background: radial-gradient(ellipse at center, #0f1a14 0%, #0a0f0d 100%);
     color: var(--pipboy-green);
     font-family: var(--pipboy-terminal-font);
     z-index: 9999;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
+    justify-content: center;
     overflow: hidden;
   }
 
-  .boot-header {
+  .boot-screen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(76, 175, 80, 0.03) 2px,
+      rgba(76, 175, 80, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  .boot-container {
+    width: 90%;
     max-width: 1200px;
+    height: 90%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 20px;
   }
 
-  .boot-logo {
-    font-size: 32px;
-    text-align: left;
-    margin: 20px 0 40px 0;
-    text-shadow: var(--pipboy-glow);
-    font-weight: bold;
-    width: 100%;
-    font-family: var(--pipboy-terminal-font);
-  }
-
-  .boot-content {
+  .boot-header {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--pipboy-green);
+    border-radius: 4px;
+  }
+
+  .boot-title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .boot-logo-text {
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: var(--pipboy-glow);
+    letter-spacing: 2px;
+  }
+
+  .boot-logo-sub {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .boot-status-bar {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .status-divider {
+    opacity: 0.4;
+  }
+
+  .boot-main {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-height: 0;
+  }
+
+  .boot-left-panel {
+    flex: 0 0 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .boot-right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .panel-title {
+    font-size: 18px;
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.3);
+    text-shadow: var(--pipboy-glow);
+  }
+
+  .system-info {
+    background: rgba(76, 175, 80, 0.05);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .info-label {
+    font-size: 12px;
+    min-width: 70px;
+    opacity: 0.8;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--pipboy-green);
+    box-shadow: var(--pipboy-glow);
+    transition: width 2s ease-out;
+    animation: progress-animation 2s ease-out;
+  }
+
+  @keyframes progress-animation {
+    from { width: 0; }
+  }
+
+  .info-value {
+    font-size: 12px;
+    min-width: 50px;
+    text-align: right;
   }
 
   .boot-image-container {
-    flex: 0 0 auto;
-    margin-right: 30px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(76, 175, 80, 0.05);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 4px;
+    padding: 20px;
   }
 
   .boot-image {
-    max-width: 400px;
-    height: auto;
-    border: 2px solid var(--pipboy-green);
-    box-shadow: var(--pipboy-glow);
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
   }
 
-  .boot-text {
-    flex: 1 1 auto;
-    font-size: 20px;
-    line-height: 1.5;
+  .boot-terminal {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 4px;
+    padding: 20px;
+    font-size: 14px;
+    overflow-y: auto;
+    max-height: 400px;
   }
 
   .boot-line {
     margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
     opacity: 0;
-    animation: typewriter 0.1s forwards;
+    animation: fadein 0.3s forwards;
+    line-height: 1.4;
   }
 
-  @keyframes typewriter {
-    from {
-      width: 0;
-      opacity: 0;
-    }
-    to {
-      width: 100%;
-      opacity: 1;
-    }
+  @keyframes fadein {
+    to { opacity: 1; }
   }
 
-  /* 각 줄마다 애니메이션 지연 설정 */
-  .boot-line:nth-child(1) { animation-delay: 0.5s; }
-  .boot-line:nth-child(2) { animation-delay: 0.8s; }
-  .boot-line:nth-child(3) { animation-delay: 1.1s; }
-  .boot-line:nth-child(4) { animation-delay: 1.4s; }
-  .boot-line:nth-child(5) { animation-delay: 1.7s; }
-  .boot-line:nth-child(6) { animation-delay: 2.0s; }
-  .boot-line:nth-child(7) { animation-delay: 2.3s; }
-  .boot-line:nth-child(8) { animation-delay: 2.6s; }
-  .boot-line:nth-child(9) { animation-delay: 2.9s; }
-  .boot-line:nth-child(10) { animation-delay: 3.2s; }
-  .boot-line:nth-child(11) { animation-delay: 3.5s; }
-  .boot-line:nth-child(12) { animation-delay: 3.8s; }
-  .boot-line:nth-child(13) { animation-delay: 4.1s; }
-  .boot-line:nth-child(14) { animation-delay: 4.4s; }
-  .boot-line:nth-child(15) { animation-delay: 4.7s; }
-  .boot-line:nth-child(16) { animation-delay: 5.0s; }
+  .boot-line:nth-child(1) { animation-delay: 0.2s; }
+  .boot-line:nth-child(2) { animation-delay: 0.4s; }
+  .boot-line:nth-child(3) { animation-delay: 0.6s; }
+  .boot-line:nth-child(4) { animation-delay: 0.8s; }
+  .boot-line:nth-child(5) { animation-delay: 1.0s; }
+  .boot-line:nth-child(6) { animation-delay: 1.2s; }
+  .boot-line:nth-child(7) { animation-delay: 1.4s; }
+  .boot-line:nth-child(8) { animation-delay: 1.6s; }
+  .boot-line:nth-child(9) { animation-delay: 1.8s; }
+  .boot-line:nth-child(10) { animation-delay: 2.0s; }
+  .boot-line:nth-child(11) { animation-delay: 2.2s; }
+  .boot-line:nth-child(12) { animation-delay: 2.4s; }
+  .boot-line:nth-child(13) { animation-delay: 2.6s; }
+  .boot-line:nth-child(14) { animation-delay: 2.8s; }
+  .boot-line:nth-child(15) { animation-delay: 3.0s; }
+  .boot-line:nth-child(16) { animation-delay: 3.2s; }
+  .boot-line:nth-child(17) { animation-delay: 3.4s; }
+  .boot-line:nth-child(18) { animation-delay: 3.6s; }
+  .boot-line:nth-child(19) { animation-delay: 3.8s; }
 
-  /* 모바일 화면 레이아웃 */
+  .blink {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .boot-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--pipboy-green);
+    border-radius: 4px;
+  }
+
+  .footer-hints {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .hint-item {
+    padding: 4px 8px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 2px;
+  }
+
+  .loading-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+  }
+
+  .loading-dots {
+    animation: loading 1.4s infinite;
+  }
+
+  @keyframes loading {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+  }
+
+  /* Responsive design */
   @media screen and (max-width: 768px) {
-    .boot-screen {
-      display: flex;
-      flex-direction: column;
-      padding: 0;
-      overflow: hidden;
+    .boot-container {
+      width: 100%;
+      height: 100%;
+      gap: 10px;
     }
-    
+
     .boot-header {
-      display: flex;
       flex-direction: column;
-      height: 100vh;
-      width: 100%;
-      max-width: 100%;
-      overflow: hidden;
-    }
-    
-    .boot-logo {
-      font-size: 32px;
-      text-align: center;
-      margin: 20px 0;
-      padding: 0 15px;
-      order: 1;
-    }
-    
-    .boot-content {
-      flex-direction: column;
-      height: calc(100vh - 80px);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .boot-image-container {
-      margin: 0;
-      width: 100%;
-      height: 60vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      order: 2;
-      overflow: hidden;
-    }
-    
-    .boot-image {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-    }
-    
-    .boot-text {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 40vh;
-      font-size: 24px;
-      background-color: rgba(10, 15, 13, 0.8);
+      align-items: flex-start;
+      gap: 10px;
       padding: 15px;
-      overflow-y: auto;
-      text-align: center;
-      order: 3;
-      
-      /* 스크롤 애니메이션 */
-      animation: scroll-up 15s linear forwards;
-      transform: translateY(100%);
     }
-    
-    @keyframes scroll-up {
-      0% {
-        transform: translateY(100%);
-      }
-      10% {
-        transform: translateY(90%);
-      }
-      100% {
-        transform: translateY(0%);
-      }
+
+    .boot-main {
+      flex-direction: column;
+    }
+
+    .boot-left-panel {
+      flex: 0 0 auto;
+    }
+
+    .boot-terminal {
+      font-size: 12px;
+      padding: 15px;
+    }
+
+    .boot-logo-text {
+      font-size: 28px;
+    }
+
+    .system-info {
+      padding: 15px;
+    }
+
+    .boot-image-container {
+      min-height: 150px;
     }
   }
 
-  /* 작은 모바일 화면 */
   @media screen and (max-width: 480px) {
-    .boot-logo {
+    .boot-logo-text {
       font-size: 24px;
     }
-    
-    .boot-text {
-      font-size: 20px;
+
+    .panel-title {
+      font-size: 16px;
+    }
+
+    .boot-status-bar {
+      font-size: 10px;
+    }
+
+    .footer-hints {
+      gap: 10px;
+    }
+
+    .hint-item {
+      font-size: 10px;
+      padding: 2px 6px;
     }
   }
 </style>
@@ -227,29 +427,39 @@
     const bootScreen = document.getElementById('boot-screen');
     const hasVisited = sessionStorage.getItem('hasVisited');
     
-    // 첫 방문 시에만 부트 스크린 표시
+    // Update time display
+    const bootTime = document.getElementById('boot-time');
+    if (bootTime) {
+      const now = new Date();
+      const timeString = now.getFullYear() + '.' + 
+                        String(now.getMonth() + 1).padStart(2, '0') + '.' + 
+                        String(now.getDate()).padStart(2, '0');
+      bootTime.textContent = timeString;
+    }
+    
+    // Show boot screen only on first visit
     if (!hasVisited) {
       bootScreen.style.display = 'flex';
       
-      // 방문 기록 저장
+      // Save visit record
       sessionStorage.setItem('hasVisited', 'true');
       
-      // 아무 키나 누르면 부트 화면 닫기
-      document.addEventListener('keydown', function() {
-        bootScreen.style.display = 'none';
-      });
+      // Close boot screen on any key press
+      const closeBootScreen = function() {
+        bootScreen.style.opacity = '0';
+        setTimeout(function() {
+          bootScreen.style.display = 'none';
+        }, 300);
+      };
       
-      // 화면 터치/클릭해도 부트 화면 닫기
-      bootScreen.addEventListener('click', function() {
-        bootScreen.style.display = 'none';
-      });
+      // Add event listeners
+      document.addEventListener('keydown', closeBootScreen, { once: true });
+      bootScreen.addEventListener('click', closeBootScreen);
       
-      // 6초 후 자동으로 부트 화면 닫기
-      setTimeout(function() {
-        bootScreen.style.display = 'none';
-      }, 6000);
+      // Auto-close after 5 seconds
+      setTimeout(closeBootScreen, 5000);
     } else {
-      // 이미 방문한 경우 부트 스크린 숨김
+      // Hide boot screen for returning visitors
       bootScreen.style.display = 'none';
     }
   });

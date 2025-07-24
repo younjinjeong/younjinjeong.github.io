@@ -30,15 +30,11 @@
       </footer>
     </article>
 
-    <!-- 터미널 커서 스크립트 추가 -->
-    <script type="application/javascript" src="/js/cursor.js"></script>
-  
     <!-- 터미널 커서 -->
     <div class="terminal-prompt">
       <span class="prompt-symbol">_></span>
-      <span class="terminal-cursor"></span>
     </div>
-    
+
     <!-- Giscus 댓글 추가 -->
     {{ if ne .Params.comments false }}
       {{ partial "comments.html" . }}

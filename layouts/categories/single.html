@@ -1,0 +1,171 @@
+{{ define "main" }}
+<main>
+  <div class="container">
+    <h1 class="category-title">CATEGORY: {{ .Title | upper }}</h1>
+    
+    <div class="posts-list">
+      {{ range .Pages }}
+        <article class="post-item">
+          <header class="post-header">
+            <h2 class="post-title">
+              <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </h2>
+            <div class="post-meta">
+              <time datetime="{{ .Date.Format "2006-01-02" }}">
+                {{ .Date.Format "2006-01-02" }}
+              </time>
+              {{ with .Params.tags }}
+                <span class="post-tags">
+                  {{ range . }}
+                    <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}/">#{{ . }}</a>
+                  {{ end }}
+                </span>
+              {{ end }}
+            </div>
+          </header>
+          
+          <div class="post-summary">
+            {{ .Summary | truncate 200 }}
+          </div>
+          
+          <footer class="post-footer">
+            <a href="{{ .Permalink }}" class="read-more">READ MORE ></a>
+          </footer>
+        </article>
+      {{ end }}
+    </div>
+    
+    <div class="category-navigation">
+      <a href="{{ "categories/" | relURL }}" class="back-link">< BACK TO CATEGORIES</a>
+    </div>
+  </div>
+</main>
+
+<style>
+  .category-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-align: center;
+    text-shadow: var(--pipboy-glow);
+    letter-spacing: 2px;
+  }
+
+  .posts-list {
+    margin-bottom: 40px;
+  }
+
+  .post-item {
+    background: rgba(76, 175, 80, 0.05);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 4px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .post-item:hover {
+    background: rgba(76, 175, 80, 0.1);
+    box-shadow: var(--pipboy-glow);
+  }
+
+  .post-header {
+    margin-bottom: 15px;
+  }
+
+  .post-title {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+  }
+
+  .post-title a {
+    color: var(--pipboy-green);
+    text-decoration: none;
+    transition: text-shadow 0.3s ease;
+  }
+
+  .post-title a:hover {
+    text-shadow: var(--pipboy-glow);
+  }
+
+  .post-meta {
+    font-size: 14px;
+    opacity: 0.8;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 10px;
+  }
+
+  .post-tags a {
+    color: var(--pipboy-light-green);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .post-tags a:hover {
+    color: var(--pipboy-green);
+    text-shadow: var(--pipboy-glow);
+  }
+
+  .post-summary {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    opacity: 0.9;
+  }
+
+  .post-footer {
+    text-align: right;
+  }
+
+  .read-more {
+    color: var(--pipboy-green);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: text-shadow 0.3s ease;
+  }
+
+  .read-more:hover {
+    text-shadow: var(--pipboy-glow);
+  }
+
+  .category-navigation {
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .back-link {
+    color: var(--pipboy-green);
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid var(--pipboy-green);
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    background: rgba(76, 175, 80, 0.1);
+    box-shadow: var(--pipboy-glow);
+  }
+
+  @media screen and (max-width: 768px) {
+    .category-title {
+      font-size: 24px;
+    }
+    
+    .post-item {
+      padding: 20px;
+    }
+    
+    .post-title {
+      font-size: 20px;
+    }
+  }
+</style>
+{{ end }}

@@ -77,6 +77,7 @@ baseFontSize = 16
 description = "Younjin Jeong's Blog"
 author = "Younjin JEONG"
 comments = true
+mainSections = ["posts"]
 
 [params.giscus]
   repo = "younjinjeong/younjinjeong.github.io"
@@ -96,3 +97,4 @@ home = ["HTML", "RSS", "JSON"]
 [taxonomies]
   tag = "tags"
   author = "authors"
+  category = "categories"

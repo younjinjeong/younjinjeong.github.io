@@ -15,3 +15,11 @@ $RECYCLE.BIN/
 
 # OSX
 .DS_Store
+
+# Claude AI related files
+.claude/
+.claude_cache/ 
+*.claude
+claude_*
+anthropic/
+anthropic_cache/

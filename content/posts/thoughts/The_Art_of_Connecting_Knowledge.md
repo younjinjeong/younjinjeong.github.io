@@ -5,6 +5,7 @@ draft: true
 authors:
   - younjinjeong
 tags: [knowledge, connection, art]
+categories: [Thoughts]
 layout: "post"
 ---
 
