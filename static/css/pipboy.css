@@ -294,7 +294,7 @@ nav ul {
 }
 
 nav li {
-  margin: 0 15px;
+  margin: 0 10px; /* Reduced margin for better spacing with larger fonts */
 }
 
 /* 포스트 목록 */
@@ -463,7 +463,7 @@ footer p {
 
 .pipboy-nav a {
   display: block;
-  padding: 10px 15px;
+  padding: 10px 30px;
   font-size: calc(1.8em * 1.3);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -481,17 +481,26 @@ footer p {
 }
 
 .pipboy-nav a::before {
-  content: "[>]";
+  content: "[";
   position: absolute;
-  left: -20px;
+  left: 15px;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
   font-family: 'Monofonto', monospace;
 }
 
-.pipboy-nav a:hover::before {
+.pipboy-nav a::after {
+  content: "]";
+  position: absolute;
+  right: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: 'Monofonto', monospace;
+}
+
+.pipboy-nav a:hover::before,
+.pipboy-nav a:hover::after {
   opacity: 1;
-  left: 0;
 }
 
 /* 로딩 화면 스타일 */
