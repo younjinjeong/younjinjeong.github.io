@@ -17,6 +17,15 @@
     font-display: swap;
 }
 
+/* Monofonto Font for English */
+@font-face {
+    font-family: 'Monofonto';
+    src: url('/fonts/Monofonto Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Web-safe 90's terminal font stack */
 @font-face {
     font-family: 'Terminal';
@@ -34,7 +43,7 @@
   --pipboy-black: #000000;        /* Pure black background */
   --pipboy-bg: #000000;           /* Main background */
   --pipboy-bg-alt: #001100;       /* Slight green tint for panels */
-  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'IBM Plex Mono', 'Terminal', 'DungGeunMo', 'Nanum Gothic Coding', 'Consolas', 'Monaco', 'Lucida Console', monospace;
+  --pipboy-terminal-font: 'Monofonto', 'VT323', 'Share Tech Mono', 'IBM Plex Mono', 'Terminal', 'DungGeunMo', 'Nanum Gothic Coding', 'Consolas', 'Monaco', 'Lucida Console', monospace;
   --pipboy-glow: 0 0 5px rgba(65, 255, 0, 0.6);
   --pipboy-glow-intense: 0 0 10px rgba(65, 255, 0, 0.8);
   --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
@@ -177,6 +186,29 @@ a:hover {
   filter: brightness(1.2);
 }
 
+/* Global English Font Size Increase - 130% bigger */
+body {
+  font-size: calc(var(--font-size-base) * 1.3);
+}
+
+/* Apply to all text elements */
+p, span, div, li, td, th, label, input, textarea, select, button {
+  font-size: inherit;
+}
+
+/* Korean text should maintain original size */
+*:lang(ko) {
+  font-size: var(--font-size-base) !important;
+}
+
+/* Ensure headings use correct size */
+h1:not(:lang(ko)) { font-size: calc(var(--font-size-h1) * 1.3); }
+h2:not(:lang(ko)) { font-size: calc(var(--font-size-h2) * 1.3); }
+h3:not(:lang(ko)) { font-size: calc(var(--font-size-h3) * 1.3); }
+h4:not(:lang(ko)) { font-size: calc(var(--font-size-h4) * 1.3); }
+h5:not(:lang(ko)) { font-size: calc(var(--font-size-h5) * 1.3); }
+h6:not(:lang(ko)) { font-size: calc(var(--font-size-h6) * 1.3); }
+
 /* Typography Hierarchy */
 h1, h2, h3, h4, h5, h6 {
   color: var(--pipboy-light-green);
@@ -187,9 +219,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   line-height: var(--line-height-tight);
   font-weight: 600;
-  font-family: 'VT323', var(--pipboy-terminal-font);
+  font-family: 'Monofonto', var(--pipboy-terminal-font);
   letter-spacing: 0.05em;
-  font-size: 1.1em; /* Boost size for VT323 */
+  /* font-size handled by global rules above */
 }
 
 h1 { font-size: var(--font-size-h1); }
@@ -386,7 +418,7 @@ footer p {
   opacity: 0.6;
   letter-spacing: 0.2em;
   margin-bottom: 0.5rem;
-  font-family: 'VT323', monospace;
+  font-family: 'Monofonto', monospace;
   animation: blink 3s ease-in-out infinite;
 }
 
@@ -432,13 +464,13 @@ footer p {
 .pipboy-nav a {
   display: block;
   padding: 10px 15px;
-  font-size: 1.8em;
+  font-size: calc(1.8em * 1.3);
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: all 0.3s ease;
   position: relative;
   font-weight: 400;
-  font-family: 'VT323', var(--pipboy-terminal-font);
+  font-family: 'Monofonto', var(--pipboy-terminal-font);
 }
 
 .pipboy-nav a:hover {
@@ -454,7 +486,7 @@ footer p {
   left: -20px;
   opacity: 0;
   transition: all 0.3s ease;
-  font-family: 'VT323', monospace;
+  font-family: 'Monofonto', monospace;
 }
 
 .pipboy-nav a:hover::before {
@@ -554,7 +586,7 @@ footer p {
   padding-top: 0.75rem;
   border-top: 1px dashed var(--pipboy-green);
   font-family: var(--pipboy-terminal-font);
-  font-size: var(--font-size-body);
+  font-size: calc(var(--font-size-body) * 1.3);
   display: flex;
   align-items: center;
   cursor: text;
@@ -564,7 +596,7 @@ footer p {
 .prompt-symbol {
   color: var(--pipboy-green);
   margin-right: 8px;
-  font-family: 'VT323', monospace;
+  font-family: 'Monofonto', monospace;
   font-size: 1.1em;
   font-weight: 400;
 }
@@ -576,8 +608,8 @@ footer p {
   background: transparent;
   border: none;
   color: var(--pipboy-green);
-  font-family: 'VT323', var(--pipboy-terminal-font);
-  font-size: inherit;
+  font-family: 'Monofonto', var(--pipboy-terminal-font);
+  font-size: calc(var(--font-size-body) * 1.3);
   outline: none;
   text-shadow: var(--pipboy-glow);
   width: auto;
@@ -600,7 +632,7 @@ footer p {
   margin-top: 20px;
   text-shadow: var(--pipboy-glow);
   font-family: var(--pipboy-terminal-font);
-  font-size: 0.9em;
+  font-size: calc(var(--font-size-body) * 1.3);
   line-height: 1.6;
   max-height: 300px;
   overflow-y: auto;
@@ -669,8 +701,8 @@ footer p {
 /* Mixed Korean/English content handling */
 .post-content {
   /* Default to English terminal font */
-  font-family: 'VT323', var(--pipboy-terminal-font);
-  font-size: 1.26em;  /* Original 1.05em * 1.2 = 1.26em */
+  font-family: 'Monofonto', var(--pipboy-terminal-font);
+  font-size: calc(var(--font-size-body) * 1.3);  /* 130% bigger than base */
   letter-spacing: 0.01em;
   line-height: 1.65;
 }
@@ -685,15 +717,15 @@ footer p {
 .post-content h5:lang(ko),
 .post-content h6:lang(ko) {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
-  font-size: 0.9384em !important;  /* Original 0.92em * 1.02 = 0.9384em */
+  font-size: var(--font-size-body) !important;  /* Same as posts page Korean size */
   letter-spacing: -0.02em !important;
   line-height: 1.75 !important;
 }
 
 /* Mixed content paragraph handling */
 .post-content p {
-  font-family: 'VT323', 'DungGeunMo', var(--pipboy-terminal-font);
-  font-size: 1.26em;  /* Match the container size for English */
+  font-family: 'Monofonto', 'DungGeunMo', var(--pipboy-terminal-font);
+  /* Size inherited from .post-content */
   line-height: 1.65;
 }
 
@@ -823,7 +855,7 @@ footer p {
   transition: all 0.3s ease;
   font-size: 0.9em;
   text-transform: uppercase;
-  font-family: 'VT323', monospace;
+  font-family: 'Monofonto', monospace;
   letter-spacing: 1px;
 }
 
@@ -835,7 +867,7 @@ footer p {
 
 /* 90's style button */
 .button {
-  font-family: 'VT323', monospace;
+  font-family: 'Monofonto', monospace;
   letter-spacing: 1px;
   text-transform: uppercase;
   background-color: var(--pipboy-dark-green);
@@ -1177,13 +1209,13 @@ pre, code {
   }
   
   .terminal-input {
-    font-size: var(--font-size-body);
+    font-size: calc(var(--font-size-body) * 1.3);
     width: 100%;
     max-width: 100%;
   }
   
   .terminal-output {
-    font-size: var(--font-size-small);
+    font-size: calc(var(--font-size-body) * 1.3);
     max-height: 200px;
     padding: 0.75rem;
   }
@@ -1331,7 +1363,7 @@ pre, code {
   .terminal-prompt,
   .terminal-input,
   .terminal-output {
-    font-size: var(--font-size-small);
+    font-size: calc(var(--font-size-body) * 1.3);
   }
   
   /* Boot screen */

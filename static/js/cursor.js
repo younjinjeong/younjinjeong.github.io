@@ -76,7 +76,7 @@ function initializeTerminal(terminalPrompt) {
     outputArea.style.cssText = `
         color: var(--pipboy-green);
         font-family: var(--pipboy-terminal-font);
-        font-size: 14px;
+        font-size: inherit;
         margin-top: 20px;
         max-height: 300px;
         overflow-y: auto;
