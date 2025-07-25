@@ -726,7 +726,7 @@ footer p {
 .post-content h5:lang(ko),
 .post-content h6:lang(ko) {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
-  font-size: calc(var(--font-size-body) * 0.95) !important;  /* 95% of original Korean size */
+  font-size: calc(var(--font-size-body) * 0.9025) !important;  /* 95% of 0.95 = 0.9025 */
   letter-spacing: -0.02em !important;
   line-height: 1.75 !important;
 }
