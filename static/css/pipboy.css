@@ -39,17 +39,17 @@
   --pipboy-glow-intense: 0 0 10px rgba(65, 255, 0, 0.8);
   --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
   
-  /* Typography Scale - Desktop (adjusted for VT323 font) */
-  --font-size-base: 20px;       /* Increased base for VT323 readability */
-  --font-size-small: 0.85rem;   /* 17px */
-  --font-size-body: 1rem;       /* 20px */
-  --font-size-h6: 1.15rem;      /* 23px */
-  --font-size-h5: 1.25rem;      /* 25px */
-  --font-size-h4: 1.45rem;      /* 29px */
-  --font-size-h3: 1.65rem;      /* 33px */
-  --font-size-h2: 1.85rem;      /* 37px */
-  --font-size-h1: 2.25rem;      /* 45px */
-  --font-size-hero: 2.65rem;    /* 53px */
+  /* Typography Scale - Desktop (balanced for mixed content) */
+  --font-size-base: 18px;       /* Balanced base size */
+  --font-size-small: 0.889rem;  /* 16px */
+  --font-size-body: 1.111rem;   /* 20px */
+  --font-size-h6: 1.222rem;     /* 22px */
+  --font-size-h5: 1.333rem;     /* 24px */
+  --font-size-h4: 1.556rem;     /* 28px */
+  --font-size-h3: 1.778rem;     /* 32px */
+  --font-size-h2: 2rem;         /* 36px */
+  --font-size-h1: 2.444rem;     /* 44px */
+  --font-size-hero: 2.889rem;   /* 52px */
   
   /* Line Heights */
   --line-height-tight: 1.25;
@@ -670,11 +670,12 @@ footer p {
 .post-content {
   /* Default to English terminal font */
   font-family: 'VT323', var(--pipboy-terminal-font);
-  font-size: 1.05em;
+  font-size: 0.85em;  /* Reduced to match Korean visual size */
   letter-spacing: 0.01em;
+  line-height: 1.65;
 }
 
-/* Korean-specific styling for better readability */
+/* Korean-specific styling */
 .post-content p:lang(ko),
 .post-content li:lang(ko),
 .post-content h1:lang(ko),
@@ -684,7 +685,7 @@ footer p {
 .post-content h5:lang(ko),
 .post-content h6:lang(ko) {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
-  font-size: 0.88em !important;
+  font-size: 1em !important;  /* Keep Korean at base size */
   letter-spacing: -0.02em !important;
   line-height: 1.75 !important;
 }
@@ -692,8 +693,8 @@ footer p {
 /* Mixed content paragraph handling */
 .post-content p {
   font-family: 'VT323', 'DungGeunMo', var(--pipboy-terminal-font);
-  font-size: 1em;
-  line-height: 1.7;
+  font-size: 0.85em;  /* Match the container size */
+  line-height: 1.65;
 }
 
 /* 포스트 제목 */
@@ -879,8 +880,7 @@ footer p {
 /* 포스트 내용 */
 .post-content p,
 .post-content li {
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-relaxed);
+    /* Font size handled by language-specific rules */
     margin-bottom: 1rem;
 }
 
