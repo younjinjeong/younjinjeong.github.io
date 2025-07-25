@@ -108,21 +108,21 @@ body {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace;
   letter-spacing: -0.02em; /* 한글 자간 조정 */
   word-break: keep-all; /* 단어 단위 줄바꿈 */
-  font-size: 0.95em; /* 한글 폰트 크기 조정 */
+  font-size: 1.425em; /* 0.95em * 1.5 = 1.425em */
 }
 
 /* 한글 제목 스타일 */
 h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
   font-family: 'DungGeunMo', 'Black Han Sans', monospace;
   letter-spacing: -0.03em;
-  font-size: 0.9em;
+  font-size: 1.35em; /* 0.9em * 1.5 = 1.35em */
 }
 
 
 /* 터미널 프롬프트 한글 스타일 */
 .terminal-prompt:lang(ko) {
   font-family: 'DungGeunMo', monospace;
-  font-size: 0.95em;
+  font-size: 1.425em; /* 0.95em * 1.5 = 1.425em */
 }
 
 /* 스캔라인 효과 - Enhanced CRT effect */
@@ -670,7 +670,7 @@ footer p {
 .post-content {
   /* Default to English terminal font */
   font-family: 'VT323', var(--pipboy-terminal-font);
-  font-size: 0.85em;  /* Reduced to match Korean visual size */
+  font-size: 2.125em;  /* 0.85em * 2.5 = 2.125em */
   letter-spacing: 0.01em;
   line-height: 1.65;
 }
@@ -685,7 +685,7 @@ footer p {
 .post-content h5:lang(ko),
 .post-content h6:lang(ko) {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
-  font-size: 1em !important;  /* Keep Korean at base size */
+  font-size: 1.5em !important;  /* 1em * 1.5 = 1.5em */
   letter-spacing: -0.02em !important;
   line-height: 1.75 !important;
 }
@@ -693,7 +693,7 @@ footer p {
 /* Mixed content paragraph handling */
 .post-content p {
   font-family: 'VT323', 'DungGeunMo', var(--pipboy-terminal-font);
-  font-size: 0.85em;  /* Match the container size */
+  font-size: 2.125em;  /* Match the container size for English */
   line-height: 1.65;
 }
 
