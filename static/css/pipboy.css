@@ -1,3 +1,10 @@
+/* 90's Terminal Fonts */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+/* Korean fonts for fallback */
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css');
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
@@ -5,6 +12,15 @@
 @font-face {
     font-family: 'DungGeunMo';
     src: url('../fonts/DungGeunMo.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Web-safe 90's terminal font stack */
+@font-face {
+    font-family: 'Terminal';
+    src: local('Consolas'), local('Monaco'), local('Lucida Console'), local('Liberation Mono'), local('DejaVu Sans Mono'), local('Bitstream Vera Sans Mono'), local('Courier New'), monospace;
     font-weight: normal;
     font-style: normal;
 }
@@ -18,22 +34,22 @@
   --pipboy-black: #000000;        /* Pure black background */
   --pipboy-bg: #000000;           /* Main background */
   --pipboy-bg-alt: #001100;       /* Slight green tint for panels */
-  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding','Share Tech Mono',  'VT323', monospace;
+  --pipboy-terminal-font: 'VT323', 'Share Tech Mono', 'IBM Plex Mono', 'Terminal', 'DungGeunMo', 'Nanum Gothic Coding', 'Consolas', 'Monaco', 'Lucida Console', monospace;
   --pipboy-glow: 0 0 5px rgba(65, 255, 0, 0.6);
   --pipboy-glow-intense: 0 0 10px rgba(65, 255, 0, 0.8);
   --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
   
-  /* Typography Scale - Desktop */
-  --font-size-base: 16px;
-  --font-size-small: 0.875rem;  /* 14px */
-  --font-size-body: 1rem;       /* 16px */
-  --font-size-h6: 1.125rem;     /* 18px */
-  --font-size-h5: 1.25rem;      /* 20px */
-  --font-size-h4: 1.5rem;       /* 24px */
-  --font-size-h3: 1.75rem;      /* 28px */
-  --font-size-h2: 2rem;         /* 32px */
-  --font-size-h1: 2.5rem;       /* 40px */
-  --font-size-hero: 3rem;       /* 48px */
+  /* Typography Scale - Desktop (adjusted for VT323 font) */
+  --font-size-base: 18px;       /* Increased base for better readability */
+  --font-size-small: 0.889rem;  /* 16px */
+  --font-size-body: 1.111rem;   /* 20px */
+  --font-size-h6: 1.222rem;     /* 22px */
+  --font-size-h5: 1.333rem;     /* 24px */
+  --font-size-h4: 1.556rem;     /* 28px */
+  --font-size-h3: 1.778rem;     /* 32px */
+  --font-size-h2: 2rem;         /* 36px */
+  --font-size-h1: 2.444rem;     /* 44px */
+  --font-size-hero: 2.889rem;   /* 52px */
   
   /* Line Heights */
   --line-height-tight: 1.25;
@@ -52,13 +68,21 @@ body {
 body {
   background-color: var(--pipboy-bg);
   color: var(--pipboy-green);
-  font-family: 'DungGeunMo', monospace;
+  font-family: var(--pipboy-terminal-font);
   line-height: var(--line-height-base);
   text-shadow: 0 0 2px rgba(65, 255, 0, 0.5);
   margin: 0;
   padding: 0;
   /* Add subtle flicker animation for authenticity */
   animation: textFlicker 120s infinite;
+  /* 90's terminal characteristics */
+  font-weight: 400;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 0;
+  /* Ensure monospace rendering */
+  font-variant-ligatures: none;
+  text-rendering: optimizeLegibility;
 }
 
 @keyframes textFlicker {
@@ -68,28 +92,39 @@ body {
   97% { opacity: 1; }
 }
 
+/* 90's Terminal Cursor Animation */
+@keyframes terminalCursor {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 /* 한글 폰트 최적화 */
 :lang(ko) {
-  font-family: 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', 'VT323', monospace;
   letter-spacing: -0.02em; /* 한글 자간 조정 */
   word-break: keep-all; /* 단어 단위 줄바꿈 */
 }
 
 /* 한글 제목 스타일 */
 h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
-  font-family: 'DungGeunMo', 'Black Han Sans', var(--pipboy-terminal-font);
+  font-family: 'DungGeunMo', 'Black Han Sans', 'VT323', monospace;
   letter-spacing: -0.03em;
 }
 
 /* 포스트 내용 한글 최적화 */
 .post-content:lang(ko) {
-  font-family: 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', 'VT323', monospace;
   line-height: 1.7; /* 한글 줄간격 조정 */
 }
 
 /* 터미널 프롬프트 한글 스타일 */
 .terminal-prompt:lang(ko) {
-  font-family: 'DungGeunMo', monospace;
+  font-family: 'DungGeunMo', 'VT323', monospace;
 }
 
 /* 스캔라인 효과 - Enhanced CRT effect */
@@ -153,7 +188,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   line-height: var(--line-height-tight);
-  font-weight: bold;
+  font-weight: 600;
+  font-family: 'VT323', var(--pipboy-terminal-font);
+  letter-spacing: 0.05em;
 }
 
 h1 { font-size: var(--font-size-h1); }
@@ -172,21 +209,24 @@ main {
 code {
   background-color: var(--pipboy-bg-alt);
   border: 1px solid var(--pipboy-dark-green);
-  border-radius: 2px;
-  font-family: var(--pipboy-terminal-font);
+  border-radius: 0;
+  font-family: 'IBM Plex Mono', var(--pipboy-terminal-font);
   padding: 0.125rem 0.375rem;
   font-size: 0.875em;
   color: var(--pipboy-light-green);
+  letter-spacing: 0.05em;
 }
 
 pre {
   background-color: var(--pipboy-bg-alt);
   border: 1px solid var(--pipboy-dark-green);
-  border-radius: 2px;
-  font-family: var(--pipboy-terminal-font);
+  border-radius: 0;
+  font-family: 'IBM Plex Mono', var(--pipboy-terminal-font);
   font-size: var(--font-size-small);
   line-height: 1.5;
   box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
+  /* 90's terminal style */
+  letter-spacing: 0.02em;
 }
 
 pre {
@@ -275,12 +315,13 @@ footer p {
 /* 깜빡이는 커서 효과 */
 .cursor {
   display: inline-block;
-  width: 10px;
-  height: 1em;
+  width: 0.6em;
+  height: 1.1em;
   background-color: var(--pipboy-green);
-  animation: blink 1s step-end infinite;
+  animation: terminalCursor 1s step-end infinite;
   vertical-align: text-bottom;
-  margin-left: 5px;
+  margin-left: 2px;
+  box-shadow: 0 0 3px var(--pipboy-green);
 }
 
 
@@ -334,6 +375,20 @@ footer p {
 .site-header {
   text-align: center;
   padding: 2rem 0;
+  position: relative;
+}
+
+/* Add 90's terminal header effect */
+.site-header::before {
+  content: "[SYSTEM ONLINE]";
+  display: block;
+  font-size: 0.8em;
+  color: var(--pipboy-green);
+  opacity: 0.6;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+  font-family: 'VT323', monospace;
+  animation: blink 3s ease-in-out infinite;
 }
 
 .site-title {
@@ -380,10 +435,11 @@ footer p {
   padding: 10px 15px;
   font-size: 1.8em;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   transition: all 0.3s ease;
   position: relative;
-  font-weight: bold;
+  font-weight: 400;
+  font-family: 'VT323', var(--pipboy-terminal-font);
 }
 
 .pipboy-nav a:hover {
@@ -394,11 +450,12 @@ footer p {
 }
 
 .pipboy-nav a::before {
-  content: ">";
+  content: "[>]";
   position: absolute;
-  left: -10px;
+  left: -20px;
   opacity: 0;
   transition: all 0.3s ease;
+  font-family: 'VT323', monospace;
 }
 
 .pipboy-nav a:hover::before {
@@ -507,7 +564,10 @@ footer p {
 
 .prompt-symbol {
   color: var(--pipboy-green);
-  margin-right: 5px;
+  margin-right: 8px;
+  font-family: 'VT323', monospace;
+  font-size: 1.1em;
+  font-weight: 400;
 }
 
 /* Terminal cursor removed - using native input cursor instead */
@@ -517,7 +577,7 @@ footer p {
   background: transparent;
   border: none;
   color: var(--pipboy-green);
-  font-family: var(--pipboy-terminal-font);
+  font-family: 'VT323', var(--pipboy-terminal-font);
   font-size: inherit;
   outline: none;
   text-shadow: var(--pipboy-glow);
@@ -528,6 +588,7 @@ footer p {
   margin: 0;
   vertical-align: middle;
   caret-color: var(--pipboy-green);
+  letter-spacing: 0.05em;
 }
 
 /* 터미널 출력 */
@@ -735,11 +796,32 @@ footer p {
   transition: all 0.3s ease;
   font-size: 0.9em;
   text-transform: uppercase;
+  font-family: 'VT323', monospace;
+  letter-spacing: 1px;
 }
 
 .read-more:hover {
   background-color: var(--pipboy-green);
   color: var(--pipboy-bg);
+  text-shadow: none;
+}
+
+/* 90's style button */
+.button {
+  font-family: 'VT323', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: var(--pipboy-dark-green);
+  color: var(--pipboy-light-green);
+  border: 2px solid var(--pipboy-green);
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--pipboy-green);
+  color: var(--pipboy-bg);
+  box-shadow: 0 0 10px var(--pipboy-green);
   text-shadow: none;
 }
 
@@ -809,7 +891,7 @@ article.post .post-content,
 .post-content li,
 .post-list .post-summary,
 .post-list article p {
-    font-family: 'DungGeunMo', monospace;
+    font-family: var(--pipboy-terminal-font);
     line-height: 1.6;  /* line-height는 유지 */
 }
 
