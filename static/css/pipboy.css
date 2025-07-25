@@ -108,21 +108,21 @@ body {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace;
   letter-spacing: -0.02em; /* 한글 자간 조정 */
   word-break: keep-all; /* 단어 단위 줄바꿈 */
-  font-size: 0.9975em; /* Original 0.95em * 1.05 = 0.9975em */
+  font-size: 0.969em; /* Original 0.95em * 1.02 = 0.969em */
 }
 
 /* 한글 제목 스타일 */
 h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
   font-family: 'DungGeunMo', 'Black Han Sans', monospace;
   letter-spacing: -0.03em;
-  font-size: 0.945em; /* Original 0.9em * 1.05 = 0.945em */
+  font-size: 0.918em; /* Original 0.9em * 1.02 = 0.918em */
 }
 
 
 /* 터미널 프롬프트 한글 스타일 */
 .terminal-prompt:lang(ko) {
   font-family: 'DungGeunMo', monospace;
-  font-size: 0.9975em; /* Original 0.95em * 1.05 = 0.9975em */
+  font-size: 0.969em; /* Original 0.95em * 1.02 = 0.969em */
 }
 
 /* 스캔라인 효과 - Enhanced CRT effect */
@@ -685,7 +685,7 @@ footer p {
 .post-content h5:lang(ko),
 .post-content h6:lang(ko) {
   font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
-  font-size: 0.966em !important;  /* Original 0.92em * 1.05 = 0.966em */
+  font-size: 0.9384em !important;  /* Original 0.92em * 1.02 = 0.9384em */
   letter-spacing: -0.02em !important;
   line-height: 1.75 !important;
 }
