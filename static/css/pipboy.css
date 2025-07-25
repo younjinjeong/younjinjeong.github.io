@@ -40,16 +40,16 @@
   --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
   
   /* Typography Scale - Desktop (adjusted for VT323 font) */
-  --font-size-base: 18px;       /* Increased base for better readability */
-  --font-size-small: 0.889rem;  /* 16px */
-  --font-size-body: 1.111rem;   /* 20px */
-  --font-size-h6: 1.222rem;     /* 22px */
-  --font-size-h5: 1.333rem;     /* 24px */
-  --font-size-h4: 1.556rem;     /* 28px */
-  --font-size-h3: 1.778rem;     /* 32px */
-  --font-size-h2: 2rem;         /* 36px */
-  --font-size-h1: 2.444rem;     /* 44px */
-  --font-size-hero: 2.889rem;   /* 52px */
+  --font-size-base: 20px;       /* Increased base for VT323 readability */
+  --font-size-small: 0.85rem;   /* 17px */
+  --font-size-body: 1rem;       /* 20px */
+  --font-size-h6: 1.15rem;      /* 23px */
+  --font-size-h5: 1.25rem;      /* 25px */
+  --font-size-h4: 1.45rem;      /* 29px */
+  --font-size-h3: 1.65rem;      /* 33px */
+  --font-size-h2: 1.85rem;      /* 37px */
+  --font-size-h1: 2.25rem;      /* 45px */
+  --font-size-hero: 2.65rem;    /* 53px */
   
   /* Line Heights */
   --line-height-tight: 1.25;
@@ -105,26 +105,24 @@ body {
 
 /* 한글 폰트 최적화 */
 :lang(ko) {
-  font-family: 'DungGeunMo', 'Nanum Gothic Coding', 'VT323', monospace;
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace;
   letter-spacing: -0.02em; /* 한글 자간 조정 */
   word-break: keep-all; /* 단어 단위 줄바꿈 */
+  font-size: 0.95em; /* 한글 폰트 크기 조정 */
 }
 
 /* 한글 제목 스타일 */
 h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
-  font-family: 'DungGeunMo', 'Black Han Sans', 'VT323', monospace;
+  font-family: 'DungGeunMo', 'Black Han Sans', monospace;
   letter-spacing: -0.03em;
+  font-size: 0.9em;
 }
 
-/* 포스트 내용 한글 최적화 */
-.post-content:lang(ko) {
-  font-family: 'DungGeunMo', 'Nanum Gothic Coding', 'VT323', monospace;
-  line-height: 1.7; /* 한글 줄간격 조정 */
-}
 
 /* 터미널 프롬프트 한글 스타일 */
 .terminal-prompt:lang(ko) {
-  font-family: 'DungGeunMo', 'VT323', monospace;
+  font-family: 'DungGeunMo', monospace;
+  font-size: 0.95em;
 }
 
 /* 스캔라인 효과 - Enhanced CRT effect */
@@ -191,6 +189,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   font-family: 'VT323', var(--pipboy-terminal-font);
   letter-spacing: 0.05em;
+  font-size: 1.1em; /* Boost size for VT323 */
 }
 
 h1 { font-size: var(--font-size-h1); }
@@ -667,6 +666,36 @@ footer p {
   line-height: var(--line-height-relaxed);
 }
 
+/* Mixed Korean/English content handling */
+.post-content {
+  /* Default to English terminal font */
+  font-family: 'VT323', var(--pipboy-terminal-font);
+  font-size: 1.05em;
+  letter-spacing: 0.01em;
+}
+
+/* Korean-specific styling for better readability */
+.post-content p:lang(ko),
+.post-content li:lang(ko),
+.post-content h1:lang(ko),
+.post-content h2:lang(ko),
+.post-content h3:lang(ko),
+.post-content h4:lang(ko),
+.post-content h5:lang(ko),
+.post-content h6:lang(ko) {
+  font-family: 'DungGeunMo', 'Nanum Gothic Coding', monospace !important;
+  font-size: 0.88em !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.75 !important;
+}
+
+/* Mixed content paragraph handling */
+.post-content p {
+  font-family: 'VT323', 'DungGeunMo', var(--pipboy-terminal-font);
+  font-size: 1em;
+  line-height: 1.7;
+}
+
 /* 포스트 제목 */
 .post h1 {
   font-size: var(--font-size-h1);
@@ -697,9 +726,6 @@ footer p {
   word-break: keep-all;
 }
 
-.post-content:lang(en) {
-  font-family: var(--pipboy-terminal-font);
-}
 
 /* YouTube 임베드 비디오 스타일 */
 .post-content iframe[src*="youtube.com"],
@@ -894,6 +920,7 @@ article.post .post-content,
     font-family: var(--pipboy-terminal-font);
     line-height: 1.6;  /* line-height는 유지 */
 }
+
 
 /* 포스트 내 헤딩 크기 통일 - CSS 변수 사용 중 (line 588-593) */
 
