@@ -1,5 +1,22 @@
 // Terminal cursor and command system
+let searchEngine = null;
+
+// Initialize search engine
+async function initSearchEngine() {
+    if (!window.SearchEngine) {
+        // SearchEngine not loaded yet, use fallback
+        return null;
+    }
+    
+    searchEngine = new window.SearchEngine();
+    await searchEngine.init();
+    return searchEngine;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize search engine in background
+    initSearchEngine().catch(console.error);
+    
     // Initialize terminals that exist on page load
     initializeAllTerminals();
     
@@ -143,6 +160,7 @@ function initializeTerminal(terminalPrompt) {
   ls          - List all posts (Date | Title | Category)
   find <term> - Search for posts containing <term>
   grep <pattern> - Full-text search in all posts (supports regex)
+  egrep <pattern> - Extended grep with line numbers and context
   go <url>    - Navigate to post by URL (e.g., go /2025/03/hugo-blog/)
   go <number> - Navigate to post by number (current page only)
   clear       - Clear terminal output
@@ -417,6 +435,150 @@ Type 'help' for available commands.`;
             }
             
             return 'Search index not available.';
+        },
+        
+        egrep: (args) => {
+            if (!args) {
+                return 'Usage: egrep <pattern>\nExample: egrep "hugo.*blog"\n       egrep -i "cursor|ide"\n       egrep -n "pattern"';
+            }
+            
+            // Parse egrep flags
+            let flags = [];
+            let pattern = args;
+            const argParts = args.split(' ');
+            
+            // Check for flags
+            if (argParts[0].startsWith('-')) {
+                flags = argParts[0].substring(1).split('');
+                pattern = argParts.slice(1).join(' ');
+            }
+            
+            // Show loading message
+            outputArea.innerHTML += 'Searching...\n';
+            
+            // Try to use search engine if available
+            if (searchEngine && searchEngine.ready) {
+                try {
+                    const results = searchEngine.egrep(pattern, flags.join(''));
+                    
+                    // Clear loading message
+                    const lines = outputArea.innerHTML.split('\n');
+                    lines.pop();
+                    lines.pop();
+                    outputArea.innerHTML = lines.join('\n');
+                    
+                    if (results.length === 0) {
+                        return `egrep: No matches found for pattern: ${pattern}`;
+                    }
+                    
+                    return searchEngine.formatEgrepOutput(results);
+                } catch (e) {
+                    // Clear loading message
+                    const lines = outputArea.innerHTML.split('\n');
+                    lines.pop();
+                    lines.pop();
+                    outputArea.innerHTML = lines.join('\n');
+                    
+                    return `egrep: ${e.message}`;
+                }
+            }
+            
+            // Fetch search index
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/searchindex.json', false);
+            try {
+                xhr.send();
+                if (xhr.status === 200) {
+                    const searchIndex = JSON.parse(xhr.responseText);
+                    let regexPattern;
+                    
+                    // Create regex pattern with proper flags
+                    const regexFlags = flags.includes('i') ? 'gi' : 'g';
+                    
+                    try {
+                        // Check if it's already a regex pattern
+                        if (pattern.startsWith('/') && pattern.endsWith('/')) {
+                            regexPattern = new RegExp(pattern.slice(1, -1), regexFlags);
+                        } else {
+                            // Treat as literal string
+                            regexPattern = new RegExp(pattern, regexFlags);
+                        }
+                    } catch (e) {
+                        // Clear loading message
+                        const lines = outputArea.innerHTML.split('\n');
+                        lines.pop();
+                        lines.pop();
+                        outputArea.innerHTML = lines.join('\n');
+                        return `egrep: Invalid regex pattern: ${pattern}\n${e.message}`;
+                    }
+                    
+                    // Perform search with egrep-style output
+                    let totalMatches = 0;
+                    let output = '';
+                    
+                    searchIndex.forEach(post => {
+                        const postPath = post.url.replace(/^\//, '').replace(/\/$/, '') + '.md';
+                        const lines = post.content.split('\n');
+                        let fileHasMatch = false;
+                        let fileOutput = '';
+                        
+                        lines.forEach((line, lineNum) => {
+                            if (regexPattern.test(line)) {
+                                if (!fileHasMatch) {
+                                    fileHasMatch = true;
+                                    if (output) output += '\n';
+                                }
+                                
+                                // Format: filename:linenum:content
+                                const lineNumber = lineNum + 1;
+                                let displayLine = line.trim();
+                                
+                                // Highlight matches in the line
+                                displayLine = displayLine.replace(regexPattern, (match) => {
+                                    return `[${match}]`;
+                                });
+                                
+                                // Truncate long lines
+                                if (displayLine.length > 80) {
+                                    displayLine = displayLine.substring(0, 77) + '...';
+                                }
+                                
+                                fileOutput += `${postPath}:${lineNumber}:${displayLine}\n`;
+                                totalMatches++;
+                            }
+                        });
+                        
+                        if (fileHasMatch) {
+                            output += fileOutput;
+                        }
+                    });
+                    
+                    // Clear the "Searching..." message
+                    const lines = outputArea.innerHTML.split('\n');
+                    lines.pop();
+                    lines.pop();
+                    outputArea.innerHTML = lines.join('\n');
+                    
+                    if (totalMatches === 0) {
+                        return `egrep: No matches found for pattern: ${pattern}`;
+                    }
+                    
+                    // Add summary at the end
+                    output += `\n-- ${totalMatches} matching lines in ${searchIndex.length} files`;
+                    
+                    return output;
+                }
+            } catch (e) {
+                // Clear the "Searching..." message
+                const lines = outputArea.innerHTML.split('\n');
+                lines.pop();
+                lines.pop();
+                outputArea.innerHTML = lines.join('\n');
+                
+                return `egrep: Error loading search index: ${e.message}\nMake sure the site has been built with searchindex support.`;
+            }
+            
+            return 'egrep: Search index not available.';
         }
     };
     
