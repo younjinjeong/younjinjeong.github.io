@@ -831,6 +831,31 @@ footer p {
   box-shadow: 0 0 25px rgba(65, 255, 0, 0.9);
 }
 
+/* General post content images */
+.post-content img {
+  display: block;
+  margin: 2em auto;
+  max-width: 100%;
+  height: auto;
+  border: 2px solid var(--pipboy-green);
+  box-shadow: 0 0 20px rgba(65, 255, 0, 0.3);
+}
+
+/* Larger images on desktop */
+@media screen and (min-width: 768px) {
+  .post-content img {
+    max-width: 90%;
+  }
+}
+
+/* Architecture diagrams and technical images */
+.post-content img[src*="architecture"],
+.post-content img[src*="diagram"] {
+  background-color: white;
+  padding: 1em;
+  border-radius: 4px;
+}
+
 /* 포스트 날짜 스타일 */
 .post-date {
   font-size: var(--font-size-small);
