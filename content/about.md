@@ -69,8 +69,8 @@ tags: [about,news]
           <ul class="perk-list">
             <li>» Focusmedia Korea - CTO</li>
             <li>» DBS Bank - SVP C2E/T&O</li>
-            <li>» Pivot - Principal Technologist</li>
-            <li>» Amazon - Solutions Architect</li>
+            <li>» Pivotal Software Inc. - Principal Technologist</li>
+            <li>» Amazon Web Services - Solutions Architect</li>
             <li>» Cafe24 - Tech Researcher</li>
           </ul>
         </div>
