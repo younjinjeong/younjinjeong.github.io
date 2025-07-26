@@ -270,6 +270,42 @@ pre code {
   font-size: inherit;
 }
 
+/* Hugo syntax highlighting fix */
+.highlight pre {
+  font-size: 0.875em !important;
+}
+
+.highlight pre code {
+  font-size: inherit !important;
+}
+
+/* Fix for syntax highlighting spans */
+.highlight pre code span {
+  font-size: inherit !important;
+  line-height: 1.5 !important;
+}
+
+/* Ensure all code elements have consistent sizing */
+.post-content pre,
+.post-content code,
+.post-content .highlight pre,
+.post-content .highlight code {
+  font-size: 0.875em !important;
+}
+
+.post-content pre code,
+.post-content .highlight pre code,
+.post-content .highlight pre code span {
+  font-size: inherit !important;
+}
+
+/* Fix for inline code within paragraphs */
+.post-content p code,
+.post-content li code,
+.post-content td code {
+  font-size: 0.875em !important;
+}
+
 blockquote {
   border-left: 4px solid var(--pipboy-green);
   padding-left: 20px;
@@ -1229,6 +1265,16 @@ header nav a {
   
   code {
     font-size: 0.875em;  /* Match desktop size */
+  }
+  
+  /* Hugo syntax highlighting fix for mobile */
+  .highlight pre {
+    font-size: 0.875em !important;
+  }
+  
+  .highlight pre code,
+  .highlight pre code span {
+    font-size: inherit !important;
   }
   
   /* Terminal adjustments */
