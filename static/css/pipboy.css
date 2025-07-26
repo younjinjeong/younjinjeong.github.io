@@ -839,14 +839,22 @@ footer p {
   box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
 }
 
-/* YouTube 링크 스타일 */
-.post-content a[href*="youtube.com"],
-.post-content a[href*="youtu.be"] {
+/* YouTube 링크 스타일 - only for standalone YouTube links */
+.post-content p > a[href*="youtube.com"]:only-child,
+.post-content p > a[href*="youtu.be"]:only-child {
   display: block;
   text-align: center;
   margin: 1.5em auto;
   color: var(--pipboy-light-green);
   font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Inline YouTube links should remain inline */
+.post-content a[href*="youtube.com"],
+.post-content a[href*="youtu.be"] {
+  color: var(--pipboy-light-green);
   text-decoration: none;
   transition: all 0.3s ease;
 }
@@ -1565,4 +1573,25 @@ header nav a {
 
 .posts-page .post-item .read-more:hover {
   text-shadow: var(--pipboy-glow);
+}
+
+/* Profile Image Styling */
+.profile-image {
+  text-align: center;
+  margin: 20px auto;
+}
+
+.profile-image img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--pipboy-green);
+  box-shadow: var(--pipboy-glow-intense);
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .profile-image img {
+    max-width: 200px;
+  }
 }
