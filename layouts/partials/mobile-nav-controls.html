@@ -1,21 +1,25 @@
 <!-- Mobile Navigation Controls - Fallout Style -->
 <div class="mobile-nav-controls" id="mobileNavControls">
+  <!-- Left Section: Back Button -->
   <button class="nav-control nav-back" id="navBack" aria-label="Go back">
-    <svg viewBox="0 0 24 24" width="24" height="24">
+    <svg viewBox="0 0 24 24" width="20" height="20">
       <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
     </svg>
-    <span class="nav-label">BACK</span>
   </button>
   
-  <div class="nav-center">
-    <div class="nav-indicator">
-      <span class="nav-page-info" id="pageInfo">NAV READY</span>
+  <!-- Center Section: Menu Button -->
+  <button class="nav-control nav-menu" id="navMenu" aria-label="Open menu">
+    <div class="menu-icon">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-  </div>
+    <span class="nav-label">MENU</span>
+  </button>
   
+  <!-- Right Section: Forward Button -->
   <button class="nav-control nav-forward" id="navForward" aria-label="Go forward">
-    <span class="nav-label">FORWARD</span>
-    <svg viewBox="0 0 24 24" width="24" height="24">
+    <svg viewBox="0 0 24 24" width="20" height="20">
       <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor"/>
     </svg>
   </button>
@@ -68,7 +72,7 @@
   background: transparent;
   border: 1px solid var(--pipboy-green);
   color: var(--pipboy-green);
-  padding: 8px 12px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -79,6 +83,57 @@
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  min-width: 60px;
+  justify-content: center;
+}
+
+/* Back and Forward buttons - circular */
+.nav-back, .nav-forward {
+  padding: 10px;
+  border-radius: 50%;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+}
+
+/* Menu button - wider with icon and text */
+.nav-menu {
+  flex: 0 0 auto;
+  padding: 8px 20px;
+  border-radius: 20px;
+  gap: 8px;
+}
+
+/* Menu icon hamburger */
+.menu-icon {
+  width: 18px;
+  height: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--pipboy-green);
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animate menu icon when active */
+.nav-menu.active .menu-icon span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-menu.active .menu-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-menu.active .menu-icon span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .nav-control:before {
@@ -120,30 +175,7 @@
 .nav-label {
   font-weight: bold;
   letter-spacing: 1px;
-}
-
-.nav-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav-indicator {
-  background: rgba(76, 175, 80, 0.1);
-  border: 1px solid var(--pipboy-dark-green);
-  padding: 6px 16px;
-  border-radius: 2px;
-}
-
-.nav-page-info {
   font-size: 11px;
-  font-family: var(--pipboy-terminal-font);
-  color: var(--pipboy-green);
-  opacity: 0.8;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
@@ -167,7 +199,41 @@
 document.addEventListener('DOMContentLoaded', function() {
   const navBack = document.getElementById('navBack');
   const navForward = document.getElementById('navForward');
-  const pageInfo = document.getElementById('pageInfo');
+  const navMenu = document.getElementById('navMenu');
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  const pipboyNav = document.querySelector('.pipboy-nav');
+  const mobileOverlay = document.querySelector('.mobile-overlay');
+  
+  // Hide the original floating hamburger menu on mobile
+  if (mobileMenuToggle) {
+    mobileMenuToggle.style.display = 'none';
+  }
+  
+  // Menu toggle functionality
+  function toggleMenu() {
+    const isActive = navMenu.classList.contains('active');
+    
+    if (isActive) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  }
+  
+  function openMenu() {
+    navMenu.classList.add('active');
+    pipboyNav.classList.add('mobile-active');
+    mobileOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    playNavSound();
+  }
+  
+  function closeMenu() {
+    navMenu.classList.remove('active');
+    pipboyNav.classList.remove('mobile-active');
+    mobileOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
   
   // Update navigation state
   function updateNavState() {
@@ -176,12 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
       // We can't directly check history length, but we can enable/disable based on user action
       navBack.disabled = !window.history.length || window.history.length <= 1;
       navForward.disabled = false; // Will be updated based on navigation
-      
-      // Update page info
-      const currentPage = document.title.split(' | ')[0] || 'TERMINAL';
-      pageInfo.textContent = currentPage.length > 20 ? 
-        currentPage.substring(0, 17) + '...' : 
-        currentPage.toUpperCase();
     }
   }
   
@@ -236,31 +296,64 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event listeners
   navBack.addEventListener('click', navigateBack);
   navForward.addEventListener('click', navigateForward);
+  navMenu.addEventListener('click', toggleMenu);
   
-  // Swipe gestures for navigation
+  // Close menu when clicking overlay or nav links
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMenu);
+  }
+  
+  const navLinks = document.querySelectorAll('.pipboy-nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (pipboyNav.classList.contains('mobile-active')) {
+        closeMenu();
+      }
+    });
+  });
+  
+  // Swipe gestures for navigation and menu
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
   
   document.addEventListener('touchstart', function(e) {
     touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
   }, { passive: true });
   
   document.addEventListener('touchend', function(e) {
     touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
   }, { passive: true });
   
   function handleSwipe() {
     const swipeThreshold = 50;
-    const diff = touchEndX - touchStartX;
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
     
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        // Swipe right - go back
-        navigateBack();
+    // Only handle horizontal swipes
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+      // Check if menu is open
+      if (pipboyNav.classList.contains('mobile-active')) {
+        if (diffX < 0) {
+          // Swipe left - close menu
+          closeMenu();
+        }
       } else {
-        // Swipe left - go forward
-        navigateForward();
+        // Menu is closed, handle navigation
+        if (diffX > 0 && touchStartX < 50) {
+          // Swipe right from left edge - open menu
+          openMenu();
+        } else if (diffX > swipeThreshold) {
+          // Swipe right - go back
+          navigateBack();
+        } else if (diffX < -swipeThreshold) {
+          // Swipe left - go forward
+          navigateForward();
+        }
       }
     }
   }

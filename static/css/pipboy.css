@@ -1136,8 +1136,9 @@ header nav a {
     --font-size-hero: 2.25rem;    /* 36px */
   }
   /* Mobile Menu Toggle */
+  /* Hide floating hamburger button - now integrated in bottom nav */
   .mobile-menu-toggle {
-    display: block;
+    display: none !important;
   }
   
   /* Hide scanline effect on mobile for performance */
@@ -1152,13 +1153,14 @@ header nav a {
     top: 0;
     left: -100%;
     width: 80%;
-    height: 100vh;
+    height: calc(100vh - 60px); /* Account for bottom nav bar */
     background: var(--pipboy-bg);
     border-right: 2px solid var(--pipboy-green);
     z-index: 1050;
     transition: left 0.3s ease;
     overflow-y: auto;
-    padding-top: 80px;
+    padding-top: 40px; /* Reduced since no floating button */
+    bottom: 60px; /* Above the nav bar */
   }
   
   .pipboy-nav.mobile-active {
