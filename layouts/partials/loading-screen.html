@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
   loadingScreen.style.display = 'none';
   console.log('Loading screen initialized and hidden');
   
+  // Check if this is the first page load (boot screen was or will be shown)
+  const isFirstVisit = !sessionStorage.getItem('bootShown');
+  
   links.forEach(link => {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
@@ -31,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 클릭 사운드 재생
         const clickSound = new Audio('/sounds/tv-channel-change.mp3');
-        clickSound.play();
+        clickSound.play().catch(err => console.log('Could not play sound:', err));
         
         // 로딩 화면 표시
         loadingScreen.style.display = 'flex';

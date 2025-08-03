@@ -2,6 +2,19 @@
 (function() {
   'use strict';
 
+  // Global flag to prevent multiple boot screens
+  if (window.__bootScreenInitialized) {
+    console.log('Boot screen script already initialized, skipping entire script');
+    return;
+  }
+  window.__bootScreenInitialized = true;
+  
+  // Also check if boot was already shown in this session
+  if (sessionStorage.getItem('bootShown') && !window.location.search.includes('boot=true')) {
+    console.log('Boot already shown in this session, skipping initialization');
+    return;
+  }
+
   class BootScreen {
     constructor() {
       this.isVisible = true;
@@ -40,6 +53,12 @@
     }
     
     init() {
+      // Prevent duplicate boot screens
+      if (document.getElementById('boot-screen-react')) {
+        console.log('Boot screen already exists, skipping initialization');
+        return;
+      }
+      
       // Create and insert boot screen
       this.createBootScreen();
       
@@ -304,25 +323,38 @@
   document.head.appendChild(style);
   
   // Initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      // Check if boot screen should be shown
-      const shouldShowBoot = !sessionStorage.getItem('bootShown') || 
-                           window.location.search.includes('boot=true');
-      
-      if (shouldShowBoot) {
-        new BootScreen();
-        sessionStorage.setItem('bootShown', 'true');
-      }
-    });
-  } else {
-    // For immediate execution
+  function initializeBootScreen() {
+    // Debug logging
+    console.log('=== Boot Screen Debug ===');
+    console.log('Current URL:', window.location.href);
+    console.log('Session Storage bootShown:', sessionStorage.getItem('bootShown'));
+    console.log('Window instance exists:', !!window.__bootScreenInstance);
+    console.log('Boot screen element exists:', !!document.getElementById('boot-screen-react'));
+    console.log('URL has boot=true:', window.location.search.includes('boot=true'));
+    
+    // Check if boot screen should be shown
+    // Shows boot screen only for first-time visitors in this session
     const shouldShowBoot = !sessionStorage.getItem('bootShown') || 
                          window.location.search.includes('boot=true');
     
-    if (shouldShowBoot) {
-      new BootScreen();
+    if (shouldShowBoot && !window.__bootScreenInstance) {
+      console.log('Showing boot screen for first-time visitor');
+      // Set session storage IMMEDIATELY to prevent double boot
       sessionStorage.setItem('bootShown', 'true');
+      console.log('Session storage set BEFORE creating boot screen');
+      window.__bootScreenInstance = new BootScreen();
+      console.log('Boot screen instance created');
+    } else {
+      console.log('Boot screen skipped. Reason:');
+      console.log('- shouldShowBoot:', shouldShowBoot);
+      console.log('- instance exists:', !!window.__bootScreenInstance);
     }
+    console.log('========================');
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeBootScreen);
+  } else {
+    initializeBootScreen();
   }
 })();

@@ -1,0 +1,287 @@
+<!-- Mobile Navigation Controls - Fallout Style -->
+<div class="mobile-nav-controls" id="mobileNavControls">
+  <button class="nav-control nav-back" id="navBack" aria-label="Go back">
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+    </svg>
+    <span class="nav-label">BACK</span>
+  </button>
+  
+  <div class="nav-center">
+    <div class="nav-indicator">
+      <span class="nav-page-info" id="pageInfo">NAV READY</span>
+    </div>
+  </div>
+  
+  <button class="nav-control nav-forward" id="navForward" aria-label="Go forward">
+    <span class="nav-label">FORWARD</span>
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" fill="currentColor"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+/* Mobile Navigation Controls */
+.mobile-nav-controls {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--pipboy-bg);
+  border-top: 2px solid var(--pipboy-green);
+  padding: 0 10px;
+  z-index: 100;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2px 20px rgba(76, 175, 80, 0.3);
+  
+  /* Scanline effect */
+  background-image: 
+    linear-gradient(
+      rgba(76, 175, 80, 0.03) 50%,
+      transparent 50%
+    );
+  background-size: 100% 2px;
+}
+
+/* Show only on mobile */
+@media (max-width: 768px) {
+  .mobile-nav-controls {
+    display: flex;
+  }
+  
+  /* Add padding to container to prevent content overlap */
+  .container {
+    padding-bottom: 70px;
+  }
+  
+  /* Adjust footer margin */
+  footer {
+    margin-bottom: 60px;
+  }
+}
+
+.nav-control {
+  background: transparent;
+  border: 1px solid var(--pipboy-green);
+  color: var(--pipboy-green);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--pipboy-terminal-font);
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-control:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--pipboy-green);
+  opacity: 0.2;
+  transition: left 0.3s ease;
+}
+
+.nav-control:active:before {
+  left: 0;
+}
+
+.nav-control:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-control:not(:disabled):hover {
+  border-color: var(--pipboy-light-green);
+  text-shadow: 0 0 5px var(--pipboy-green);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.nav-control:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.nav-control svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-label {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-indicator {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid var(--pipboy-dark-green);
+  padding: 6px 16px;
+  border-radius: 2px;
+}
+
+.nav-page-info {
+  font-size: 11px;
+  font-family: var(--pipboy-terminal-font);
+  color: var(--pipboy-green);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Sound feedback visual */
+.nav-control.nav-pressed {
+  animation: navPress 0.2s ease;
+}
+
+@keyframes navPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const navBack = document.getElementById('navBack');
+  const navForward = document.getElementById('navForward');
+  const pageInfo = document.getElementById('pageInfo');
+  
+  // Update navigation state
+  function updateNavState() {
+    // Check if browser supports navigation
+    if (typeof window.history !== 'undefined') {
+      // We can't directly check history length, but we can enable/disable based on user action
+      navBack.disabled = !window.history.length || window.history.length <= 1;
+      navForward.disabled = false; // Will be updated based on navigation
+      
+      // Update page info
+      const currentPage = document.title.split(' | ')[0] || 'TERMINAL';
+      pageInfo.textContent = currentPage.length > 20 ? 
+        currentPage.substring(0, 17) + '...' : 
+        currentPage.toUpperCase();
+    }
+  }
+  
+  // Navigation functions
+  function navigateBack() {
+    if (!navBack.disabled) {
+      playNavSound();
+      navBack.classList.add('nav-pressed');
+      setTimeout(() => navBack.classList.remove('nav-pressed'), 200);
+      
+      // Show loading screen before navigation
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+      }
+      
+      setTimeout(() => {
+        window.history.back();
+      }, 100);
+    }
+  }
+  
+  function navigateForward() {
+    if (!navForward.disabled) {
+      playNavSound();
+      navForward.classList.add('nav-pressed');
+      setTimeout(() => navForward.classList.remove('nav-pressed'), 200);
+      
+      // Show loading screen before navigation
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'flex';
+      }
+      
+      setTimeout(() => {
+        window.history.forward();
+      }, 100);
+    }
+  }
+  
+  // Play navigation sound
+  function playNavSound() {
+    try {
+      const audio = new Audio('/sounds/tv-channel-change.mp3');
+      audio.volume = 0.3;
+      audio.play().catch(err => console.log('Could not play nav sound:', err));
+    } catch (err) {
+      console.log('Audio not supported:', err);
+    }
+  }
+  
+  // Event listeners
+  navBack.addEventListener('click', navigateBack);
+  navForward.addEventListener('click', navigateForward);
+  
+  // Swipe gestures for navigation
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchEndX - touchStartX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swipe right - go back
+        navigateBack();
+      } else {
+        // Swipe left - go forward
+        navigateForward();
+      }
+    }
+  }
+  
+  // Update state on page load and navigation
+  updateNavState();
+  window.addEventListener('popstate', updateNavState);
+  
+  // Track navigation to update forward button state
+  let canGoForward = false;
+  window.addEventListener('beforeunload', function() {
+    sessionStorage.setItem('previousPage', window.location.href);
+  });
+  
+  // Check if we came from a previous page
+  const previousPage = sessionStorage.getItem('previousPage');
+  if (previousPage && previousPage !== window.location.href) {
+    canGoForward = false;
+  }
+  
+  // Update forward button based on navigation
+  navForward.disabled = !canGoForward;
+});
+</script>
