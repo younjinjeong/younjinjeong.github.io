@@ -422,45 +422,4 @@
   }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const bootScreen = document.getElementById('boot-screen');
-    const hasVisited = sessionStorage.getItem('hasVisited');
-    
-    // Update time display
-    const bootTime = document.getElementById('boot-time');
-    if (bootTime) {
-      const now = new Date();
-      const timeString = now.getFullYear() + '.' + 
-                        String(now.getMonth() + 1).padStart(2, '0') + '.' + 
-                        String(now.getDate()).padStart(2, '0');
-      bootTime.textContent = timeString;
-    }
-    
-    // Show boot screen only on first visit
-    if (!hasVisited) {
-      bootScreen.style.display = 'flex';
-      
-      // Save visit record
-      sessionStorage.setItem('hasVisited', 'true');
-      
-      // Close boot screen on any key press
-      const closeBootScreen = function() {
-        bootScreen.style.opacity = '0';
-        setTimeout(function() {
-          bootScreen.style.display = 'none';
-        }, 300);
-      };
-      
-      // Add event listeners
-      document.addEventListener('keydown', closeBootScreen, { once: true });
-      bootScreen.addEventListener('click', closeBootScreen);
-      
-      // Auto-close after 5 seconds
-      setTimeout(closeBootScreen, 5000);
-    } else {
-      // Hide boot screen for returning visitors
-      bootScreen.style.display = 'none';
-    }
-  });
-</script>
+<!-- Boot screen script removed - handled by /js/boot-screen.js -->

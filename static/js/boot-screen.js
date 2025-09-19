@@ -8,7 +8,13 @@
     return;
   }
   window.__bootScreenInitialized = true;
-  
+
+  // Handle browser navigation - reset flag on popstate
+  window.addEventListener('popstate', function() {
+    console.log('Browser navigation detected, resetting boot screen flag');
+    window.__bootScreenInitialized = false;
+  });
+
   // Also check if boot was already shown in this session
   if (sessionStorage.getItem('bootShown') && !window.location.search.includes('boot=true')) {
     console.log('Boot already shown in this session, skipping initialization');
@@ -302,12 +308,14 @@
     hide() {
       clearInterval(this.bootInterval);
       clearInterval(this.statsInterval);
-      
+
       this.container.style.opacity = '0';
       setTimeout(() => {
         if (this.container && this.container.parentNode) {
           this.container.parentNode.removeChild(this.container);
         }
+        // Clear the instance when boot screen is hidden
+        window.__bootScreenInstance = null;
       }, 500);
     }
   }
@@ -331,12 +339,19 @@
     console.log('Window instance exists:', !!window.__bootScreenInstance);
     console.log('Boot screen element exists:', !!document.getElementById('boot-screen-react'));
     console.log('URL has boot=true:', window.location.search.includes('boot=true'));
-    
+
+    // Clean up any orphaned boot screens first
+    const existingBootScreen = document.getElementById('boot-screen-react');
+    if (existingBootScreen && !window.__bootScreenInstance) {
+      console.log('Found orphaned boot screen, removing it');
+      existingBootScreen.remove();
+    }
+
     // Check if boot screen should be shown
     // Shows boot screen only for first-time visitors in this session
-    const shouldShowBoot = !sessionStorage.getItem('bootShown') || 
+    const shouldShowBoot = !sessionStorage.getItem('bootShown') ||
                          window.location.search.includes('boot=true');
-    
+
     if (shouldShowBoot && !window.__bootScreenInstance) {
       console.log('Showing boot screen for first-time visitor');
       // Set session storage IMMEDIATELY to prevent double boot
