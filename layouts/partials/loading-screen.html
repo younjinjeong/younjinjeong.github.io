@@ -70,5 +70,50 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Handle browser back/forward navigation
+  window.addEventListener('pageshow', function(event) {
+    const loadingScreen = document.getElementById('loadingScreen');
+    const loadingBar = document.getElementById('loadingBar');
+    const loadingPercentage = document.getElementById('loadingPercentage');
+
+    if (event.persisted || window.performance && window.performance.navigation.type === 2) {
+      // Page was loaded from cache (back/forward navigation)
+      console.log('Page loaded from cache, handling loading screen');
+
+      // Show loading screen briefly with animation
+      loadingScreen.style.display = 'flex';
+
+      // Quick loading animation
+      let progress = 0;
+      const totalTime = 300; // 0.3 seconds for back navigation
+      const interval = 20;
+      const steps = totalTime / interval;
+      const increment = 100 / steps;
+
+      loadingBar.style.width = '0%';
+      loadingPercentage.textContent = '0%';
+
+      const progressInterval = setInterval(() => {
+        progress += increment;
+        const roundedProgress = Math.min(Math.round(progress), 100);
+
+        loadingBar.style.width = roundedProgress + '%';
+        loadingPercentage.textContent = roundedProgress + '%';
+
+        if (roundedProgress >= 100) {
+          clearInterval(progressInterval);
+          // Hide loading screen after animation completes
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            console.log('Loading screen hidden after back navigation');
+          }, 100);
+        }
+      }, interval);
+    } else {
+      // Normal page load - ensure loading screen is hidden
+      loadingScreen.style.display = 'none';
+    }
+  });
 });
 </script> 
