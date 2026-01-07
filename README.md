@@ -19,7 +19,7 @@ A personal tech blog with a unique **Fallout Pip-Boy terminal theme**, built wit
 | **Hosting** | GitHub Pages |
 | **Custom Domain** | blog.younjinjeong.io |
 | **Comments** | Giscus (GitHub Discussions) |
-| **E2E Testing** | Vibium (Browser Automation) |
+| **E2E Testing** | Playwright (Browser Automation) |
 | **CI/CD** | GitHub Actions |
 | **Analytics** | Google Analytics 4 |
 
@@ -33,7 +33,7 @@ A personal tech blog with a unique **Fallout Pip-Boy terminal theme**, built wit
 ### Development Tools
 
 - **Orchestrator**: Automated development cycle (Plan → Build → Test → Review)
-- **E2E Tests**: 38 Vibium-based browser tests
+- **E2E Tests**: 38 Playwright-based browser tests with headless Chromium
 - **Test Coverage**: Font display, image sizing, visual design, navigation, interactive elements
 
 ---
@@ -87,11 +87,11 @@ Triggered on push/PR to `main`:
 
 ```
 1. Setup Node.js 20
-2. Install Chrome dependencies
-3. Install Hugo & npm dependencies
-4. Start Hugo dev server
-5. Run 38 Vibium E2E tests
-6. Upload screenshots & report artifacts
+2. Install Hugo CLI (v0.128.0)
+3. Install npm dependencies
+4. Install Playwright with Chromium browser
+5. Run 38 Playwright E2E tests (auto-starts Hugo server)
+6. Upload Playwright report, test results & screenshots
 ```
 
 ---
@@ -115,9 +115,11 @@ Triggered on push/PR to `main`:
 │   ├── js/                  # Boot screen, loading, mobile nav
 │   ├── fonts/               # DungGeunMo, Monofonto
 │   └── sounds/              # TV channel change effect
-├── e2e/                     # E2E test suite
-│   ├── tests/               # 5 test files, 38 tests
-│   └── screenshots/         # Test artifacts
+├── e2e/                     # Playwright E2E test suite
+│   ├── tests/               # 5 spec files, 38 tests
+│   ├── screenshots/         # Test screenshots
+│   └── playwright-report/   # HTML test report
+├── playwright.config.js     # Playwright configuration
 ├── orchestrator/            # Development cycle automation
 │   ├── phases/              # Plan, Implement, Build, Test, Review
 │   └── lib/                 # Utilities
@@ -150,10 +152,17 @@ npm run orchestrate
 ### Available Scripts
 
 ```bash
-npm test                 # Run E2E tests
+# Hugo commands
 npm run hugo:build       # Build for production
 npm run hugo:serve       # Start dev server
 
+# Playwright E2E tests
+npm test                 # Run all 38 E2E tests (headless)
+npm run test:headed      # Run tests with browser visible
+npm run test:ui          # Interactive Playwright UI mode
+npm run test:report      # View HTML test report
+
+# Orchestrator (automated dev cycle)
 npm run orchestrate      # Full cycle (Plan → Build → Test → Review)
 npm run cycle:quick      # Quick cycle (Build → Test)
 npm run cycle:full       # Full cycle with verbose logging
