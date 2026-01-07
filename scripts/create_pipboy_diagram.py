@@ -30,15 +30,15 @@ def create_pipboy_aws_diagram():
         bgcolor=PIPBOY_BLACK,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New Bold",
-        fontsize="28",
+        fontsize="72",
         label="[ AWS AI KNOWLEDGE + EVENT STREAMING ARCHITECTURE ]",
         labelloc="t",
         labeljust="c",
-        pad="1.0",
+        pad="1.5",
         splines="ortho",
-        nodesep="1.0",
-        ranksep="1.2",
-        dpi="200",
+        nodesep="1.5",
+        ranksep="2.0",
+        dpi="150",
         compound="true",
         newrank="true",
         margin="0",
@@ -53,9 +53,9 @@ def create_pipboy_aws_diagram():
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New Bold",
-        fontsize="14",
-        penwidth="2",
-        margin="0.3,0.2",
+        fontsize="36",
+        penwidth="3",
+        margin="0.5,0.3",
     )
 
     # Default edge styling - glowing green lines
@@ -64,9 +64,9 @@ def create_pipboy_aws_diagram():
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New",
-        fontsize="11",
-        penwidth="2",
-        arrowsize="0.8",
+        fontsize="28",
+        penwidth="3",
+        arrowsize="1.2",
         arrowhead="vee",
     )
 
@@ -77,8 +77,8 @@ def create_pipboy_aws_diagram():
         "bgcolor": PIPBOY_BLACK,
         "fontcolor": PIPBOY_GREEN,
         "fontname": "Courier New Bold",
-        "fontsize": "16",
-        "penwidth": "2",
+        "fontsize": "42",
+        "penwidth": "3",
     }
 
     # ============= CLIENTS =============
@@ -109,8 +109,8 @@ def create_pipboy_aws_diagram():
             bgcolor=PIPBOY_BLACK,
             fontcolor=PIPBOY_LIGHT_GREEN,
             fontname="Courier New Bold",
-            fontsize="18",
-            penwidth="3",
+            fontsize="48",
+            penwidth="4",
         )
         c.node("guardrails", "Guardrails / Policy", color=PIPBOY_LIGHT_GREEN)
         c.node("bedrock", "Amazon Bedrock\n(Converse API)", color=PIPBOY_LIGHT_GREEN)
