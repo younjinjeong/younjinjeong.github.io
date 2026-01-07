@@ -19,6 +19,7 @@ defaults:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       HUGO_VERSION: 0.128.0
 
@@ -33,6 +34,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libasound2 \
+            libpango-1.0-0 \
+            libcairo2 \
+            libatspi2.0-0
 
       - name: Install Hugo CLI
         run: |
@@ -58,6 +79,7 @@ jobs:
 
       - name: Run E2E tests
         run: npm test
+        timeout-minutes: 10
         env:
           E2E_BASE_URL: http://localhost:1313
           E2E_HEADLESS: true
