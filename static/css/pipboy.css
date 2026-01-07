@@ -51,6 +51,7 @@
   /* Typography Scale - Desktop (balanced for mixed content) */
   --font-size-base: 18px;       /* Balanced base size */
   --font-size-small: 0.889rem;  /* 16px */
+  --font-size-meta: 1rem;       /* 18px - for dates, tags, metadata */
   --font-size-body: 1.111rem;   /* 20px */
   --font-size-h6: 1.222rem;     /* 22px */
   --font-size-h5: 1.333rem;     /* 24px */
@@ -777,20 +778,50 @@ footer p {
   margin-bottom: 1rem;
 }
 
-/* 포스트 내 헤딩 */
-.post-content h1 { font-size: var(--font-size-h2); }
-.post-content h2 { font-size: var(--font-size-h3); }
-.post-content h3 { font-size: var(--font-size-h4); }
-.post-content h4 { font-size: var(--font-size-h5); }
-.post-content h5 { font-size: var(--font-size-h6); }
-.post-content h6 { font-size: var(--font-size-body); }
+/* 포스트 내 헤딩 - proper hierarchy */
+.post-content h1 { font-size: var(--font-size-h1); }
+.post-content h2 { font-size: var(--font-size-h2); }
+.post-content h3 { font-size: var(--font-size-h3); }
+.post-content h4 { font-size: var(--font-size-h4); }
+.post-content h5 { font-size: var(--font-size-h5); }
+.post-content h6 { font-size: var(--font-size-h6); }
 
 /* 포스트 메타 정보 스타일 */
 .post-meta {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-meta);
   margin-bottom: 2rem;
   color: var(--pipboy-light-green);
   opacity: 0.9;
+}
+
+/* Tag styles - consistent across all pages */
+.post-tags,
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.post-tags a,
+.tags a {
+  font-size: var(--font-size-meta);
+  color: var(--pipboy-light-green);
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
+  background: rgba(65, 255, 0, 0.05);
+  transition: all 0.3s ease;
+  font-family: var(--pipboy-terminal-font);
+}
+
+.post-tags a:hover,
+.tags a:hover {
+  background: var(--pipboy-green);
+  color: var(--pipboy-black);
+  text-shadow: none;
+  box-shadow: var(--pipboy-glow);
 }
 
 /* 언어별 설정 수정 - 폰트 크기는 제거하고 다른 스타일만 유지 */
@@ -899,7 +930,7 @@ footer p {
 
 /* 포스트 날짜 스타일 */
 .post-date {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-meta);
   color: var(--pipboy-light-green);
   margin-bottom: 0.75rem;
   font-family: var(--pipboy-terminal-font);
@@ -1041,15 +1072,7 @@ article.post .post-content,
 /* 추가: 모든 기본 텍스트 요소에 대한 최소 폰트 크기 보장 - CSS 변수 사용 권장 */
 
 /* 네비게이션 - 22px */
-nav,
-.nav-links,
-.nav-links a,
-.pipboy-nav a,
-.pipboy-nav li a,
-.menu a,
-header nav a {
-    font-size: var(--font-size-h4);
-}
+/* Navigation font-size unified to h5 (see .pipboy-nav a rule above) */
 
 /* 포스트 제목 - 20px - CSS 변수 사용 중 */
 
@@ -1059,7 +1082,7 @@ header nav a {
 
 /* 메타 정보 */
 .post-meta {
-  font-size: var(--font-size-h6);
+  font-size: var(--font-size-meta);
 }
 
 /* 코드 블록 - Remove conflicting rule */
@@ -1126,6 +1149,7 @@ header nav a {
     --font-size-base: 16px;
     /* Slightly reduce scale for mobile */
     --font-size-small: 0.875rem;  /* 14px */
+    --font-size-meta: 0.9375rem;  /* 15px - readable metadata on mobile */
     --font-size-body: 1rem;       /* 16px */
     --font-size-h6: 1.125rem;     /* 18px */
     --font-size-h5: 1.25rem;      /* 20px */
@@ -1373,9 +1397,10 @@ header nav a {
   }
   
   /* Tags and categories */
-  .post-tags a {
-    font-size: var(--font-size-small);
-    padding: 2px 8px;
+  .post-tags a,
+  .tags a {
+    font-size: var(--font-size-meta);
+    padding: 3px 10px;
   }
   
   /* Giscus comments */
@@ -1412,6 +1437,7 @@ header nav a {
 @media screen and (max-width: 480px) {
   :root {
     /* Further reduce for very small screens */
+    --font-size-meta: 0.875rem;   /* 14px - minimum readable */
     --font-size-hero: 1.75rem;    /* 28px */
     --font-size-h1: 1.5rem;       /* 24px */
     --font-size-h2: 1.375rem;     /* 22px */
@@ -1535,7 +1561,7 @@ header nav a {
 }
 
 .posts-page .post-item .post-meta {
-  font-size: 14px;
+  font-size: var(--font-size-meta);
   opacity: 0.8;
   margin-bottom: 15px;
   display: flex;
@@ -1549,8 +1575,12 @@ header nav a {
 }
 
 .posts-page .post-item .post-tags a {
+  font-size: var(--font-size-meta);
   color: var(--pipboy-light-green);
   text-decoration: none;
+  padding: 2px 8px;
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 

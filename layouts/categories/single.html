@@ -2,7 +2,7 @@
 <main>
   <div class="container">
     <h1 class="category-title">CATEGORY: {{ .Title | upper }}</h1>
-    
+
     <div class="posts-list">
       {{ range .Pages }}
         <article class="post-item">
@@ -23,18 +23,18 @@
               {{ end }}
             </div>
           </header>
-          
+
           <div class="post-summary">
             {{ .Summary | truncate 200 }}
           </div>
-          
+
           <footer class="post-footer">
             <a href="{{ .Permalink }}" class="read-more">READ MORE ></a>
           </footer>
         </article>
       {{ end }}
     </div>
-    
+
     <div class="category-navigation">
       <a href="{{ "categories/" | relURL }}" class="back-link">< BACK TO CATEGORIES</a>
     </div>
@@ -42,8 +42,9 @@
 </main>
 
 <style>
+  /* Category page specific styles - font sizes use CSS variables from pipboy.css */
   .category-title {
-    font-size: 32px;
+    font-size: var(--font-size-h2);
     margin-bottom: 40px;
     text-align: center;
     text-shadow: var(--pipboy-glow);
@@ -72,65 +73,46 @@
     margin-bottom: 15px;
   }
 
-  .post-title {
-    font-size: 24px;
+  .post-item .post-title {
+    font-size: var(--font-size-h4);
     margin: 0 0 10px 0;
   }
 
-  .post-title a {
+  .post-item .post-title a {
     color: var(--pipboy-green);
     text-decoration: none;
     transition: text-shadow 0.3s ease;
   }
 
-  .post-title a:hover {
+  .post-item .post-title a:hover {
     text-shadow: var(--pipboy-glow);
   }
 
-  .post-meta {
-    font-size: 14px;
-    opacity: 0.8;
+  .post-item .post-meta {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
   }
 
-  .post-tags {
-    display: flex;
-    gap: 10px;
-  }
-
-  .post-tags a {
-    color: var(--pipboy-light-green);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .post-tags a:hover {
-    color: var(--pipboy-green);
-    text-shadow: var(--pipboy-glow);
-  }
-
-  .post-summary {
-    font-size: 16px;
+  .post-item .post-summary {
     line-height: 1.6;
     margin-bottom: 15px;
     opacity: 0.9;
   }
 
-  .post-footer {
+  .post-item .post-footer {
     text-align: right;
   }
 
-  .read-more {
+  .post-item .read-more {
     color: var(--pipboy-green);
     text-decoration: none;
-    font-size: 14px;
+    font-size: var(--font-size-meta);
     font-weight: bold;
     transition: text-shadow 0.3s ease;
   }
 
-  .read-more:hover {
+  .post-item .read-more:hover {
     text-shadow: var(--pipboy-glow);
   }
 
@@ -156,15 +138,15 @@
 
   @media screen and (max-width: 768px) {
     .category-title {
-      font-size: 24px;
+      font-size: var(--font-size-h3);
     }
-    
+
     .post-item {
       padding: 20px;
     }
-    
-    .post-title {
-      font-size: 20px;
+
+    .post-item .post-title {
+      font-size: var(--font-size-h5);
     }
   }
 </style>
