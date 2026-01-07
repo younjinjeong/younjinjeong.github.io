@@ -1,56 +1,21 @@
-# E2E Tests with Vibium
-# Note: Browser-based tests may fail in CI due to headless Chrome limitations
-# These tests are best run locally; CI runs build verification only
+# E2E Tests with Playwright
 name: E2E Tests
 
 on:
-  # Run on pull requests
+  push:
+    branches: ["main"]
   pull_request:
     branches: ["main"]
-  # Allow manual trigger
   workflow_dispatch:
 
-# Default to bash
 defaults:
   run:
     shell: bash
 
 jobs:
-  # Build verification (always runs)
-  build-verify:
-    runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.128.0
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Install Hugo CLI
-        run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
-
-      - name: Build Hugo site
-        run: hugo --gc --minify
-
-      - name: Verify build output
-        run: |
-          echo "Checking build output..."
-          test -f public/index.html || (echo "index.html not found!" && exit 1)
-          test -d public/posts || (echo "posts directory not found!" && exit 1)
-          echo "Build verification passed!"
-          echo "Pages generated:"
-          find public -name "*.html" | wc -l
-
-  # Browser tests (optional - may fail in CI)
-  browser-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    continue-on-error: true  # Don't fail the workflow if browser tests fail
     env:
       HUGO_VERSION: 0.128.0
 
@@ -66,27 +31,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Chrome dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libdrm2 \
-            libxkbcommon0 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxfixes3 \
-            libxrandr2 \
-            libgbm1 \
-            libasound2t64 \
-            libpango-1.0-0 \
-            libcairo2 \
-            libatspi2.0-0 \
-            xvfb
-
       - name: Install Hugo CLI
         run: |
           wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
@@ -95,31 +39,34 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start Hugo server
-        run: |
-          hugo server -D --bind 0.0.0.0 -p 1313 &
-          echo "Waiting for Hugo server to start..."
-          for i in {1..30}; do
-            if curl -s http://localhost:1313 > /dev/null; then
-              echo "Hugo server is ready!"
-              break
-            fi
-            echo "Attempt $i: waiting..."
-            sleep 1
-          done
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
 
-      - name: Run E2E tests with xvfb
-        run: xvfb-run --auto-servernum npm test
-        timeout-minutes: 10
+      - name: Run Playwright tests
+        run: npm test
         env:
-          E2E_BASE_URL: http://localhost:1313
-          E2E_HEADLESS: true
-          DISPLAY: :99
+          CI: true
 
-      - name: Upload test screenshots
+      - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: e2e-screenshots
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 30
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: e2e/test-results/
+          retention-days: 7
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
           path: e2e/screenshots/
           retention-days: 7

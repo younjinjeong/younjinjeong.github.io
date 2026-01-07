@@ -4,15 +4,12 @@
   "description": "[![Deploy RYONGJIN's Blog to Pages](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml/badge.svg)](https://github.com/younjinjeong/younjinjeong.github.io/actions/workflows/hugo.yml)",
   "main": "index.js",
   "scripts": {
-    "test": "node e2e/run-tests.js",
-    "test:fonts": "node e2e/tests/font-display.test.js",
-    "test:images": "node e2e/tests/image-sizing.test.js",
-    "test:visual": "node e2e/tests/visual-design.test.js",
-    "test:navigation": "node e2e/tests/navigation.test.js",
-    "test:interactive": "node e2e/tests/interactive.test.js",
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:report": "npx playwright show-report e2e/playwright-report",
     "hugo:build": "hugo --gc --minify",
     "hugo:serve": "hugo server -D",
-    "e2e": "npm run hugo:serve & sleep 3 && npm test; kill %1",
     "orchestrate": "node orchestrator/index.js",
     "orchestrate:plan": "node orchestrator/index.js --phase plan",
     "orchestrate:build": "node orchestrator/index.js --phase build",
@@ -34,6 +31,6 @@
   },
   "homepage": "https://github.com/younjinjeong/younjinjeong.github.io#readme",
   "devDependencies": {
-    "vibium": "^0.1.2"
+    "@playwright/test": "^1.57.0"
   }
 }
