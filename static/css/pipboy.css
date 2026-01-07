@@ -197,9 +197,21 @@ p, span, div, li, td, th, label, input, textarea, select, button {
   font-size: inherit;
 }
 
-/* Korean text - 95% of original size */
-*:lang(ko) {
-  font-size: calc(var(--font-size-base) * 0.95) !important;
+/* Korean text - Apply size reduction only to content elements, not tags/meta */
+p:lang(ko),
+li:lang(ko),
+td:lang(ko),
+th:lang(ko),
+blockquote:lang(ko) {
+  font-size: calc(var(--font-size-base) * 0.95);
+}
+
+/* Ensure tags and meta keep their intended size regardless of language */
+.post-tags a,
+.tags a,
+.post-meta,
+.post-date {
+  font-size: var(--font-size-meta) !important;
 }
 
 /* Ensure headings use correct size */
