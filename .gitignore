@@ -8,6 +8,11 @@ package-lock.json
 # E2E test screenshots (generated)
 e2e/screenshots/
 
+# Orchestrator reports (generated)
+orchestrator/reports/*.json
+orchestrator/reports/*.md
+orchestrator/reports/*.html
+
 ## OS Files
 # Windows
 Thumbs.db

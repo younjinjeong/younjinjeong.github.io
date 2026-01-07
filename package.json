@@ -12,7 +12,15 @@
     "test:interactive": "node e2e/tests/interactive.test.js",
     "hugo:build": "hugo --gc --minify",
     "hugo:serve": "hugo server -D",
-    "e2e": "npm run hugo:serve & sleep 3 && npm test; kill %1"
+    "e2e": "npm run hugo:serve & sleep 3 && npm test; kill %1",
+    "orchestrate": "node orchestrator/index.js",
+    "orchestrate:plan": "node orchestrator/index.js --phase plan",
+    "orchestrate:build": "node orchestrator/index.js --phase build",
+    "orchestrate:test": "node orchestrator/index.js --phase test",
+    "orchestrate:review": "node orchestrator/index.js --phase review",
+    "cycle": "node orchestrator/index.js",
+    "cycle:quick": "node orchestrator/index.js --phase build --phase test",
+    "cycle:full": "node orchestrator/index.js --verbose"
   },
   "repository": {
     "type": "git",
