@@ -892,9 +892,9 @@ footer p {
 /* Architecture diagrams and technical images */
 .post-content img[src*="architecture"],
 .post-content img[src*="diagram"] {
-  background-color: white;
-  padding: 1em;
-  border-radius: 4px;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 /* 포스트 날짜 스타일 */
