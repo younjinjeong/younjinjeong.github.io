@@ -1,0 +1,80 @@
+# E2E Tests with Vibium
+name: E2E Tests
+
+on:
+  # Run on pushes to main
+  push:
+    branches: ["main"]
+  # Run on pull requests
+  pull_request:
+    branches: ["main"]
+  # Allow manual trigger
+  workflow_dispatch:
+
+# Default to bash
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.128.0
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Hugo CLI
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start Hugo server
+        run: |
+          hugo server -D --bind 0.0.0.0 -p 1313 &
+          # Wait for server to be ready
+          echo "Waiting for Hugo server to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:1313 > /dev/null; then
+              echo "Hugo server is ready!"
+              break
+            fi
+            echo "Attempt $i: waiting..."
+            sleep 1
+          done
+
+      - name: Run E2E tests
+        run: npm test
+        env:
+          E2E_BASE_URL: http://localhost:1313
+          E2E_HEADLESS: true
+
+      - name: Upload test screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-screenshots
+          path: e2e/screenshots/
+          retention-days: 7
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-report
+          path: e2e/screenshots/test-report.json
+          retention-days: 7
