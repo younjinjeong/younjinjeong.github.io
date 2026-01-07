@@ -175,7 +175,12 @@ npm run cycle:full       # Full cycle with verbose logging
 **Younjin Jeong (RYONGJIN)**
 
 - Tech Advisor to CEO @ MegazoneCloud
-- Former: CTO @ Focusmedia Korea, SVP @ DBS Bank, Principal @ Pivotal, SA @ AWS
+- Former:
+  - CTO @ Focusmedia Korea
+  - SVP @ Development Bank of Singapore (DBS), C2E
+  - Principal Technologist @ Pivotal Software Inc.
+  - Solutions Architect @ Amazon Web Services
+  - Tech Lab Researcher @ Cafe24
 
 ---
 
