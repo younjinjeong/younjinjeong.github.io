@@ -30,18 +30,18 @@ def create_pipboy_aws_diagram():
         bgcolor=PIPBOY_BLACK,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New Bold",
-        fontsize="72",
+        fontsize="48",
         label="[ AWS AI KNOWLEDGE + EVENT STREAMING ARCHITECTURE ]",
         labelloc="t",
         labeljust="c",
-        pad="1.5",
+        pad="0.8",
         splines="ortho",
-        nodesep="1.5",
-        ranksep="2.0",
-        dpi="150",
+        nodesep="0.8",
+        ranksep="1.0",
+        dpi="300",
         compound="true",
         newrank="true",
-        margin="0",
+        margin="0.3",
     )
 
     # Default node styling - terminal boxes
@@ -53,9 +53,9 @@ def create_pipboy_aws_diagram():
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New Bold",
-        fontsize="36",
+        fontsize="24",
         penwidth="3",
-        margin="0.5,0.3",
+        margin="0.3,0.2",
     )
 
     # Default edge styling - glowing green lines
@@ -64,9 +64,9 @@ def create_pipboy_aws_diagram():
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
         fontname="Courier New",
-        fontsize="28",
+        fontsize="18",
         penwidth="3",
-        arrowsize="1.2",
+        arrowsize="1.0",
         arrowhead="vee",
     )
 
@@ -77,7 +77,7 @@ def create_pipboy_aws_diagram():
         "bgcolor": PIPBOY_BLACK,
         "fontcolor": PIPBOY_GREEN,
         "fontname": "Courier New Bold",
-        "fontsize": "42",
+        "fontsize": "28",
         "penwidth": "3",
     }
 
@@ -109,7 +109,7 @@ def create_pipboy_aws_diagram():
             bgcolor=PIPBOY_BLACK,
             fontcolor=PIPBOY_LIGHT_GREEN,
             fontname="Courier New Bold",
-            fontsize="48",
+            fontsize="32",
             penwidth="4",
         )
         c.node("guardrails", "Guardrails / Policy", color=PIPBOY_LIGHT_GREEN)
