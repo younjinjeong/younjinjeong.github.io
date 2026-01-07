@@ -5,7 +5,6 @@ Generates a retro terminal-styled architecture diagram matching the blog theme
 """
 
 import graphviz
-from PIL import Image, ImageFilter, ImageEnhance
 import os
 
 # Pip-Boy Terminal Theme Colors (from pipboy.css)
@@ -14,7 +13,6 @@ PIPBOY_DARK_GREEN = "#29a000"
 PIPBOY_LIGHT_GREEN = "#5fff1f"
 PIPBOY_BLACK = "#000000"
 PIPBOY_BG_ALT = "#0a1a0a"
-PIPBOY_GLOW = "#2d5a2d"
 
 
 def create_pipboy_aws_diagram():
@@ -31,18 +29,19 @@ def create_pipboy_aws_diagram():
     dot.attr(
         bgcolor=PIPBOY_BLACK,
         fontcolor=PIPBOY_GREEN,
-        fontname="Monospace",
-        fontsize="18",
+        fontname="Courier New Bold",
+        fontsize="28",
         label="[ AWS AI KNOWLEDGE + EVENT STREAMING ARCHITECTURE ]",
         labelloc="t",
         labeljust="c",
-        pad="0.5",
+        pad="1.0",
         splines="ortho",
-        nodesep="0.6",
-        ranksep="0.8",
-        dpi="150",
+        nodesep="1.0",
+        ranksep="1.2",
+        dpi="200",
         compound="true",
         newrank="true",
+        margin="0",
     )
 
     # Default node styling - terminal boxes
@@ -50,13 +49,13 @@ def create_pipboy_aws_diagram():
         "node",
         shape="box",
         style="filled,bold",
-        fillcolor=PIPBOY_BG_ALT,
+        fillcolor=PIPBOY_BLACK,
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
-        fontname="Monospace",
-        fontsize="9",
+        fontname="Courier New Bold",
+        fontsize="14",
         penwidth="2",
-        margin="0.2,0.1",
+        margin="0.3,0.2",
     )
 
     # Default edge styling - glowing green lines
@@ -64,51 +63,39 @@ def create_pipboy_aws_diagram():
         "edge",
         color=PIPBOY_GREEN,
         fontcolor=PIPBOY_GREEN,
-        fontname="Monospace",
-        fontsize="8",
-        penwidth="1.5",
-        arrowsize="0.7",
+        fontname="Courier New",
+        fontsize="11",
+        penwidth="2",
+        arrowsize="0.8",
         arrowhead="vee",
     )
 
+    # Cluster style helper
+    cluster_style = {
+        "style": "dashed,bold",
+        "color": PIPBOY_GREEN,
+        "bgcolor": PIPBOY_BLACK,
+        "fontcolor": PIPBOY_GREEN,
+        "fontname": "Courier New Bold",
+        "fontsize": "16",
+        "penwidth": "2",
+    }
+
     # ============= CLIENTS =============
     with dot.subgraph(name="cluster_clients") as c:
-        c.attr(
-            label="[ CLIENTS ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            fontname="Monospace",
-            fontsize="10",
-            penwidth="2",
-        )
-        c.node("mobile", "> Mobile / Tools")
-        c.node("web", "> Web / Admin")
+        c.attr(label="[ CLIENTS ]", **cluster_style)
+        c.node("mobile", "Mobile / Tools")
+        c.node("web", "Web / Admin")
 
     # ============= PERSONA & FEATURE FLAGS =============
     with dot.subgraph(name="cluster_persona") as c:
-        c.attr(
-            label="[ PERSONA & FEATURE FLAGS ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ PERSONA & FEATURE FLAGS ]", **cluster_style)
         c.node("dynamodb", "DynamoDB\nPersona/Preferences")
         c.node("appconfig", "AppConfig\n(Learning/Expert)")
 
     # ============= ENTRY & ORCHESTRATION =============
     with dot.subgraph(name="cluster_entry") as c:
-        c.attr(
-            label="[ ENTRY & ORCHESTRATION ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ ENTRY & ORCHESTRATION ]", **cluster_style)
         c.node("api_gateway", "Amazon API Gateway\n(OIDC/Cognito)")
         c.node("orchestrator", "Orchestrator Lambda")
         c.node("step_functions", "Flow Control\nStep Functions")
@@ -117,10 +104,12 @@ def create_pipboy_aws_diagram():
     with dot.subgraph(name="cluster_ai_core") as c:
         c.attr(
             label="[ AI CORE - AMAZON BEDROCK ]",
-            style="filled,dashed,bold",
+            style="dashed,bold",
             color=PIPBOY_LIGHT_GREEN,
-            bgcolor="#0d2a0d",
+            bgcolor=PIPBOY_BLACK,
             fontcolor=PIPBOY_LIGHT_GREEN,
+            fontname="Courier New Bold",
+            fontsize="18",
             penwidth="3",
         )
         c.node("guardrails", "Guardrails / Policy", color=PIPBOY_LIGHT_GREEN)
@@ -129,48 +118,27 @@ def create_pipboy_aws_diagram():
 
     # ============= KNOWLEDGE & SEARCH =============
     with dot.subgraph(name="cluster_knowledge") as c:
-        c.attr(
-            label="[ KNOWLEDGE & SEARCH ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ KNOWLEDGE & SEARCH ]", **cluster_style)
         c.node("kendra", "Amazon Kendra")
         c.node("knowledge_bases", "Bedrock\nKnowledge Bases")
         c.node("opensearch", "OpenSearch Serverless\n(Vector + Keyword)")
 
     # ============= CONNECTORS (MCP SERVER) =============
     with dot.subgraph(name="cluster_connectors") as c:
-        c.attr(
-            label="[ CONNECTORS - MCP SERVER ON ECS FARGATE ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ CONNECTORS - MCP ON ECS FARGATE ]", **cluster_style)
         c.node("ecs_cluster", "ECS Cluster")
         c.node("mcp_server", "MCP Server")
 
     # External services (ellipse shape for external)
-    dot.node("cicd", "CI/CD", shape="ellipse", style="filled,bold")
-    dot.node("github", "GitHub/GitLab", shape="ellipse", style="filled,bold")
-    dot.node("jira", "Jira/Issues", shape="ellipse", style="filled,bold")
-    dot.node("erp", "ERP", shape="ellipse", style="filled,bold")
-    dot.node("internet", "Internet Search", shape="ellipse", style="filled,bold")
+    dot.node("cicd", "CI/CD", shape="ellipse", style="filled,bold", fillcolor=PIPBOY_BLACK)
+    dot.node("github", "GitHub/GitLab", shape="ellipse", style="filled,bold", fillcolor=PIPBOY_BLACK)
+    dot.node("jira", "Jira/Issues", shape="ellipse", style="filled,bold", fillcolor=PIPBOY_BLACK)
+    dot.node("erp", "ERP", shape="ellipse", style="filled,bold", fillcolor=PIPBOY_BLACK)
+    dot.node("internet", "Internet Search", shape="ellipse", style="filled,bold", fillcolor=PIPBOY_BLACK)
 
     # ============= EVENT STREAMING & STORAGE =============
     with dot.subgraph(name="cluster_streaming") as c:
-        c.attr(
-            label="[ EVENT STREAMING & STORAGE ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ EVENT STREAMING & STORAGE ]", **cluster_style)
         c.node("kinesis", "Kinesis\nData Streams")
         c.node("s3_lake", "S3 Data Lake\n(events, docs)")
         c.node("glue", "Glue\nData Catalog")
@@ -178,17 +146,10 @@ def create_pipboy_aws_diagram():
 
     # ============= SECURITY & OBSERVABILITY =============
     with dot.subgraph(name="cluster_security") as c:
-        c.attr(
-            label="[ SECURITY & OBSERVABILITY ]",
-            style="dashed,bold",
-            color=PIPBOY_DARK_GREEN,
-            bgcolor=PIPBOY_BG_ALT,
-            fontcolor=PIPBOY_GREEN,
-            penwidth="2",
-        )
+        c.attr(label="[ SECURITY & OBSERVABILITY ]", **cluster_style)
         c.node("iam", "IAM")
         c.node("kms", "KMS")
-        c.node("cloudwatch", "CloudWatch\nX-Ray")
+        c.node("cloudwatch", "CloudWatch / X-Ray")
         c.node("cloudtrail", "CloudTrail")
         c.node("lake_formation", "Lake Formation")
 
@@ -246,28 +207,6 @@ def create_pipboy_aws_diagram():
     return dot
 
 
-def add_glow_effect(input_path, output_path, glow_radius=2):
-    """Add phosphor glow effect to the diagram for authentic CRT look"""
-    img = Image.open(input_path).convert("RGBA")
-
-    # Create a subtle glow by blurring and blending
-    glow = img.filter(ImageFilter.GaussianBlur(radius=glow_radius))
-
-    # Enhance the green channel slightly
-    enhancer = ImageEnhance.Color(glow)
-    glow = enhancer.enhance(1.2)
-
-    # Blend original with glow
-    result = Image.blend(glow, img, 0.85)
-
-    # Add slight brightness for phosphor effect
-    enhancer = ImageEnhance.Brightness(result)
-    result = enhancer.enhance(1.05)
-
-    result.save(output_path)
-    print(f"Glow effect applied: {output_path}")
-
-
 def main():
     # Determine output path
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -281,21 +220,11 @@ def main():
     print("Generating Pip-Boy styled AWS architecture diagram...")
     diagram = create_pipboy_aws_diagram()
 
-    # Render to temp file first
-    temp_output = os.path.join(output_dir, "aws_ai_architecture_temp")
-    diagram.render(temp_output, cleanup=True)
+    # Render directly to final output
+    output_path = os.path.join(output_dir, "aws_ai_architecture")
+    diagram.render(output_path, cleanup=True)
 
-    temp_png = temp_output + ".png"
-    final_output = os.path.join(output_dir, "aws_ai_architecture.png")
-
-    # Apply glow effect
-    print("Applying phosphor glow effect...")
-    add_glow_effect(temp_png, final_output)
-
-    # Clean up temp file
-    if os.path.exists(temp_png):
-        os.remove(temp_png)
-
+    final_output = output_path + ".png"
     print(f"Diagram saved to: {final_output}")
     return final_output
 
