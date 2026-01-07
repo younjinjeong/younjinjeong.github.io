@@ -7,6 +7,8 @@ A personal tech blog with a unique **Fallout Pip-Boy terminal theme**, built wit
 
 **Live Site:** [https://blog.younjinjeong.io](https://blog.younjinjeong.io)
 
+![Blog Screenshot](static/images/blog-screenshot.png)
+
 ---
 
 ## Tech Stack
