@@ -1,0 +1,148 @@
+# Docker Compose for local development and testing
+# Mirrors GitHub Actions workflow environment
+#
+# Usage:
+#   docker compose up hugo-dev          # Development server
+#   docker compose run hugo-build       # Production build
+#   docker compose up e2e-test          # Run E2E tests
+#   docker compose --profile ci up      # Full CI pipeline
+
+services:
+  # Hugo development server with live reload
+  # Mirrors: .github/workflows/hugo.yml build job
+  hugo-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.hugo
+      args:
+        HUGO_VERSION: "0.128.0"
+        DART_SASS_VERSION: "1.69.5"
+    ports:
+      - "1313:1313"
+    volumes:
+      - .:/src
+      - hugo_cache:/tmp/hugo_cache
+      - /src/public  # Exclude public directory from sync
+    environment:
+      - HUGO_ENVIRONMENT=development
+      - HUGO_CACHEDIR=/tmp/hugo_cache
+    command: ["hugo", "server", "-D", "--bind", "0.0.0.0", "--poll", "700ms"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1313"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # Hugo production build (mirrors GitHub Actions build step)
+  # Mirrors: hugo --gc --minify --baseURL
+  hugo-build:
+    build:
+      context: .
+      dockerfile: Dockerfile.hugo
+      args:
+        HUGO_VERSION: "0.128.0"
+        DART_SASS_VERSION: "1.69.5"
+    volumes:
+      - .:/src
+      - hugo_cache:/tmp/hugo_cache
+    environment:
+      - HUGO_ENVIRONMENT=production
+      - HUGO_CACHEDIR=/tmp/hugo_cache
+    command: >
+      sh -c "
+        echo 'Cleaning previous build artifacts...' &&
+        rm -rf ./public/* &&
+        echo 'Building with Hugo...' &&
+        hugo version &&
+        hugo --gc --minify --baseURL 'http://localhost:1313/' &&
+        echo 'Build complete. Output in ./public/'
+      "
+    profiles:
+      - build
+      - ci
+
+  # E2E tests with Playwright (mirrors GitHub Actions e2e-tests job)
+  # Mirrors: .github/workflows/e2e-tests.yml
+  e2e-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+      args:
+        HUGO_VERSION: "0.128.0"
+        NODE_VERSION: "20"
+    volumes:
+      - ./e2e:/src/e2e
+      - ./content:/src/content:ro
+      - ./layouts:/src/layouts:ro
+      - ./static:/src/static:ro
+      - ./config.toml:/src/config.toml:ro
+      - ./playwright.config.js:/src/playwright.config.js:ro
+      - ./themes:/src/themes:ro
+    environment:
+      - CI=true
+      - PLAYWRIGHT_BASE_URL=http://hugo-dev:1313
+    depends_on:
+      hugo-dev:
+        condition: service_healthy
+    command: ["npm", "test"]
+    profiles:
+      - test
+      - ci
+
+  # Standalone E2E test (includes its own Hugo server)
+  # Use when you want to run tests without starting hugo-dev separately
+  e2e-standalone:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+      args:
+        HUGO_VERSION: "0.128.0"
+        NODE_VERSION: "20"
+    volumes:
+      - .:/src
+    environment:
+      - CI=true
+    command: ["npm", "test"]
+    profiles:
+      - standalone
+
+  # Full CI pipeline simulation
+  # Runs build verification + E2E tests (mirrors complete GitHub Actions workflow)
+  ci-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+      args:
+        HUGO_VERSION: "0.128.0"
+        NODE_VERSION: "20"
+    volumes:
+      - .:/src
+      - hugo_cache:/tmp/hugo_cache
+    environment:
+      - CI=true
+      - HUGO_ENVIRONMENT=production
+      - HUGO_CACHEDIR=/tmp/hugo_cache
+    command: >
+      sh -c "
+        echo '=== CI Pipeline Start ===' &&
+        echo 'Step 1: Verify Hugo installation...' &&
+        hugo version &&
+        echo 'Step 2: Clean previous build...' &&
+        rm -rf ./public/* &&
+        echo 'Step 3: Build site...' &&
+        hugo --gc --minify &&
+        echo 'Step 4: Run E2E tests...' &&
+        npm test &&
+        echo '=== CI Pipeline Complete ==='
+      "
+    profiles:
+      - ci
+
+volumes:
+  hugo_cache:
+    name: blog-hugo-cache
+
+networks:
+  default:
+    name: blog-network

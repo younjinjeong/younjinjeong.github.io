@@ -44,9 +44,33 @@
   --pipboy-bg: #000000;           /* Main background */
   --pipboy-bg-alt: #001100;       /* Slight green tint for panels */
   --pipboy-terminal-font: 'Monofonto', 'VT323', 'Share Tech Mono', 'IBM Plex Mono', 'Terminal', 'DungGeunMo', 'Nanum Gothic Coding', 'Consolas', 'Monaco', 'Lucida Console', monospace;
-  --pipboy-glow: 0 0 5px rgba(65, 255, 0, 0.6);
-  --pipboy-glow-intense: 0 0 10px rgba(65, 255, 0, 0.8);
-  --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
+
+  /* Enhanced Phosphor Glow - Multi-layered for bloom effect */
+  --phosphor-glow-core: 0 0 1px rgba(65, 255, 0, 0.9);
+  --phosphor-glow-inner: 0 0 3px rgba(65, 255, 0, 0.7);
+  --phosphor-glow-mid: 0 0 8px rgba(65, 255, 0, 0.5);
+  --phosphor-glow-outer: 0 0 15px rgba(65, 255, 0, 0.3);
+  --phosphor-glow-bloom: 0 0 25px rgba(65, 255, 0, 0.15);
+
+  /* Combined phosphor glow presets */
+  --pipboy-glow:
+    var(--phosphor-glow-core),
+    var(--phosphor-glow-inner),
+    var(--phosphor-glow-mid);
+  --pipboy-glow-intense:
+    var(--phosphor-glow-core),
+    var(--phosphor-glow-inner),
+    var(--phosphor-glow-mid),
+    var(--phosphor-glow-outer),
+    var(--phosphor-glow-bloom);
+  --pipboy-glow-subtle:
+    var(--phosphor-glow-core),
+    var(--phosphor-glow-inner);
+
+  /* CRT Screen Effect Variables */
+  --crt-border-radius: 8px;
+  --crt-edge-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+  --phosphor-decay-time: 150ms;
   
   /* Typography Scale - Desktop (balanced for mixed content) */
   --font-size-base: 18px;       /* Balanced base size */
@@ -135,7 +159,7 @@ h1:lang(ko), h2:lang(ko), h3:lang(ko), h4:lang(ko), h5:lang(ko), h6:lang(ko) {
   font-size: 0.921em; /* 95% of 0.969em */
 }
 
-/* 스캔라인 효과 - Enhanced CRT effect */
+/* 스캔라인 효과 - Enhanced CRT effect with RGB subpixels */
 body::before {
   content: "";
   position: fixed;
@@ -143,23 +167,37 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    transparent 50%,
-    rgba(0, 0, 0, 0.15) 50%
-  );
-  background-size: 100% 3px;
+  background:
+    /* Primary scanlines - horizontal */
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.12) 50%,
+      rgba(0, 0, 0, 0.12) 100%
+    ),
+    /* Secondary RGB subpixel effect */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.02) 0px,
+      rgba(0, 255, 0, 0.02) 1px,
+      rgba(0, 0, 255, 0.02) 2px,
+      transparent 3px
+    );
+  background-size: 100% 2px, 3px 100%;
   z-index: 1000;
   pointer-events: none;
-  opacity: 0.2;
-  animation: scanlines 8s linear infinite;
+  opacity: 0.35;
+  animation: scanlines 10s linear infinite;
+  will-change: background-position;
 }
 
 @keyframes scanlines {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 10px; }
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 0 4px, 0 0; }
 }
 
-/* CRT 화면 효과 - Vignette and glow */
+/* CRT 화면 효과 - Barrel distortion, Vignette and Phosphor glow */
 body::after {
   content: "";
   position: fixed;
@@ -167,24 +205,58 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.7) 100%),
-    radial-gradient(ellipse at center, rgba(65, 255, 0, 0.1) 0%, transparent 50%);
+  background:
+    /* Edge curvature darkening - simulates barrel distortion */
+    radial-gradient(
+      ellipse 120% 120% at 50% 50%,
+      transparent 0%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.15) 80%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    /* Center phosphor glow */
+    radial-gradient(
+      ellipse 80% 80% at 50% 50%,
+      rgba(65, 255, 0, 0.08) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 1001;
-  mix-blend-mode: multiply;
+  border-radius: var(--crt-border-radius);
 }
 
 a {
   color: var(--pipboy-light-green);
   text-decoration: none;
-  transition: all 0.3s ease;
+  /* Phosphor persistence - slow text-shadow decay */
+  transition:
+    color 0.15s ease-out,
+    text-shadow 0.4s ease-out,
+    filter 0.3s ease-out;
 }
 
 a:hover {
   color: var(--pipboy-light-green);
   text-shadow: var(--pipboy-glow-intense);
   filter: brightness(1.2);
+}
+
+/* Phosphor pulse animation for focused elements */
+@keyframes phosphorPulse {
+  0%, 100% {
+    filter: brightness(1);
+    text-shadow: var(--pipboy-glow);
+  }
+  50% {
+    filter: brightness(1.05);
+    text-shadow: var(--pipboy-glow-intense);
+  }
+}
+
+a:focus,
+button:focus {
+  outline: none;
+  animation: phosphorPulse 2s ease-in-out infinite;
 }
 
 /* Global English Font Size Increase - 130% bigger */
@@ -1177,10 +1249,51 @@ article.post .post-content,
     display: none !important;
   }
   
-  /* Hide scanline effect on mobile for performance */
-  body::before,
+  /* Lighter CRT effects on mobile for performance */
+  :root {
+    --crt-border-radius: 4px;
+    --phosphor-decay-time: 100ms;
+    /* Reduce glow layers on mobile */
+    --pipboy-glow:
+      var(--phosphor-glow-core),
+      var(--phosphor-glow-inner);
+    --pipboy-glow-intense:
+      var(--phosphor-glow-core),
+      var(--phosphor-glow-inner),
+      var(--phosphor-glow-mid);
+  }
+
+  /* Lighter scanlines - static, no animation */
+  body::before {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0.08) 100%
+    );
+    background-size: 100% 3px;
+    opacity: 0.2;
+    animation: none;
+  }
+
+  /* Lighter barrel distortion */
   body::after {
-    display: none;
+    background:
+      radial-gradient(
+        ellipse 130% 130% at 50% 50%,
+        transparent 0%,
+        transparent 70%,
+        rgba(0, 0, 0, 0.1) 85%,
+        rgba(0, 0, 0, 0.25) 100%
+      );
+    border-radius: var(--crt-border-radius);
+  }
+
+  /* Disable phosphor pulse on mobile */
+  a:focus,
+  button:focus {
+    animation: none;
   }
   
   /* Mobile Navigation */
@@ -1455,6 +1568,26 @@ article.post .post-content,
     --font-size-h2: 1.375rem;     /* 22px */
     --font-size-h3: 1.25rem;      /* 20px */
     --font-size-h4: 1.125rem;     /* 18px */
+    /* Minimal CRT effects */
+    --crt-border-radius: 2px;
+  }
+
+  /* Even lighter scanlines on small screens */
+  body::before {
+    opacity: 0.15;
+    background-size: 100% 4px;
+  }
+
+  /* Minimal barrel distortion */
+  body::after {
+    background:
+      radial-gradient(
+        ellipse 150% 150% at 50% 50%,
+        transparent 0%,
+        transparent 80%,
+        rgba(0, 0, 0, 0.08) 90%,
+        rgba(0, 0, 0, 0.15) 100%
+      );
   }
   
   /* Site title */
@@ -1637,5 +1770,178 @@ article.post .post-content,
 @media (max-width: 768px) {
   .profile-image img {
     max-width: 200px;
+  }
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all CRT animations */
+  body::before {
+    animation: none !important;
+    opacity: 0.1;
+  }
+
+  @keyframes scanlines {
+    0%, 100% { background-position: 0 0; }
+  }
+
+  @keyframes phosphorPulse {
+    0%, 100% { filter: brightness(1); }
+  }
+
+  @keyframes textFlicker {
+    0%, 100% { opacity: 1; }
+  }
+
+  /* Reduce glow effects */
+  :root {
+    --pipboy-glow: 0 0 2px rgba(65, 255, 0, 0.5);
+    --pipboy-glow-intense: 0 0 4px rgba(65, 255, 0, 0.6);
+    --pipboy-glow-subtle: 0 0 1px rgba(65, 255, 0, 0.4);
+  }
+
+  /* Disable all transitions and animations */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  /* Keep static effects only */
+  body::after {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  /* Disable phosphor pulse */
+  a:focus,
+  button:focus {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   CRT Effects Toggle (Disabled State)
+   ============================================ */
+body.crt-effects-disabled::before,
+body.crt-effects-disabled::after {
+  display: none !important;
+}
+
+body.crt-effects-disabled {
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+body.crt-effects-disabled * {
+  text-shadow: none !important;
+}
+
+body.crt-effects-disabled .container {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Keep basic styling when CRT is off */
+body.crt-effects-disabled a:hover {
+  filter: brightness(1.1);
+}
+
+body.crt-effects-disabled a:focus,
+body.crt-effects-disabled button:focus {
+  animation: none !important;
+  outline: 2px solid var(--pipboy-green);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   CRT Toggle Button Styles
+   ============================================ */
+.nav-crt-toggle {
+  padding: 8px 12px;
+  border-radius: 50%;
+  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  background: var(--pipboy-dark-green);
+  border: 2px solid var(--pipboy-green);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nav-crt-toggle:hover {
+  background: var(--pipboy-green);
+  box-shadow: var(--pipboy-glow);
+}
+
+.nav-crt-toggle:hover svg {
+  fill: var(--pipboy-black);
+}
+
+.nav-crt-toggle svg {
+  fill: var(--pipboy-green);
+  transition: fill 0.3s ease;
+}
+
+.nav-crt-toggle .crt-status {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pipboy-green);
+  box-shadow: 0 0 4px var(--pipboy-green);
+}
+
+/* CRT disabled indicator */
+.nav-crt-toggle.crt-disabled .crt-status {
+  background: var(--pipboy-dark-green);
+  box-shadow: none;
+}
+
+/* Desktop CRT toggle hint */
+.crt-toggle-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--pipboy-green);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  opacity: 0.6;
+  z-index: 100;
+  transition: opacity 0.3s;
+  font-family: var(--pipboy-terminal-font);
+  color: var(--pipboy-green);
+}
+
+.crt-toggle-hint:hover {
+  opacity: 1;
+}
+
+.crt-toggle-hint kbd {
+  background: var(--pipboy-dark-green);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid var(--pipboy-green);
+  margin: 0 2px;
+}
+
+@media screen and (max-width: 768px) {
+  .crt-toggle-hint {
+    display: none;
   }
 }

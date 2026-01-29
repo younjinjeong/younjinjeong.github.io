@@ -1,0 +1,51 @@
+# Hugo Build Container - Matches GitHub Actions environment
+# Based on Ubuntu (same as GitHub Actions runners)
+
+FROM ubuntu:24.04
+
+# Version matching GitHub Actions workflows
+ARG HUGO_VERSION=0.128.0
+ARG DART_SASS_VERSION=1.69.5
+
+# Avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies (matching GitHub Actions ubuntu-latest)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    curl \
+    git \
+    ca-certificates \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Hugo Extended (same method as GitHub Actions)
+RUN wget -O /tmp/hugo.deb \
+    "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb" \
+    && dpkg -i /tmp/hugo.deb \
+    && rm /tmp/hugo.deb
+
+# Install Dart Sass (same method as GitHub Actions)
+RUN curl -LJO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz" \
+    && tar -xf "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz" -C /usr/local \
+    && rm "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
+
+# Add Dart Sass to PATH
+ENV PATH="/usr/local/dart-sass:${PATH}"
+
+# Verify installations
+RUN hugo version && sass --version
+
+# Set working directory
+WORKDIR /src
+
+# Environment variables matching GitHub Actions
+ENV HUGO_ENVIRONMENT=production
+ENV HUGO_CACHEDIR=/tmp/hugo_cache
+
+# Expose Hugo server port
+EXPOSE 1313
+
+# Default command: start development server
+CMD ["hugo", "server", "-D", "--bind", "0.0.0.0"]

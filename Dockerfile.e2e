@@ -1,0 +1,55 @@
+# E2E Testing Container - Matches GitHub Actions environment
+# Based on Ubuntu with Node.js 20 (same as GitHub Actions runners)
+
+FROM ubuntu:24.04
+
+# Versions matching GitHub Actions workflows
+ARG HUGO_VERSION=0.128.0
+ARG NODE_VERSION=20
+
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install base dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    curl \
+    git \
+    ca-certificates \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 20 (matching GitHub Actions setup-node@v4)
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Hugo Extended (same method as GitHub Actions)
+RUN wget -O /tmp/hugo.deb \
+    "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb" \
+    && dpkg -i /tmp/hugo.deb \
+    && rm /tmp/hugo.deb
+
+# Verify installations
+RUN hugo version && node --version && npm --version
+
+# Set working directory
+WORKDIR /src
+
+# Copy package files first for better layer caching
+COPY package.json ./
+
+# Install npm dependencies (matching: npm install)
+RUN npm install
+
+# Install Playwright with dependencies (matching: npx playwright install --with-deps chromium)
+RUN npx playwright install --with-deps chromium
+
+# Copy the rest of the project
+COPY . .
+
+# Environment matching GitHub Actions
+ENV CI=true
+
+# Default command: run E2E tests
+CMD ["npm", "test"]

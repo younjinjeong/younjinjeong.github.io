@@ -30,7 +30,40 @@ $RECYCLE.BIN/
 CLAUDE.md
 .claude/
 .claude_cache/
+.claude-*
+.clauderc
+.claude.json
+.claude.local
 *.claude
 claude_*
+claude-*
+
+# Anthropic SDK and API
 anthropic/
 anthropic_cache/
+.anthropic/
+.anthropic_cache/
+*.anthropic
+
+# Claude Code specific
+.claude-code/
+.claudecode/
+claude-code-*
+.claude_session*
+.claude_workspace*
+claude_output*
+claude_response*
+
+# Claude conversation and context
+.context/
+.conversation/
+claude_conversations/
+claude_history/
+*.claude.md
+*.claude.json
+*.claude.log
+
+# act (GitHub Actions local runner)
+.actrc
+.secrets
+.act-*

@@ -1,0 +1,57 @@
+# Git
+.git
+.gitmodules
+.gitignore
+
+# Hugo output
+public/
+resources/
+
+# Node modules (will be installed in container)
+node_modules/
+
+# E2E test artifacts
+e2e/screenshots/
+e2e/playwright-report/
+e2e/test-results/
+e2e/test-results.json
+
+# Orchestrator reports
+orchestrator/reports/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude AI files
+.claude/
+.claude_cache/
+*.claude
+claude_*
+CLAUDE.md
+anthropic/
+anthropic_cache/
+
+# Docker files (no need to copy these into container)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+!content/**/*.md
+
+# Hugo cache
+.hugo_build.lock
+
+# act (GitHub Actions local runner)
+.actrc
+.secrets
+.act-*
