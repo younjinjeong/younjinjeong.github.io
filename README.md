@@ -265,6 +265,35 @@ The blog works perfectly with local Markdown files in `content/posts/`. Strapi i
 
 ---
 
+## Contributing (Branch Strategy)
+
+The `main` branch is **protected**. All changes must go through a Pull Request with owner approval.
+
+```text
+main (protected)        ← production, deploys to GitHub Pages
+  └── feature/<name>    ← new features
+  └── fix/<name>        ← bug fixes
+  └── docs/<name>       ← documentation changes
+```
+
+### Workflow
+
+1. Create a feature branch from `main`: `git checkout -b feature/<name>`
+2. Make changes and commit
+3. Push the branch: `git push origin feature/<name>`
+4. Open a Pull Request to `main`
+5. Wait for CI to pass and owner approval
+6. Merge after approval
+
+### Branch Protection Rules
+
+- PR required with **1 approving review**
+- **CI must pass** (`build` job)
+- Stale reviews are dismissed on new commits
+- Enforced for admins
+
+---
+
 ## Author
 
 **Younjin Jeong (RYONGJIN)**
