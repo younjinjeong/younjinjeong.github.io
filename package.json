@@ -17,7 +17,9 @@
     "orchestrate:review": "node orchestrator/index.js --phase review",
     "cycle": "node orchestrator/index.js",
     "cycle:quick": "node orchestrator/index.js --phase build --phase test",
-    "cycle:full": "node orchestrator/index.js --verbose"
+    "cycle:full": "node orchestrator/index.js --verbose",
+    "strapi:fetch": "node scripts/fetch-strapi-content.js",
+    "strapi:migrate": "node scripts/migrate-to-strapi.js"
   },
   "repository": {
     "type": "git",

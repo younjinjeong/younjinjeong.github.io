@@ -26,6 +26,11 @@ $RECYCLE.BIN/
 # OSX
 .DS_Store
 
+# Environment variables
+.env
+.env.local
+.env.production
+
 # Claude AI related files
 CLAUDE.md
 .claude/
