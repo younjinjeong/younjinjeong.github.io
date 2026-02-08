@@ -20,6 +20,7 @@ A personal tech blog with a unique **Fallout Pip-Boy terminal theme**, built wit
 | **Custom Domain** | blog.younjinjeong.io |
 | **Comments** | Giscus (GitHub Discussions) |
 | **E2E Testing** | Playwright (Browser Automation) |
+| **CMS** | Strapi (headless, optional) |
 | **CI/CD** | GitHub Actions |
 | **Analytics** | Google Analytics 4 |
 
@@ -74,11 +75,21 @@ The blog features a unique retro terminal aesthetic inspired by the Fallout vide
 Triggered on push to `main` branch:
 
 ```
-1. Install Hugo 0.128.0 (extended)
-2. Install Dart Sass
+1. Install Hugo 0.128.0 (extended) + Dart Sass
+2. Fetch content from Strapi CMS (if configured)
 3. Build site with hugo --gc --minify
 4. Create CNAME for custom domain
 5. Deploy to GitHub Pages
+```
+
+### Strapi Webhook Workflow (`strapi-webhook.yml`)
+
+Triggered by Strapi CMS on content publish/update:
+
+```
+1. Strapi fires webhook on publish → repository_dispatch
+2. Fetch latest content from Strapi API
+3. Hugo build + deploy to GitHub Pages
 ```
 
 ### E2E Test Workflow (`e2e-tests.yml`)
@@ -123,6 +134,10 @@ Triggered on push/PR to `main`:
 ├── orchestrator/            # Development cycle automation
 │   ├── phases/              # Plan, Implement, Build, Test, Review
 │   └── lib/                 # Utilities
+├── scripts/                 # Strapi CMS integration scripts
+│   ├── fetch-strapi-content.js   # Fetch content from Strapi API
+│   ├── migrate-to-strapi.js      # Migrate Markdown to Strapi
+│   └── strapi-setup/             # Strapi setup configs & schemas
 └── .github/workflows/       # CI/CD pipelines
 ```
 
@@ -166,7 +181,87 @@ npm run test:report      # View HTML test report
 npm run orchestrate      # Full cycle (Plan → Build → Test → Review)
 npm run cycle:quick      # Quick cycle (Build → Test)
 npm run cycle:full       # Full cycle with verbose logging
+
+# Strapi CMS (optional)
+npm run strapi:fetch     # Fetch content from Strapi API
+npm run strapi:migrate   # Migrate local Markdown to Strapi
 ```
+
+---
+
+## How This Blog Works (Two-Repository Architecture)
+
+This blog uses a **two-repository architecture** where content management and site rendering are separated:
+
+```text
+┌─────────────────────────────┐      ┌─────────────────────────────────┐
+│  blog-cms (Private Repo)    │      │  younjinjeong.github.io (Public)│
+│  github.com/younjinjeong/   │      │  github.com/younjinjeong/       │
+│  blog-cms                   │      │  younjinjeong.github.io         │
+│                             │      │                                 │
+│  Strapi v5 CMS              │      │  Hugo 0.128.0 Static Site       │
+│  - Write/edit posts         │      │  - Templates & theme            │
+│  - Manage categories/tags   │      │  - Pip-Boy terminal CSS/JS      │
+│  - Upload media             │      │  - E2E tests (Playwright)       │
+│  - Google Analytics dashboard│      │  - CI/CD pipelines              │
+│                             │      │                                 │
+│  Hosted on: Render.com      │      │  Hosted on: GitHub Pages        │
+│  (Free tier)                │      │  blog.younjinjeong.io           │
+└──────────┬──────────────────┘      └──────────┬──────────────────────┘
+           │                                    │
+           │  REST API                          │
+           │  /api/posts                        │
+           │  /api/categories                   │
+           │  /api/tags                         │
+           └──────────────┐  ┌──────────────────┘
+                          │  │
+                          ▼  ▼
+              ┌───────────────────────┐
+              │   GitHub Actions      │
+              │                       │
+              │ 1. Fetch from Strapi  │
+              │ 2. Generate Markdown  │
+              │ 3. Hugo build         │
+              │ 4. Deploy to Pages    │
+              └───────────────────────┘
+```
+
+### Content Flow
+
+1. **Write** a post in Strapi admin (`https://blog-cms-strapi-3lzr.onrender.com/admin`)
+2. **Publish** the post in Strapi (or save as draft)
+3. **Trigger** build — either via push to this repo, or Strapi webhook (`repository_dispatch`)
+4. **Fetch** — GitHub Actions runs `scripts/fetch-strapi-content.js` to pull content from Strapi API
+5. **Build** — Hugo generates static HTML from the fetched Markdown
+6. **Deploy** — Static files are pushed to GitHub Pages at `blog.younjinjeong.io`
+
+### Key Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Strapi is in a **separate private repo** | Keeps CMS config, DB credentials, and admin code isolated from the public blog |
+| Content is **fetched at build time**, not runtime | Static site = fast, secure, free hosting on GitHub Pages |
+| Strapi is **optional** | If `STRAPI_API_URL` is not set, the build uses local Markdown files in `content/posts/` |
+| Google Analytics (GA4) | Tracking is embedded in Hugo templates; GA dashboard is available in Strapi admin |
+
+### GitHub Secrets (this repo)
+
+| Secret | Purpose |
+|--------|---------|
+| `STRAPI_API_URL` | Strapi instance URL (e.g. `https://blog-cms-strapi-3lzr.onrender.com`) |
+| `STRAPI_API_TOKEN` | Full-access API token for fetching content |
+
+### Relevant Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/fetch-strapi-content.js` | Fetches posts from Strapi REST API and generates Hugo-compatible Markdown files |
+| `scripts/migrate-to-strapi.js` | One-time migration of local Markdown posts to Strapi |
+| `scripts/strapi-setup/` | Content type schemas, Render deploy config, setup guide |
+
+### Without Strapi
+
+The blog works perfectly with local Markdown files in `content/posts/`. Strapi integration is fully optional — if the `STRAPI_API_URL` secret is not configured, the build uses local content.
 
 ---
 
