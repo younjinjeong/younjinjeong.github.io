@@ -1270,9 +1270,9 @@ article.post .post-content,
     line-height: var(--line-height-tight);
   }
   
-  /* Post content remains readable */
+  /* Post content — double English text size for mobile readability */
   .post-content {
-    font-size: var(--font-size-body);
+    font-size: calc(var(--font-size-body) * 2);
     line-height: var(--line-height-base);
   }
   
