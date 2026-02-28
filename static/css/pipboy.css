@@ -266,7 +266,7 @@ pre {
   border: 1px solid var(--pipboy-dark-green);
   border-radius: 0;
   font-family: 'IBM Plex Mono', var(--pipboy-terminal-font);
-  font-size: 0.875em;  /* Match inline code size */
+  font-size: 1em;  /* Match body text size */
   line-height: 1.5;
   box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
   /* 90's terminal style */
@@ -285,7 +285,7 @@ pre code {
 
 /* Hugo syntax highlighting fix */
 .highlight pre {
-  font-size: 0.875em !important;
+  font-size: 1em !important;
 }
 
 .highlight pre code {
@@ -298,10 +298,13 @@ pre code {
   line-height: 1.5 !important;
 }
 
-/* Ensure all code elements have consistent sizing */
+/* Ensure code blocks match body text size; inline code stays smaller */
 .post-content pre,
+.post-content .highlight pre {
+  font-size: 1em !important;
+}
+
 .post-content code,
-.post-content .highlight pre,
 .post-content .highlight code {
   font-size: 0.875em !important;
 }
@@ -1302,20 +1305,20 @@ article.post .post-content,
     font-size: var(--font-size-body);
   }
   
-  /* Code blocks */
+  /* Code blocks — match body text size */
   pre {
-    font-size: 0.875em;  /* Match desktop size */
+    font-size: 1em;
     padding: 10px;
     overflow-x: auto;
   }
-  
+
   code {
-    font-size: 0.875em;  /* Match desktop size */
+    font-size: 0.875em;  /* Inline code stays slightly smaller */
   }
-  
+
   /* Hugo syntax highlighting fix for mobile */
   .highlight pre {
-    font-size: 0.875em !important;
+    font-size: 1em !important;
   }
   
   .highlight pre code,
