@@ -45,7 +45,7 @@ baseFontSize = 16
       strikethrough = true
       table = true
       taskList = true
-      typographer = true
+      typographer = false
     [markup.goldmark.parser]
       autoHeadingID = true
       autoHeadingIDType = "github"
