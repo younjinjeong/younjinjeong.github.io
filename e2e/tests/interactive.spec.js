@@ -29,9 +29,18 @@ test.describe('Interactive Elements', () => {
     await page.screenshot({ path: 'e2e/screenshots/interactive-after-boot.png' });
   });
 
-  test('navigation triggers loading effect', async ({ page }) => {
+  test('navigation triggers loading effect', async ({ page, isMobile }) => {
     await page.goto('/');
     await page.waitForTimeout(3000);
+
+    if (isMobile) {
+      // On mobile, header nav links are hidden — open menu first
+      const menuBtn = page.locator('.nav-menu');
+      if (await menuBtn.count() > 0) {
+        await menuBtn.click();
+        await page.waitForTimeout(500);
+      }
+    }
 
     const link = page.locator('nav a, a[href="/about/"]').first();
     if (await link.count() > 0) {

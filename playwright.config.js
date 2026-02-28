@@ -47,11 +47,23 @@ module.exports = defineConfig({
     actionTimeout: 30000,
   },
 
-  /* Configure projects for major browsers */
+  /* Configure projects — all Chromium-based to avoid requiring WebKit install */
   projects: [
     {
-      name: 'chromium',
+      name: 'desktop-hd',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1920, height: 1080 } },
+    },
+    {
+      name: 'desktop',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'tablet',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 810, height: 1080 }, isMobile: true, hasTouch: true },
+    },
+    {
+      name: 'mobile',
+      use: { ...devices['Pixel 5'] },
     },
   ],
 

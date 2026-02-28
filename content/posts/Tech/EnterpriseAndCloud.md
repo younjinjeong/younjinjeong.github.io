@@ -8,6 +8,7 @@ categories:
   - Cloud
 tags: [Cloud, Managements, Cloud, Transformation]
 layout: "post"
+content_lang: ko
 ---
 
 
