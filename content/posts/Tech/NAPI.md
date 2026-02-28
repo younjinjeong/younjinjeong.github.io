@@ -6,6 +6,7 @@ authors:
   - younjinjeong
 tags: [linux, networking, interrupts]
 categories: [Tech]
+content_lang: ko
 ---
 
 

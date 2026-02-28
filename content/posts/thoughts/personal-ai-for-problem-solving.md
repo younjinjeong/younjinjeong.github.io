@@ -7,6 +7,7 @@ authors:
 tags: [rc, hobby, status]
 categories: [Thoughts]
 layout: "post"
+content_lang: ko
 ---
 
 최근 AI 사용이 열풍이다. 본 블로그 역시 99% AI의 도움을 받아 만들어졌다. Cursor 에 Claude Code 를 함께 사용하는 방식으로 사용한다. Max 수준의 서비스 사용은 Claude 가 유일하며 나머지는 무료나 기본 플랜을 사용중이다. ChatGPT 기본, Cursor 기본, Claude Max 이렇게 사용하는데, GPT는 보통 문서나 언어와 관련된 영역에서 4o 를 사용하고, Cursor 와 Claude 는 IDE 안에서 수정에 대한 의견을 서로 다르게 제시할때 유의미하게 사용한다.

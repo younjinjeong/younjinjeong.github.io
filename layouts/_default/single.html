@@ -1,5 +1,5 @@
 {{ define "main" }}
-<article class="post">
+<article class="post"{{ with .Params.content_lang }} lang="{{ . }}"{{ end }}>
   <header>
     <h1>{{ .Title }}</h1>
     <div class="post-meta">
