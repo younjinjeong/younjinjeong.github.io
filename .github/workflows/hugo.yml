@@ -5,6 +5,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -97,8 +99,9 @@ jobs:
           # 이전 아티팩트 삭제 옵션 추가
           retention-days: 1
 
-  # Deployment job
+  # Deployment job — only on push to main, not on PRs
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
