@@ -7,6 +7,7 @@ authors:
   - younjinjeong
 tags: [Tech, introduction, goHugo]
 categories: [Tech]
+content_lang: ko
 ---
 
 연휴 이틀 동안 반나절 정도 시간을 들여, Hugo 기본 레이아웃을 폴아웃 Pip-Boy 스타일로 재구성해봤다. 작업 도중 여러 시행착오가 있었지만, 그 중 가장 대표적인 난관은 폰트 사이즈 문제였다. 아직 완전히 해결되지는 않은 것 같지만, 어느 정도 원하는 형태를 잡아낸 듯하다.
