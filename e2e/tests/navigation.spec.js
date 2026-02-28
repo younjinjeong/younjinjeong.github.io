@@ -66,9 +66,18 @@ test.describe('Navigation', () => {
     }
   });
 
-  test('home navigation works', async ({ page }) => {
+  test('home navigation works', async ({ page, isMobile }) => {
     await page.goto('/about/');
     await page.waitForTimeout(2000);
+
+    if (isMobile) {
+      // On mobile, header links are hidden — open menu first
+      const menuBtn = page.locator('.nav-menu');
+      if (await menuBtn.count() > 0) {
+        await menuBtn.click();
+        await page.waitForTimeout(500);
+      }
+    }
 
     const homeLink = page.locator('a[href="/"], .site-title a, header a').first();
     if (await homeLink.count() > 0) {

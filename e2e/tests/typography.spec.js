@@ -84,14 +84,14 @@ test.describe('Typography — Heading Hierarchy', () => {
 });
 
 test.describe('Typography — Code Sizing', () => {
-  test('code blocks use IBM Plex Mono font', async ({ page }) => {
+  test('code blocks use Monofonto font (same as body)', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
     await page.waitForTimeout(2000);
 
     const codeBlock = page.locator('pre code, .highlight code').first();
     if (await codeBlock.count() > 0) {
       const fontFamily = await codeBlock.evaluate(el => getComputedStyle(el).fontFamily);
-      expect(fontFamily.toLowerCase()).toContain('ibm plex mono');
+      expect(fontFamily.toLowerCase()).toContain('monofonto');
     }
   });
 
@@ -107,7 +107,7 @@ test.describe('Typography — Code Sizing', () => {
     if (await codeBlock.count() > 0) {
       const codeSize = await codeBlock.evaluate(el => parseFloat(getComputedStyle(el).fontSize));
       const ratio = codeSize / bodySize;
-      expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be >= 0.70`).toBeGreaterThanOrEqual(0.70);
+      expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be >= 0.85`).toBeGreaterThanOrEqual(0.85);
       expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be <= 1.0`).toBeLessThanOrEqual(1.0);
     }
   });
