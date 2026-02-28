@@ -256,7 +256,7 @@ code {
   border-radius: 0;
   font-family: 'IBM Plex Mono', var(--pipboy-terminal-font);
   padding: 0.125rem 0.375rem;
-  font-size: 0.875em;
+  font-size: 1em;
   color: var(--pipboy-light-green);
   letter-spacing: 0.05em;
 }
@@ -306,7 +306,7 @@ pre code {
 
 .post-content code,
 .post-content .highlight code {
-  font-size: 0.875em !important;
+  font-size: 1em !important;
 }
 
 .post-content pre code,
@@ -319,7 +319,7 @@ pre code {
 .post-content p code,
 .post-content li code,
 .post-content td code {
-  font-size: 0.875em !important;
+  font-size: 1em !important;
 }
 
 blockquote {
@@ -1313,7 +1313,7 @@ article.post .post-content,
   }
 
   code {
-    font-size: 0.875em;  /* Inline code stays slightly smaller */
+    font-size: 1em;
   }
 
   /* Hugo syntax highlighting fix for mobile */
