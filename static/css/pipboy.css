@@ -53,7 +53,7 @@
   --font-size-small: 0.833rem;  /* 15px */
   --font-size-meta: 0.944rem;   /* 17px - dates, tags, metadata */
   --font-size-body: 1.222rem;   /* 22px */
-  --font-size-code: 1.056rem;   /* 19px - optically matches IBM Plex Mono to Monofonto */
+  --font-size-code: 0.889rem;   /* 16px - IBM Plex Mono optically matched to Monofonto body */
   --font-size-h6: 1.333rem;     /* 24px */
   --font-size-h5: 1.556rem;     /* 28px */
   --font-size-h4: 1.778rem;     /* 32px */
@@ -1096,7 +1096,7 @@ article.post .post-content,
     --font-size-small: 0.8125rem;  /* 13px */
     --font-size-meta: 0.875rem;    /* 14px */
     --font-size-body: 1.0625rem;   /* 17px */
-    --font-size-code: 0.9375rem;   /* 15px */
+    --font-size-code: 0.8125rem;   /* 13px - IBM Plex Mono optically matched */
     --font-size-h6: 1.125rem;      /* 18px */
     --font-size-h5: 1.25rem;       /* 20px */
     --font-size-h4: 1.5rem;        /* 24px */
@@ -1383,7 +1383,7 @@ article.post .post-content,
   :root {
     --font-size-meta: 0.8125rem;   /* 13px */
     --font-size-body: 1rem;         /* 16px */
-    --font-size-code: 0.875rem;     /* 14px */
+    --font-size-code: 0.75rem;      /* 12px - IBM Plex Mono optically matched */
     --font-size-h4: 1.3125rem;     /* 21px */
     --font-size-h3: 1.5rem;        /* 24px */
     --font-size-h2: 1.75rem;       /* 28px */

@@ -107,7 +107,7 @@ test.describe('Typography — Code Sizing', () => {
     if (await codeBlock.count() > 0) {
       const codeSize = await codeBlock.evaluate(el => parseFloat(getComputedStyle(el).fontSize));
       const ratio = codeSize / bodySize;
-      expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be >= 0.75`).toBeGreaterThanOrEqual(0.75);
+      expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be >= 0.70`).toBeGreaterThanOrEqual(0.70);
       expect(ratio, `code/body ratio (${ratio.toFixed(2)}) should be <= 1.0`).toBeLessThanOrEqual(1.0);
     }
   });
