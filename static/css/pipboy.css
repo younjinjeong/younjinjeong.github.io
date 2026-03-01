@@ -789,6 +789,74 @@ footer p {
   box-shadow: var(--pipboy-glow);
 }
 
+/* Tag Cloud */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  justify-content: center;
+  align-items: baseline;
+  padding: 30px 10px;
+}
+
+.tag-cloud-item {
+  font-family: var(--pipboy-terminal-font);
+  color: var(--pipboy-green);
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 2px;
+  background: rgba(65, 255, 0, 0.03);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tag-cloud-item:hover {
+  background: var(--pipboy-green);
+  color: var(--pipboy-black);
+  text-shadow: none;
+  box-shadow: var(--pipboy-glow);
+  transform: scale(1.05);
+}
+
+/* Level 1: lowest count — small, dim */
+.tag-level-1 {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  text-shadow: none;
+}
+
+/* Level 2 */
+.tag-level-2 {
+  font-size: 1rem;
+  opacity: 0.75;
+  text-shadow: 0 0 3px rgba(65, 255, 0, 0.2);
+}
+
+/* Level 3 */
+.tag-level-3 {
+  font-size: 1.2rem;
+  opacity: 0.85;
+  text-shadow: 0 0 5px rgba(65, 255, 0, 0.4);
+}
+
+/* Level 4 */
+.tag-level-4 {
+  font-size: 1.5rem;
+  opacity: 0.95;
+  text-shadow: 0 0 8px rgba(65, 255, 0, 0.6);
+  border-color: var(--pipboy-green);
+}
+
+/* Level 5: highest count — large, bright glow */
+.tag-level-5 {
+  font-size: 1.8rem;
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(65, 255, 0, 0.8);
+  border-color: var(--pipboy-light-green);
+  background: rgba(65, 255, 0, 0.08);
+}
+
 /* 언어별 설정 수정 - 폰트 크기는 제거하고 다른 스타일만 유지 */
 .post-content:lang(ko) {
   font-family: 'D2Coding', 'DungGeunMo', 'Nanum Gothic Coding', var(--pipboy-terminal-font);
