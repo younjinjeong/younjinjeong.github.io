@@ -125,23 +125,19 @@ function initializeTerminal(terminalPrompt) {
     // HELP / ?
     commands.help = function() {
         return [
-            '\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557',
-            '\u2551  RYONGJIN BBS  -  COMMAND REFERENCE          \u2551',
-            '\u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563',
-            '\u2551                                              \u2551',
-            '\u2551  list           List items in section        \u2551',
-            '\u2551  go <n>         Go to item by number         \u2551',
-            '\u2551  go <section>   HOME POSTS ABOUT CATEGORIES  \u2551',
-            '\u2551                 TAGS                         \u2551',
-            '\u2551  go back        Previous page                \u2551',
-            '\u2551  go forward     Next page                    \u2551',
-            '\u2551  search <term>  Search all posts             \u2551',
-            '\u2551  comment        Leave a comment (posts)      \u2551',
-            '\u2551  whoami         Show login & IP              \u2551',
-            '\u2551  clear          Clear terminal               \u2551',
-            '\u2551  help, ?        Show this message            \u2551',
-            '\u2551                                              \u2551',
-            '\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d'
+            'RYONGJIN BBS  -  COMMAND REFERENCE',
+            '',
+            '  help, ?        Show this message',
+            '  list           List items in section',
+            '  search <term>  Search all posts',
+            '  go <n>         Go to item by number',
+            '  go <section>   HOME, POSTS, ABOUT',
+            '  go back        Previous page',
+            '  go forward     Next page',
+            '  comment        Leave a comment (posts)',
+            '  whoami         Show login & IP',
+            '  about          Show blog information',
+            '  clear          Clear terminal'
         ].join('\n');
     };
     commands['?'] = function() { return commands.help(); };
@@ -323,25 +319,26 @@ function initializeTerminal(terminalPrompt) {
         var sections = {
             'home': '/',
             'posts': '/posts/',
-            'about': '/about/',
-            'categories': '/categories/',
-            'tags': '/tags/'
+            'about': '/about/'
         };
 
         if (sections[target]) {
-            outputArea.innerHTML += 'Connecting to ' + target.toUpperCase() + '...\n';
+            outputArea.innerHTML += 'okay\n';
+            sessionStorage.setItem('terminalFocus', '1');
             setTimeout(function() { window.location.href = sections[target]; }, 400);
             return '';
         }
 
         // Navigation
         if (target === 'back') {
-            outputArea.innerHTML += 'Going back...\n';
+            outputArea.innerHTML += 'okay\n';
+            sessionStorage.setItem('terminalFocus', '1');
             setTimeout(function() { window.history.back(); }, 400);
             return '';
         }
         if (target === 'forward') {
-            outputArea.innerHTML += 'Going forward...\n';
+            outputArea.innerHTML += 'okay\n';
+            sessionStorage.setItem('terminalFocus', '1');
             setTimeout(function() { window.history.forward(); }, 400);
             return '';
         }
@@ -357,13 +354,14 @@ function initializeTerminal(terminalPrompt) {
                 return '*** Invalid selection: ' + num + '\n    Valid range: 1-' + results.length;
             }
             var item = results[num - 1];
-            outputArea.innerHTML += 'Connecting to: ' + truncTitle(item.title, 50) + '...\n';
+            outputArea.innerHTML += 'okay\n';
+            sessionStorage.setItem('terminalFocus', '1');
             setTimeout(function() { window.location.href = item.url; }, 400);
             return '';
         }
 
         // Unknown
-        return '*** UNKNOWN TARGET: ' + args + '\n    Usage: go <number> | go home | go posts | go about | go categories | go tags\n           go back | go forward';
+        return '*** UNKNOWN TARGET: ' + args + '\n    Usage: go <number> | go home | go posts | go about\n           go back | go forward';
     };
 
     // SEARCH
@@ -468,6 +466,11 @@ function initializeTerminal(terminalPrompt) {
         return '';
     };
 
+    // ABOUT
+    commands.about = function() {
+        return "RYONGJIN's TECH Blog\nTerminal OS v5.0.0\nPowered by Hugo Static Site Generator\n\nType 'help' for available commands.";
+    };
+
     // ─── Command Processor ─────────────────────────────────────
 
     function processCommand(input) {
@@ -480,7 +483,7 @@ function initializeTerminal(terminalPrompt) {
         }
         if (command === '') return '';
 
-        return '*** UNKNOWN COMMAND: ' + command + '\n    Usage: help | list | go | search | comment | whoami | clear\n    Type "help" for available commands.';
+        return '*** UNKNOWN COMMAND: ' + command + '\n    Usage: help | list | go | search | comment | whoami | about | clear\n    Type "help" for available commands.';
     }
 
     // ─── Input Handler ─────────────────────────────────────────
@@ -565,4 +568,16 @@ function initializeTerminal(terminalPrompt) {
     commandInput.addEventListener('blur', function() {
         terminalPrompt.classList.remove('terminal-focused');
     });
+
+    // ─── Auto-focus after terminal navigation ────────────────
+
+    if (sessionStorage.getItem('terminalFocus') === '1') {
+        sessionStorage.removeItem('terminalFocus');
+        setTimeout(function() {
+            terminalPrompt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            commandInput.focus();
+            terminalPrompt.style.animation = 'terminal-flash 0.3s';
+            setTimeout(function() { terminalPrompt.style.animation = ''; }, 300);
+        }, 500);
+    }
 }
