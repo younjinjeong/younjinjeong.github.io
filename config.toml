@@ -1,6 +1,6 @@
 baseURL = "https://blog.younjinjeong.io/"
 languageCode = "en-us"
-title = "RYONGJIN's Blog"
+title = "RYONGJIN's TECH Blog"
 googleAnalytics = "G-LF5W12M5RW"
 enableRobotsTXT = true
 baseFontSize = 16
@@ -74,7 +74,7 @@ baseFontSize = 16
     startLevel = 2
 
 [params]
-description = "Younjin Jeong's Blog"
+description = "Strategic Technologist"
 author = "Younjin JEONG"
 comments = true
 mainSections = ["posts"]
