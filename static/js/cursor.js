@@ -129,11 +129,8 @@ function initializeTerminal(terminalPrompt) {
             '',
             '  help, ?        Show this message',
             '  list           List items in section',
-            '  search <term>  Search all posts',
-            '  go <n>         Go to item by number',
-            '  go <section>   HOME, POSTS, ABOUT',
-            '  go back        Previous page',
-            '  go forward     Next page',
+            '  search &lt;term&gt;  Search all posts',
+            '  go             HOME, POSTS, ABOUT, back, forward, or Go to item by number',
             '  comment        Leave a comment (posts)',
             '  whoami         Show login & IP',
             '  about          Show blog information',
@@ -189,7 +186,7 @@ function initializeTerminal(terminalPrompt) {
         });
 
         output += '────────────────────────────────────────────────\n';
-        output += 'Use "go <number>" to read a post.';
+        output += 'Use "go [number]" to read a post.';
         storeResults(results);
         return output;
     }
@@ -249,7 +246,7 @@ function initializeTerminal(terminalPrompt) {
             output += num + '  ' + cat.title.toUpperCase() + ' (' + cat.count + ' posts)\n';
         });
         output += '────────────────────────────────────────────────\n';
-        output += 'Use "go <number>" to browse a category.';
+        output += 'Use "go [number]" to browse a category.';
         storeResults(results);
         return output;
     }
@@ -302,7 +299,7 @@ function initializeTerminal(terminalPrompt) {
             output += num + '  ' + tag.title.toUpperCase() + countStr + '\n';
         });
         output += '────────────────────────────────────────────────\n';
-        output += 'Use "go <number>" to browse a tag.';
+        output += 'Use "go [number]" to browse a tag.';
         storeResults(results);
         return output;
     }
@@ -310,7 +307,7 @@ function initializeTerminal(terminalPrompt) {
     // GO
     commands.go = function(args) {
         if (!args) {
-            return '*** MISSING ARGUMENT\n    Usage: go <number> | go <section> | go back | go forward';
+            return '*** MISSING ARGUMENT\n    Usage: go [number] | go [section] | go back | go forward';
         }
 
         var target = args.trim().toLowerCase();
@@ -361,13 +358,13 @@ function initializeTerminal(terminalPrompt) {
         }
 
         // Unknown
-        return '*** UNKNOWN TARGET: ' + args + '\n    Usage: go <number> | go home | go posts | go about\n           go back | go forward';
+        return '*** UNKNOWN TARGET: ' + args + '\n    Usage: go [number] | go home | go posts | go about | go back | go forward';
     };
 
     // SEARCH
     commands.search = function(args) {
         if (!args) {
-            return '*** MISSING ARGUMENT\n    Usage: search <keyword>\n    Example: search microfoundry';
+            return '*** MISSING ARGUMENT\n    Usage: search [keyword]\n    Example: search microfoundry';
         }
 
         var searchTerm = args.toLowerCase();
@@ -398,7 +395,7 @@ function initializeTerminal(terminalPrompt) {
             output += num + '  ' + date + '  ' + title + '\n';
         });
         output += '────────────────────────────────────────────────\n';
-        output += 'Use "go <number>" to read a result.';
+        output += 'Use "go [number]" to read a result.';
 
         storeResults(results);
         return output;
