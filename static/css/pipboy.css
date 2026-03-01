@@ -955,6 +955,105 @@ footer p {
   text-shadow: none;
 }
 
+/* ============================================
+   Language Switcher
+   ============================================ */
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--pipboy-dark-green);
+  font-family: var(--pipboy-terminal-font);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+}
+
+.lang-label {
+  color: var(--pipboy-dark-green);
+  letter-spacing: 2px;
+}
+
+.lang-separator {
+  color: var(--pipboy-dark-green);
+}
+
+.lang-option {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--pipboy-dark-green);
+  color: var(--pipboy-dark-green);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+}
+
+.lang-option:hover {
+  color: var(--pipboy-green);
+  border-color: var(--pipboy-green);
+  box-shadow: 0 0 5px rgba(65, 255, 0, 0.4);
+  text-shadow: 0 0 3px rgba(65, 255, 0, 0.6);
+}
+
+.lang-option.active {
+  color: var(--pipboy-green);
+  border-color: var(--pipboy-green);
+  background-color: rgba(65, 255, 0, 0.1);
+  cursor: default;
+  text-shadow: var(--pipboy-glow);
+}
+
+/* Language suggestion banner */
+.lang-suggestion {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--pipboy-bg);
+  border: 2px solid var(--pipboy-green);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--pipboy-terminal-font);
+  font-size: var(--font-size-small);
+  color: var(--pipboy-green);
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(65, 255, 0, 0.3);
+  text-align: center;
+  max-width: 90vw;
+}
+
+.lang-suggestion.visible {
+  display: block;
+  animation: terminal-fade-in 0.3s ease-in;
+}
+
+.lang-suggestion a {
+  color: var(--pipboy-light-green);
+  text-decoration: underline;
+  margin: 0 0.25rem;
+}
+
+.lang-suggestion .dismiss-btn {
+  background: none;
+  border: 1px solid var(--pipboy-dark-green);
+  color: var(--pipboy-dark-green);
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.75rem;
+  cursor: pointer;
+  font-family: var(--pipboy-terminal-font);
+  font-size: var(--font-size-small);
+}
+
+.lang-suggestion .dismiss-btn:hover {
+  color: var(--pipboy-green);
+  border-color: var(--pipboy-green);
+}
+
+@keyframes terminal-fade-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* 네비게이션 영역 */
 .pipboy-nav a {
     font-size: var(--font-size-h5);

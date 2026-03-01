@@ -26,4 +26,13 @@
 <link rel="stylesheet" href="/css/syntax.css">
 <link rel="stylesheet" href="/css/pipboy.css">
 
+{{/* Alternate language links for bilingual articles */}}
+{{ with .Params.translations }}
+  {{ $currentLang := $.Params.content_lang | default "en" }}
+  <link rel="alternate" hreflang="{{ $currentLang }}" href="{{ $.Permalink }}">
+  {{ range $lang, $url := . }}
+    <link rel="alternate" hreflang="{{ $lang }}" href="{{ $url | absURL }}">
+  {{ end }}
+{{ end }}
+
 {{ template "_internal/google_analytics.html" . }}
