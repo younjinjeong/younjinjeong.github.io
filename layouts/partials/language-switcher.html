@@ -1,0 +1,27 @@
+{{/* Language Switcher - only renders when translations exist */}}
+{{ with .Params.translations }}
+<div class="language-switcher" role="navigation" aria-label="Language options">
+  <span class="lang-label">LANG://</span>
+  {{ $currentLang := $.Params.content_lang | default "en" }}
+
+  {{/* English link */}}
+  {{ if eq $currentLang "en" }}
+    <span class="lang-option active" aria-current="true">EN</span>
+  {{ else }}
+    {{ with .en }}
+      <a href="{{ . }}" class="lang-option" hreflang="en" data-lang="en">EN</a>
+    {{ end }}
+  {{ end }}
+
+  <span class="lang-separator">|</span>
+
+  {{/* Korean link */}}
+  {{ if eq $currentLang "ko" }}
+    <span class="lang-option active" aria-current="true">KO</span>
+  {{ else }}
+    {{ with .ko }}
+      <a href="{{ . }}" class="lang-option" hreflang="ko" data-lang="ko">KO</a>
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}
