@@ -84,14 +84,14 @@ test.describe('Typography — Heading Hierarchy', () => {
 });
 
 test.describe('Typography — Code Sizing', () => {
-  test('code blocks use Monofonto font (same as body)', async ({ page }) => {
+  test('code blocks use D2Coding font (same as body)', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
     await page.waitForTimeout(2000);
 
     const codeBlock = page.locator('pre code, .highlight code').first();
     if (await codeBlock.count() > 0) {
       const fontFamily = await codeBlock.evaluate(el => getComputedStyle(el).fontFamily);
-      expect(fontFamily.toLowerCase()).toContain('monofonto');
+      expect(fontFamily.toLowerCase()).toContain('d2coding');
     }
   });
 
@@ -130,7 +130,7 @@ test.describe('Typography — Code Sizing', () => {
 });
 
 test.describe('Typography — Korean Content', () => {
-  test('Korean article uses DungGeunMo font', async ({ page }) => {
+  test('Korean article uses D2Coding font', async ({ page }) => {
     await page.goto(KOREAN_ARTICLE);
     await page.waitForTimeout(2000);
 
@@ -140,8 +140,8 @@ test.describe('Typography — Korean Content', () => {
       const fontFamily = await content.evaluate(el => getComputedStyle(el).fontFamily);
       expect(
         fontFamily.toLowerCase(),
-        `Korean content font-family should include DungGeunMo`
-      ).toContain('dunggeunmo');
+        `Korean content font-family should include D2Coding`
+      ).toContain('d2coding');
     }
   });
 
