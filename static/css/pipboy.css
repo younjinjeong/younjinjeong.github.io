@@ -71,13 +71,13 @@
   --font-size-meta: 0.944rem;   /* 17px - dates, tags, metadata */
   --font-size-body: 1rem;        /* 18px — D2Coding unified */
   --font-size-code: 1rem;        /* 18px — same as body (D2Coding) */
-  --font-size-h6: 1.333rem;     /* 24px */
-  --font-size-h5: 1.556rem;     /* 28px */
-  --font-size-h4: 1.778rem;     /* 32px */
-  --font-size-h3: 2rem;         /* 36px */
-  --font-size-h2: 2.444rem;     /* 44px */
-  --font-size-h1: 2.889rem;     /* 52px */
-  --font-size-hero: 3.333rem;   /* 60px */
+  --font-size-h6: 1.111rem;     /* 20px — 1.1x body */
+  --font-size-h5: 1.222rem;     /* 22px — 1.25x body */
+  --font-size-h4: 1.389rem;     /* 25px — 1.4x body */
+  --font-size-h3: 1.611rem;     /* 29px — 1.6x body */
+  --font-size-h2: 1.778rem;     /* 32px — 1.8x body */
+  --font-size-h1: 2rem;         /* 36px — 2.0x body */
+  --font-size-hero: 2.222rem;   /* 40px — 2.2x body */
   
   /* Line Heights */
   --line-height-tight: 1.25;
@@ -1214,13 +1214,13 @@ article.post .post-content,
     --font-size-meta: 0.889rem;    /* 16px */
     --font-size-body: 1rem;         /* 18px — D2Coding unified */
     --font-size-code: 1rem;         /* 18px — same as body (D2Coding) */
-    --font-size-h6: 1.111rem;      /* 20px */
-    --font-size-h5: 1.222rem;      /* 22px */
-    --font-size-h4: 1.444rem;      /* 26px */
-    --font-size-h3: 1.667rem;      /* 30px */
-    --font-size-h2: 1.889rem;      /* 34px */
-    --font-size-h1: 2.111rem;      /* 38px */
-    --font-size-hero: 2.333rem;    /* 42px */
+    --font-size-h6: 1.111rem;      /* 20px — 1.1x body */
+    --font-size-h5: 1.222rem;      /* 22px — 1.25x body */
+    --font-size-h4: 1.389rem;      /* 25px — 1.4x body */
+    --font-size-h3: 1.611rem;      /* 29px — 1.6x body */
+    --font-size-h2: 1.778rem;      /* 32px — 1.8x body */
+    --font-size-h1: 2rem;          /* 36px — 2.0x body */
+    --font-size-hero: 2.222rem;    /* 40px — 2.2x body */
   }
   /* Mobile Menu Toggle */
   /* Hide floating hamburger button - now integrated in bottom nav */
@@ -1502,11 +1502,11 @@ article.post .post-content,
     --font-size-meta: 0.889rem;    /* 16px */
     --font-size-body: 1rem;         /* 18px — D2Coding unified */
     --font-size-code: 1rem;         /* 18px — same as body (D2Coding) */
-    --font-size-h4: 1.444rem;      /* 26px */
-    --font-size-h3: 1.667rem;      /* 30px */
-    --font-size-h2: 1.889rem;      /* 34px */
-    --font-size-h1: 2.111rem;      /* 38px */
-    --font-size-hero: 2.333rem;    /* 42px */
+    --font-size-h4: 1.389rem;      /* 25px — 1.4x body */
+    --font-size-h3: 1.611rem;      /* 29px — 1.6x body */
+    --font-size-h2: 1.778rem;      /* 32px — 1.8x body */
+    --font-size-h1: 2rem;          /* 36px — 2.0x body */
+    --font-size-hero: 2.222rem;    /* 40px — 2.2x body */
   }
   
   /* Site title */
