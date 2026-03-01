@@ -1,0 +1,33 @@
+{{ define "main" }}
+<main>
+  <div class="container">
+    <h1 class="page-title">{{ .Title }}</h1>
+
+    {{ $max := 1 }}
+    {{ range .Data.Terms.Alphabetical }}
+      {{ if gt .Count $max }}{{ $max = .Count }}{{ end }}
+    {{ end }}
+
+    <div class="tag-cloud">
+      {{ range .Data.Terms.Alphabetical }}
+        {{ $count := .Count }}
+        {{ $ratio := div (float $count) (float $max) }}
+        {{ $level := 1 }}
+        {{ if gt $ratio 0.8 }}{{ $level = 5 }}
+        {{ else if gt $ratio 0.6 }}{{ $level = 4 }}
+        {{ else if gt $ratio 0.4 }}{{ $level = 3 }}
+        {{ else if gt $ratio 0.2 }}{{ $level = 2 }}
+        {{ end }}
+        <a href="{{ .Page.RelPermalink }}" class="tag-cloud-item tag-level-{{ $level }}" title="{{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}">
+          {{ .Page.Title | upper }}
+        </a>
+      {{ end }}
+    </div>
+
+    <!-- 터미널 커서 -->
+    <div class="terminal-prompt">
+      <span class="prompt-symbol">_></span>
+    </div>
+  </div>
+</main>
+{{ end }}
