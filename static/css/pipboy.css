@@ -759,6 +759,15 @@ footer p {
   opacity: 0.9;
 }
 
+.reading-time {
+  opacity: 0.7;
+}
+
+.reading-time::before {
+  content: " // ";
+  opacity: 0.5;
+}
+
 /* Tag styles - consistent across all pages */
 .post-tags,
 .tags {
