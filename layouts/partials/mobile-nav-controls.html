@@ -348,11 +348,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (diffX > 0 && touchStartX < 50) {
           // Swipe right from left edge - open menu
           openMenu();
-        } else if (diffX > swipeThreshold) {
-          // Swipe right - go back
+        } else if (diffX > swipeThreshold && touchStartX < 30) {
+          // Swipe right from left edge only - go back
           navigateBack();
-        } else if (diffX < -swipeThreshold) {
-          // Swipe left - go forward
+        } else if (diffX < -swipeThreshold && touchStartX > window.innerWidth - 30) {
+          // Swipe left from right edge only - go forward
           navigateForward();
         }
       }
