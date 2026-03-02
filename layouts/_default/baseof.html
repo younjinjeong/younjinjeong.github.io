@@ -54,7 +54,38 @@
   <script type="application/javascript" src="/js/cursor.js"></script>
   <script type="application/javascript" src="/js/mobile.js"></script>
   <script type="application/javascript" src="/js/lang-detect.js"></script>
-  
+
+  <!-- Mermaid diagram support (loaded only on pages with mermaid blocks) -->
+  {{ if .Store.Get "hasMermaid" }}
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        primaryColor: '#003300',
+        primaryTextColor: '#41ff00',
+        primaryBorderColor: '#29a000',
+        lineColor: '#41ff00',
+        secondaryColor: '#001a00',
+        tertiaryColor: '#002200',
+        noteBkgColor: '#001100',
+        noteTextColor: '#41ff00',
+        noteBorderColor: '#29a000',
+        actorTextColor: '#41ff00',
+        actorBorder: '#29a000',
+        actorBkg: '#001100',
+        labelTextColor: '#41ff00',
+        edgeLabelBackground: '#001100',
+        clusterBkg: '#001a00',
+        clusterBorder: '#29a000',
+        fontFamily: 'Monofonto, VT323, monospace'
+      }
+    });
+  </script>
+  {{ end }}
+
   <!-- 터미널 단축키 힌트 -->
   <div class="terminal-shortcut-hint">
     Press Shift+T for terminal

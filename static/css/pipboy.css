@@ -1759,3 +1759,72 @@ article.post .post-content,
     max-width: 200px;
   }
 }
+
+/* ===== Mermaid Diagram Pip-Boy Theme ===== */
+.mermaid {
+  background-color: var(--pipboy-bg-alt);
+  border: 1px solid var(--pipboy-dark-green);
+  border-radius: 0;
+  padding: 1.5rem 1rem;
+  margin: 1.5rem 0;
+  box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Override Mermaid SVG text to phosphor green */
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid .label,
+.mermaid text {
+  fill: #41ff00 !important;
+  color: #41ff00 !important;
+}
+
+/* Node styling */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon {
+  stroke: #29a000 !important;
+}
+
+/* Edge/arrow lines */
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke: #41ff00 !important;
+}
+
+/* Arrow markers */
+.mermaid marker path {
+  fill: #41ff00 !important;
+  stroke: #41ff00 !important;
+}
+
+/* Cluster/subgraph borders */
+.mermaid .cluster rect {
+  stroke: #29a000 !important;
+  fill: #001a00 !important;
+}
+
+/* Sequence diagram lifelines */
+.mermaid line {
+  stroke: #29a000 !important;
+}
+
+/* Sequence diagram actor boxes */
+.mermaid .actor {
+  stroke: #29a000 !important;
+  fill: #001100 !important;
+}
+
+@media (max-width: 768px) {
+  .mermaid {
+    padding: 1rem 0.5rem;
+    margin: 1rem 0;
+  }
+}
