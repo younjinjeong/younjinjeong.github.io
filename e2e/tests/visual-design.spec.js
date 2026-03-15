@@ -9,7 +9,7 @@ const { test, expect } = require('@playwright/test');
 test.describe('Visual Design', () => {
   test('homepage has dark background', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const body = page.locator('body');
     const bgColor = await body.evaluate(el =>
@@ -24,7 +24,7 @@ test.describe('Visual Design', () => {
 
   test('header element exists and styled', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const header = page.locator('header, .site-header');
     await expect(header.first()).toBeVisible();
@@ -32,7 +32,7 @@ test.describe('Visual Design', () => {
 
   test('navigation styled correctly', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const nav = page.locator('nav');
     await expect(nav.first()).toBeVisible();
@@ -40,7 +40,7 @@ test.describe('Visual Design', () => {
 
   test('footer element exists', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const footer = page.locator('footer');
     await expect(footer.first()).toBeVisible();
@@ -48,7 +48,7 @@ test.describe('Visual Design', () => {
 
   test('links have green color (pipboy theme)', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const link = page.locator('a').first();
     const color = await link.evaluate(el =>
@@ -61,7 +61,7 @@ test.describe('Visual Design', () => {
 
   test('terminal-styled content container', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const content = page.locator('article, .content, main');
     await expect(content.first()).toBeVisible();
@@ -69,21 +69,21 @@ test.describe('Visual Design', () => {
 
   test('categories page visual', async ({ page }) => {
     await page.goto('/categories/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/visual-categories.png' });
   });
 
   test('tags page visual', async ({ page }) => {
     await page.goto('/tags/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/visual-tags.png' });
   });
 
   test('full page visual regression', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({
       path: 'e2e/screenshots/visual-full-page.png',

@@ -7,8 +7,8 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './e2e/tests',
 
-  /* Run tests sequentially to avoid overwhelming Hugo server */
-  fullyParallel: false,
+  /* Run tests in parallel — they are independent */
+  fullyParallel: true,
 
   /* Fail the build on CI if you accidentally left test.only in the source code */
   forbidOnly: !!process.env.CI,
@@ -16,8 +16,8 @@ module.exports = defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
 
-  /* Use single worker to avoid overwhelming Hugo server */
-  workers: 1,
+  /* Use 2 workers on CI for speed, 1 locally */
+  workers: process.env.CI ? 2 : 1,
 
   /* Reporter to use */
   reporter: [
@@ -41,10 +41,10 @@ module.exports = defineConfig({
     video: 'on-first-retry',
 
     /* Navigation timeout */
-    navigationTimeout: 60000,
+    navigationTimeout: 30000,
 
     /* Action timeout */
-    actionTimeout: 30000,
+    actionTimeout: 15000,
   },
 
   /* Configure projects — all Chromium-based to avoid requiring WebKit install */
@@ -79,7 +79,7 @@ module.exports = defineConfig({
   outputDir: 'e2e/test-results',
 
   /* Timeout for each test */
-  timeout: 60000,
+  timeout: 30000,
 
   /* Expect timeout */
   expect: {
