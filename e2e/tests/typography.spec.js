@@ -1,6 +1,14 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/** Wait for boot screen overlay to disappear */
+async function waitForBootScreen(page) {
+  const boot = page.locator('#boot-screen-react');
+  if (await boot.count() > 0) {
+    await boot.waitFor({ state: 'detached', timeout: 15000 });
+  }
+}
+
 /**
  * Typography Tests
  * Validates heading hierarchy, code sizing, and font consistency across devices
@@ -17,7 +25,7 @@ function parsePx(value) {
 test.describe('Typography — Heading Hierarchy', () => {
   test('content headings decrease in size and all larger than body', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const bodySize = await page.locator('.post-content p').first().evaluate(
       el => parseFloat(getComputedStyle(el).fontSize)
@@ -53,7 +61,7 @@ test.describe('Typography — Heading Hierarchy', () => {
 
   test('page title is larger than content headings', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const titleSize = await page.locator('.post > header h1').first().evaluate(
       el => parseFloat(getComputedStyle(el).fontSize)
@@ -68,7 +76,7 @@ test.describe('Typography — Heading Hierarchy', () => {
 
   test('h2/body ratio > 1.5 — proves hierarchy is not flat', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const bodySize = await page.locator('.post-content p').first().evaluate(
       el => parseFloat(getComputedStyle(el).fontSize)
@@ -86,7 +94,7 @@ test.describe('Typography — Heading Hierarchy', () => {
 test.describe('Typography — Code Sizing', () => {
   test('code blocks use D2Coding font (same as body)', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const codeBlock = page.locator('pre code, .highlight code').first();
     if (await codeBlock.count() > 0) {
@@ -97,7 +105,7 @@ test.describe('Typography — Code Sizing', () => {
 
   test('code font size is 75-100% of body text', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const bodySize = await page.locator('.post-content p').first().evaluate(
       el => parseFloat(getComputedStyle(el).fontSize)
@@ -114,7 +122,7 @@ test.describe('Typography — Code Sizing', () => {
 
   test('inline code matches code block size', async ({ page }) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const inlineCode = page.locator('.post-content p code, .post-content li code').first();
     const blockCode = page.locator('pre code, .highlight code').first();
@@ -132,7 +140,7 @@ test.describe('Typography — Code Sizing', () => {
 test.describe('Typography — Korean Content', () => {
   test('Korean article uses D2Coding font', async ({ page }) => {
     await page.goto(KOREAN_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const article = page.locator('article[lang="ko"], article.post');
     if (await article.count() > 0) {
@@ -147,7 +155,7 @@ test.describe('Typography — Korean Content', () => {
 
   test('Korean article has lang="ko" attribute', async ({ page }) => {
     await page.goto(KOREAN_ARTICLE);
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const article = page.locator('article[lang="ko"]');
     await expect(article).toHaveCount(1);
@@ -157,7 +165,7 @@ test.describe('Typography — Korean Content', () => {
 test.describe('Typography — Visual Regression Screenshots', () => {
   test('English article screenshot', async ({ page, browserName }, testInfo) => {
     await page.goto(ENGLISH_ARTICLE);
-    await page.waitForTimeout(3000);
+    await waitForBootScreen(page);
 
     await page.screenshot({
       path: `e2e/screenshots/typography-english-${testInfo.project.name}.png`,
@@ -167,7 +175,7 @@ test.describe('Typography — Visual Regression Screenshots', () => {
 
   test('Homepage screenshot', async ({ page }, testInfo) => {
     await page.goto('/');
-    await page.waitForTimeout(3000);
+    await waitForBootScreen(page);
 
     await page.screenshot({
       path: `e2e/screenshots/typography-homepage-${testInfo.project.name}.png`,
@@ -177,7 +185,7 @@ test.describe('Typography — Visual Regression Screenshots', () => {
 
   test('Posts list screenshot', async ({ page }, testInfo) => {
     await page.goto('/posts/');
-    await page.waitForTimeout(3000);
+    await waitForBootScreen(page);
 
     await page.screenshot({
       path: `e2e/screenshots/typography-posts-${testInfo.project.name}.png`,

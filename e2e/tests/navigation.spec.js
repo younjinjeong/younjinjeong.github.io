@@ -1,6 +1,14 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/** Wait for boot screen overlay to disappear */
+async function waitForBootScreen(page) {
+  const boot = page.locator('#boot-screen-react');
+  if (await boot.count() > 0) {
+    await boot.waitFor({ state: 'detached', timeout: 15000 });
+  }
+}
+
 /**
  * Navigation Tests
  * Tests page navigation and link functionality
@@ -9,14 +17,14 @@ const { test, expect } = require('@playwright/test');
 test.describe('Navigation', () => {
   test('homepage loads successfully', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     await expect(page).toHaveTitle(/RYONGJIN|Blog/i);
   });
 
   test('posts page navigates correctly', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const content = page.locator('article, .posts, main');
     await expect(content.first()).toBeVisible();
@@ -26,7 +34,7 @@ test.describe('Navigation', () => {
 
   test('about page loads', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const content = page.locator('article, main');
     await expect(content.first()).toBeVisible();
@@ -36,7 +44,7 @@ test.describe('Navigation', () => {
 
   test('categories page loads', async ({ page }) => {
     await page.goto('/categories/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const content = page.locator('main, .categories, ul');
     await expect(content.first()).toBeVisible();
@@ -44,7 +52,7 @@ test.describe('Navigation', () => {
 
   test('tags page loads', async ({ page }) => {
     await page.goto('/tags/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const content = page.locator('main, .tags, ul');
     await expect(content.first()).toBeVisible();
@@ -52,12 +60,12 @@ test.describe('Navigation', () => {
 
   test('individual post navigation', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     const postLink = page.locator('article a, .post-link, h2 a, h3 a').first();
     if (await postLink.count() > 0) {
       await postLink.click();
-      await page.waitForTimeout(2000);
+      await page.waitForLoadState('domcontentloaded');
 
       const article = page.locator('article, .post-content');
       await expect(article.first()).toBeVisible();
@@ -68,21 +76,23 @@ test.describe('Navigation', () => {
 
   test('home navigation works', async ({ page, isMobile }) => {
     await page.goto('/about/');
-    await page.waitForTimeout(2000);
+    await waitForBootScreen(page);
 
     if (isMobile) {
       // On mobile, header links are hidden — open menu first
       const menuBtn = page.locator('.nav-menu');
       if (await menuBtn.count() > 0) {
         await menuBtn.click();
-        await page.waitForTimeout(500);
+        await page.waitForSelector('.pipboy-nav.mobile-active', { timeout: 5000 });
       }
     }
 
-    const homeLink = page.locator('a[href="/"], .site-title a, header a').first();
+    const homeLink = isMobile
+      ? page.locator('.pipboy-nav a[href="/"]').first()
+      : page.locator('a[href="/"], .site-title a, header a').first();
     if (await homeLink.count() > 0) {
       await homeLink.click();
-      await page.waitForTimeout(2000);
+      await page.waitForLoadState('domcontentloaded');
 
       await expect(page).toHaveURL(/\/$/);
     }
@@ -90,7 +100,7 @@ test.describe('Navigation', () => {
 
   test('404 page for non-existent URL', async ({ page }) => {
     await page.goto('/nonexistent-page-12345/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/nav-404-page.png' });
   });
