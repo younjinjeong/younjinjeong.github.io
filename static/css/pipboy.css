@@ -1284,7 +1284,7 @@ article.post .post-content,
 }
 
 /* Mobile Responsive Design */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 810px) {
   :root {
     --font-size-base: 18px;
     --font-size-small: 0.833rem;   /* 15px */
@@ -1763,7 +1763,7 @@ article.post .post-content,
   border-radius: 4px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .profile-image img {
     max-width: 200px;
   }
@@ -1831,7 +1831,7 @@ article.post .post-content,
   fill: #001100 !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .mermaid {
     padding: 1rem 0.5rem;
     margin: 1rem 0;

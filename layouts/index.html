@@ -22,6 +22,9 @@
       <div class="post-content">
         {{ $latestPost.Content }}
       </div>
+      {{ if $latestPost.Store.Get "hasMermaid" }}
+        {{ .Store.Set "hasMermaid" true }}
+      {{ end }}
       
       <footer class="post-footer">
         <div class="post-navigation">
