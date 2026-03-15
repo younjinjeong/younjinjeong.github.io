@@ -12,7 +12,7 @@ const KO_ARTICLE = '/2026/03/microfoundry-ko/';
 test.describe('Language Switcher — Rendering', () => {
   test('English article shows language switcher', async ({ page }) => {
     await page.goto(EN_ARTICLE);
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toBeVisible();
@@ -31,7 +31,7 @@ test.describe('Language Switcher — Rendering', () => {
 
   test('Korean article shows language switcher', async ({ page }) => {
     await page.goto(KO_ARTICLE);
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toBeVisible();
@@ -48,7 +48,7 @@ test.describe('Language Switcher — Rendering', () => {
 
   test('non-bilingual article has no language switcher', async ({ page }) => {
     await page.goto('/2026/02/why-every-financial-database-needs-a-proper-money-type/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toHaveCount(0);
@@ -58,11 +58,11 @@ test.describe('Language Switcher — Rendering', () => {
 test.describe('Language Switcher — Navigation', () => {
   test('clicking KO navigates to Korean version', async ({ page }) => {
     await page.goto(EN_ARTICLE);
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const koLink = page.locator('.language-switcher a[data-lang="ko"]');
     await koLink.click();
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await expect(page).toHaveURL(new RegExp(KO_ARTICLE.replace(/\//g, '\\/')));
 
@@ -73,11 +73,11 @@ test.describe('Language Switcher — Navigation', () => {
 
   test('clicking EN navigates to English version', async ({ page }) => {
     await page.goto(KO_ARTICLE);
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const enLink = page.locator('.language-switcher a[data-lang="en"]');
     await enLink.click();
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await expect(page).toHaveURL(new RegExp(EN_ARTICLE.replace(/\//g, '\\/')));
   });
@@ -89,7 +89,7 @@ test.describe('Language Switcher — Browser Detection', () => {
     const page = await context.newPage();
 
     await page.goto(EN_ARTICLE);
-    await page.waitForTimeout(3500);
+    await page.waitForTimeout(3500); // wait for lang-suggestion CSS animation
 
     const suggestion = page.locator('.lang-suggestion.visible');
     await expect(suggestion).toBeVisible();
@@ -106,7 +106,7 @@ test.describe('Language Switcher — Browser Detection', () => {
     const page = await context.newPage();
 
     await page.goto(EN_ARTICLE);
-    await page.waitForTimeout(3500);
+    await page.waitForTimeout(3500); // wait for lang-suggestion CSS animation
 
     const suggestion = page.locator('.lang-suggestion.visible');
     await expect(suggestion).toHaveCount(0);
@@ -119,14 +119,12 @@ test.describe('Language Switcher — Browser Detection', () => {
     const page = await context.newPage();
 
     await page.goto(EN_ARTICLE);
-    await page.waitForTimeout(3500);
+    await page.waitForTimeout(3500); // wait for lang-suggestion CSS animation
 
     const suggestion = page.locator('.lang-suggestion');
     await expect(suggestion).toBeVisible();
 
     await suggestion.locator('.dismiss-btn').click();
-    await page.waitForTimeout(500);
-
     await expect(page.locator('.lang-suggestion.visible')).toHaveCount(0);
     await context.close();
   });

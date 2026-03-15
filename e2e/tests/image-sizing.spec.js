@@ -16,7 +16,7 @@ test.describe('Image Sizing', () => {
 
   test('about page profile images load', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/image-about-page.png' });
 
@@ -28,20 +28,20 @@ test.describe('Image Sizing', () => {
 
   test('posts page loads images correctly', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/image-posts-list.png' });
   });
 
   test('single post page images', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     // Click first post link
     const postLink = page.locator('article a, .post-link, h2 a').first();
     if (await postLink.count() > 0) {
       await postLink.click();
-      await page.waitForTimeout(2000);
+      await page.waitForLoadState('domcontentloaded');
 
       await page.screenshot({ path: 'e2e/screenshots/image-single-post.png' });
     }
@@ -49,7 +49,7 @@ test.describe('Image Sizing', () => {
 
   test('images have proper attributes', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     const images = page.locator('img[src]');
     const count = await images.count();
@@ -63,7 +63,7 @@ test.describe('Image Sizing', () => {
 
   test('responsive layout screenshot', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/image-responsive-desktop.png', fullPage: true });
   });
@@ -71,7 +71,7 @@ test.describe('Image Sizing', () => {
   test('mobile viewport images', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({ path: 'e2e/screenshots/image-mobile-viewport.png', fullPage: true });
   });
