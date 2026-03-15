@@ -1,6 +1,14 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/** Wait for boot screen overlay to disappear */
+async function waitForBootScreen(page) {
+  const boot = page.locator('#boot-screen-react');
+  if (await boot.count() > 0) {
+    await boot.waitFor({ state: 'detached', timeout: 15000 });
+  }
+}
+
 /**
  * Navigation Tests
  * Tests page navigation and link functionality
@@ -9,14 +17,14 @@ const { test, expect } = require('@playwright/test');
 test.describe('Navigation', () => {
   test('homepage loads successfully', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await expect(page).toHaveTitle(/RYONGJIN|Blog/i);
   });
 
   test('posts page navigates correctly', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const content = page.locator('article, .posts, main');
     await expect(content.first()).toBeVisible();
@@ -26,7 +34,7 @@ test.describe('Navigation', () => {
 
   test('about page loads', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const content = page.locator('article, main');
     await expect(content.first()).toBeVisible();
@@ -36,7 +44,7 @@ test.describe('Navigation', () => {
 
   test('categories page loads', async ({ page }) => {
     await page.goto('/categories/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const content = page.locator('main, .categories, ul');
     await expect(content.first()).toBeVisible();
@@ -44,7 +52,7 @@ test.describe('Navigation', () => {
 
   test('tags page loads', async ({ page }) => {
     await page.goto('/tags/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const content = page.locator('main, .tags, ul');
     await expect(content.first()).toBeVisible();
@@ -52,7 +60,7 @@ test.describe('Navigation', () => {
 
   test('individual post navigation', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const postLink = page.locator('article a, .post-link, h2 a, h3 a').first();
     if (await postLink.count() > 0) {
@@ -68,7 +76,7 @@ test.describe('Navigation', () => {
 
   test('home navigation works', async ({ page, isMobile }) => {
     await page.goto('/about/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     if (isMobile) {
       // On mobile, header links are hidden — open menu first

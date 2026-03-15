@@ -1,6 +1,14 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/** Wait for boot screen overlay to disappear */
+async function waitForBootScreen(page) {
+  const boot = page.locator('#boot-screen-react');
+  if (await boot.count() > 0) {
+    await boot.waitFor({ state: 'detached', timeout: 15000 });
+  }
+}
+
 /**
  * Language Switcher Tests
  * Tests bilingual article language switching and browser detection
@@ -12,7 +20,7 @@ const KO_ARTICLE = '/2026/03/microfoundry-ko/';
 test.describe('Language Switcher — Rendering', () => {
   test('English article shows language switcher', async ({ page }) => {
     await page.goto(EN_ARTICLE);
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toBeVisible();
@@ -31,7 +39,7 @@ test.describe('Language Switcher — Rendering', () => {
 
   test('Korean article shows language switcher', async ({ page }) => {
     await page.goto(KO_ARTICLE);
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toBeVisible();
@@ -48,7 +56,7 @@ test.describe('Language Switcher — Rendering', () => {
 
   test('non-bilingual article has no language switcher', async ({ page }) => {
     await page.goto('/2026/02/why-every-financial-database-needs-a-proper-money-type/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const switcher = page.locator('.language-switcher');
     await expect(switcher).toHaveCount(0);
@@ -58,11 +66,11 @@ test.describe('Language Switcher — Rendering', () => {
 test.describe('Language Switcher — Navigation', () => {
   test('clicking KO navigates to Korean version', async ({ page }) => {
     await page.goto(EN_ARTICLE);
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const koLink = page.locator('.language-switcher a[data-lang="ko"]');
     await koLink.click();
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await expect(page).toHaveURL(new RegExp(KO_ARTICLE.replace(/\//g, '\\/')));
 
@@ -73,11 +81,11 @@ test.describe('Language Switcher — Navigation', () => {
 
   test('clicking EN navigates to English version', async ({ page }) => {
     await page.goto(KO_ARTICLE);
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const enLink = page.locator('.language-switcher a[data-lang="en"]');
     await enLink.click();
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await expect(page).toHaveURL(new RegExp(EN_ARTICLE.replace(/\//g, '\\/')));
   });

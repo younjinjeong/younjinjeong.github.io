@@ -1,6 +1,14 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/** Wait for boot screen overlay to disappear */
+async function waitForBootScreen(page) {
+  const boot = page.locator('#boot-screen-react');
+  if (await boot.count() > 0) {
+    await boot.waitFor({ state: 'detached', timeout: 15000 });
+  }
+}
+
 /**
  * Image Sizing Tests
  * Tests that images load with correct dimensions
@@ -16,7 +24,7 @@ test.describe('Image Sizing', () => {
 
   test('about page profile images load', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await page.screenshot({ path: 'e2e/screenshots/image-about-page.png' });
 
@@ -28,14 +36,14 @@ test.describe('Image Sizing', () => {
 
   test('posts page loads images correctly', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await page.screenshot({ path: 'e2e/screenshots/image-posts-list.png' });
   });
 
   test('single post page images', async ({ page }) => {
     await page.goto('/posts/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     // Click first post link
     const postLink = page.locator('article a, .post-link, h2 a').first();
@@ -49,7 +57,7 @@ test.describe('Image Sizing', () => {
 
   test('images have proper attributes', async ({ page }) => {
     await page.goto('/about/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     const images = page.locator('img[src]');
     const count = await images.count();
@@ -63,7 +71,7 @@ test.describe('Image Sizing', () => {
 
   test('responsive layout screenshot', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await page.screenshot({ path: 'e2e/screenshots/image-responsive-desktop.png', fullPage: true });
   });
@@ -71,7 +79,7 @@ test.describe('Image Sizing', () => {
   test('mobile viewport images', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await waitForBootScreen(page);
 
     await page.screenshot({ path: 'e2e/screenshots/image-mobile-viewport.png', fullPage: true });
   });
