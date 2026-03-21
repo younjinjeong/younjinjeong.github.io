@@ -912,6 +912,26 @@ footer p {
   box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
 }
 
+/* YouTube Shorts (9:16 세로 비디오) */
+.video-container--shorts {
+  padding-bottom: 0;
+  height: auto;
+  max-width: 400px;
+  overflow: visible;
+  border: 2px solid var(--pipboy-green);
+  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
+}
+
+.video-container.video-container--shorts iframe {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  height: auto;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 /* YouTube 링크 스타일 - only for standalone YouTube links */
 .post-content p > a[href*="youtube.com"]:only-child,
 .post-content p > a[href*="youtu.be"]:only-child {
