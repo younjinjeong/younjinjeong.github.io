@@ -73,12 +73,12 @@ To put it plainly: these three are not independent virtues. **Extreme Ownership 
 
 Highly skilled people are often weakest here, worn down by repetitive questions from others. But that's a problem that only applies when Extreme Ownership and Deliver the Result are already in place. When someone lacks the competence to build trust in the first place, their unkindness is just a symptom of incapability.
 
-## Give the $500K Engineer $2.5M in Tokens
+## Give the $500K Engineer $250K in Tokens
 
 This brings me to something Jensen Huang, CEO of NVIDIA, said that resonates deeply.
 
 {{< youtube-shorts bkcGggJJFjM >}}
-> *Jensen Huang — "Spend $2.5M on tokens for your $500K engineer"*
+> *Jensen Huang — "Spend $250K on tokens for your $500K engineer"*
 
 I agree wholeheartedly. There is nothing more important than ensuring that the experience of burning through tokens—driven by curiosity, driven by the obsession to solve problems—translates into real results. The goal isn't to economize on tokens. It's to maximize the value each token creates.
 
