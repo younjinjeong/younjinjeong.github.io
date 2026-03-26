@@ -52,18 +52,39 @@
 }
 
 :root {
-  /* Authentic Pipboy colors from the GIF */
-  --pipboy-green: #41ff00;        /* Bright phosphor green */
-  --pipboy-dark-green: #29a000;   /* Darker shade for borders/accents */
-  --pipboy-light-green: #5fff1f;  /* Lighter shade for highlights */
-  --pipboy-amber: #ffb000;        /* Amber variant */
-  --pipboy-black: #000000;        /* Pure black background */
-  --pipboy-bg: #000000;           /* Main background */
-  --pipboy-bg-alt: #001100;       /* Slight green tint for panels */
+  /* Default: Aged Phosphor — muted P1 green, easy on the eyes */
+  --pipboy-green: #7ABF5E;
+  --pipboy-dark-green: #4E8A2C;
+  --pipboy-light-green: #96D47A;
+  --pipboy-amber: #C8B060;
+  --pipboy-black: #000000;
+  --pipboy-bg: #000000;
+  --pipboy-bg-alt: #061106;
   --pipboy-terminal-font: 'D2Coding', 'Monofonto', 'VT323', 'Share Tech Mono', 'IBM Plex Mono', 'Terminal', 'DungGeunMo', 'Nanum Gothic Coding', 'Consolas', 'Monaco', 'Lucida Console', monospace;
-  --pipboy-glow: 0 0 5px rgba(65, 255, 0, 0.6);
-  --pipboy-glow-intense: 0 0 10px rgba(65, 255, 0, 0.8);
-  --pipboy-glow-subtle: 0 0 2px rgba(65, 255, 0, 0.5);
+
+  /* RGB components for rgba() usage */
+  --pipboy-rgb: 122, 191, 94;
+  --pipboy-rgb-alt: 100, 160, 76;
+
+  --pipboy-glow: 0 0 5px rgba(var(--pipboy-rgb), 0.5);
+  --pipboy-glow-intense: 0 0 10px rgba(var(--pipboy-rgb), 0.7);
+  --pipboy-glow-subtle: 0 0 2px rgba(var(--pipboy-rgb), 0.4);
+
+  /* Syntax highlighting palette */
+  --syntax-default: #7ABF5E;
+  --syntax-keyword: #C8B060;
+  --syntax-keyword-dark: #5E9A40;
+  --syntax-string: #96D47A;
+  --syntax-function: #8CC870;
+  --syntax-number: #60C880;
+  --syntax-attribute: #B0D8A0;
+  --syntax-operator: #4E8A2C;
+  --syntax-comment: #3A6828;
+  --syntax-error: #E05040;
+  --syntax-bg: #061106;
+  --syntax-line-highlight: #0E200E;
+  --syntax-line-number: #3A6A3A;
+  --syntax-error-bg: #1A0800;
   
   /* Typography Scale - Desktop (final rendered sizes, no multipliers) */
   --font-size-base: 18px;       /* rem anchor */
@@ -95,7 +116,7 @@ body {
   color: var(--pipboy-green);
   font-family: var(--pipboy-terminal-font);
   line-height: var(--line-height-base);
-  text-shadow: 0 0 2px rgba(65, 255, 0, 0.5);
+  text-shadow: 0 0 2px rgba(var(--pipboy-rgb), 0.5);
   margin: 0;
   padding: 0;
   /* Add subtle flicker animation for authenticity */
@@ -181,7 +202,7 @@ body::after {
   height: 100%;
   background: 
     radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.7) 100%),
-    radial-gradient(ellipse at center, rgba(65, 255, 0, 0.1) 0%, transparent 50%);
+    radial-gradient(ellipse at center, rgba(var(--pipboy-rgb), 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: 1001;
   mix-blend-mode: multiply;
@@ -253,7 +274,7 @@ pre {
   font-family: 'D2Coding', 'Monofonto', var(--pipboy-terminal-font);
   font-size: var(--font-size-code);
   line-height: 1.5;
-  box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
+  box-shadow: inset 0 0 20px rgba(var(--pipboy-rgb), 0.1);
   /* 90's terminal style */
   letter-spacing: 0.02em;
   padding: 1rem;
@@ -271,7 +292,7 @@ pre code {
 /* Hugo syntax highlighting — inherit from pre */
 .highlight pre {
   font-size: var(--font-size-code);
-  text-shadow: 0 0 2px rgba(65, 255, 0, 0.3);
+  text-shadow: 0 0 2px rgba(var(--pipboy-rgb), 0.3);
 }
 
 .highlight pre code,
@@ -319,7 +340,7 @@ nav li {
   box-shadow: var(--pipboy-glow-intense);
   transform: translateY(-2px);
   border-color: var(--pipboy-green);
-  background-color: rgba(65, 255, 0, 0.05);
+  background-color: rgba(var(--pipboy-rgb), 0.05);
 }
 
 /* 푸터 */
@@ -450,7 +471,7 @@ footer p {
   border-bottom: 2px solid var(--pipboy-green);
   padding: 15px 0;
   margin-bottom: 30px;
-  box-shadow: 0 2px 10px rgba(65, 255, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(var(--pipboy-rgb), 0.3);
 }
 
 .pipboy-nav ul {
@@ -484,7 +505,7 @@ footer p {
   background-color: var(--pipboy-green);
   color: var(--pipboy-black);
   text-shadow: none;
-  box-shadow: 0 0 20px rgba(65, 255, 0, 0.8);
+  box-shadow: 0 0 20px rgba(var(--pipboy-rgb), 0.8);
 }
 
 .pipboy-nav a::before {
@@ -653,7 +674,7 @@ footer p {
   max-height: 300px;
   overflow-y: auto;
   white-space: pre-wrap;
-  box-shadow: inset 0 0 30px rgba(65, 255, 0, 0.1);
+  box-shadow: inset 0 0 30px rgba(var(--pipboy-rgb), 0.1);
 }
 
 .terminal-output::-webkit-scrollbar {
@@ -661,11 +682,11 @@ footer p {
 }
 
 .terminal-output::-webkit-scrollbar-track {
-  background: rgba(65, 255, 0, 0.1);
+  background: rgba(var(--pipboy-rgb), 0.1);
 }
 
 .terminal-output::-webkit-scrollbar-thumb {
-  background: rgba(65, 255, 0, 0.5);
+  background: rgba(var(--pipboy-rgb), 0.5);
   border-radius: 4px;
 }
 
@@ -675,8 +696,8 @@ footer p {
 
 /* Terminal focus states */
 .terminal-focused {
-  box-shadow: 0 0 30px rgba(65, 255, 0, 0.6);
-  background: rgba(65, 255, 0, 0.05);
+  box-shadow: 0 0 30px rgba(var(--pipboy-rgb), 0.6);
+  background: rgba(var(--pipboy-rgb), 0.05);
 }
 
 @keyframes terminal-flash {
@@ -684,7 +705,7 @@ footer p {
     background: transparent;
   }
   50% { 
-    background: rgba(65, 255, 0, 0.15);
+    background: rgba(var(--pipboy-rgb), 0.15);
   }
 }
 
@@ -785,7 +806,7 @@ footer p {
   padding: 3px 10px;
   border: 1px solid var(--pipboy-dark-green);
   border-radius: 2px;
-  background: rgba(65, 255, 0, 0.05);
+  background: rgba(var(--pipboy-rgb), 0.05);
   transition: all 0.3s ease;
   font-family: var(--pipboy-terminal-font);
 }
@@ -815,7 +836,7 @@ footer p {
   padding: 4px 12px;
   border: 1px solid var(--pipboy-dark-green);
   border-radius: 2px;
-  background: rgba(65, 255, 0, 0.03);
+  background: rgba(var(--pipboy-rgb), 0.03);
   transition: all 0.3s ease;
   white-space: nowrap;
 }
@@ -839,21 +860,21 @@ footer p {
 .tag-level-2 {
   font-size: 1rem;
   opacity: 0.75;
-  text-shadow: 0 0 3px rgba(65, 255, 0, 0.2);
+  text-shadow: 0 0 3px rgba(var(--pipboy-rgb), 0.2);
 }
 
 /* Level 3 */
 .tag-level-3 {
   font-size: 1.2rem;
   opacity: 0.85;
-  text-shadow: 0 0 5px rgba(65, 255, 0, 0.4);
+  text-shadow: 0 0 5px rgba(var(--pipboy-rgb), 0.4);
 }
 
 /* Level 4 */
 .tag-level-4 {
   font-size: 1.5rem;
   opacity: 0.95;
-  text-shadow: 0 0 8px rgba(65, 255, 0, 0.6);
+  text-shadow: 0 0 8px rgba(var(--pipboy-rgb), 0.6);
   border-color: var(--pipboy-green);
 }
 
@@ -861,9 +882,9 @@ footer p {
 .tag-level-5 {
   font-size: 1.8rem;
   opacity: 1;
-  text-shadow: 0 0 10px rgba(65, 255, 0, 0.8);
+  text-shadow: 0 0 10px rgba(var(--pipboy-rgb), 0.8);
   border-color: var(--pipboy-light-green);
-  background: rgba(65, 255, 0, 0.08);
+  background: rgba(var(--pipboy-rgb), 0.08);
 }
 
 /* 언어별 설정 수정 - 폰트 크기는 제거하고 다른 스타일만 유지 */
@@ -886,7 +907,7 @@ footer p {
   max-width: 100%;
   height: auto;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
+  box-shadow: 0 0 20px rgba(var(--pipboy-rgb), 0.6);
   transition: all 0.3s ease;
 }
 
@@ -909,7 +930,7 @@ footer p {
   width: 100%;
   height: 100%;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
+  box-shadow: 0 0 20px rgba(var(--pipboy-rgb), 0.6);
 }
 
 /* YouTube Shorts (9:16 세로 비디오) */
@@ -919,7 +940,7 @@ footer p {
   max-width: 400px;
   overflow: visible;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 20px rgba(65, 255, 0, 0.6);
+  box-shadow: 0 0 20px rgba(var(--pipboy-rgb), 0.6);
 }
 
 .video-container.video-container--shorts iframe {
@@ -962,7 +983,7 @@ footer p {
 .post-content a[href*="youtube.com"] img:hover,
 .post-content a[href*="youtu.be"] img:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 25px rgba(65, 255, 0, 0.9);
+  box-shadow: 0 0 25px rgba(var(--pipboy-rgb), 0.9);
 }
 
 /* General post content images */
@@ -972,7 +993,7 @@ footer p {
   max-width: 100%;
   height: auto;
   border: 2px solid var(--pipboy-green);
-  box-shadow: 0 0 20px rgba(65, 255, 0, 0.3);
+  box-shadow: 0 0 20px rgba(var(--pipboy-rgb), 0.3);
 }
 
 /* Larger images on desktop */
@@ -1088,14 +1109,14 @@ footer p {
 .lang-option:hover {
   color: var(--pipboy-green);
   border-color: var(--pipboy-green);
-  box-shadow: 0 0 5px rgba(65, 255, 0, 0.4);
-  text-shadow: 0 0 3px rgba(65, 255, 0, 0.6);
+  box-shadow: 0 0 5px rgba(var(--pipboy-rgb), 0.4);
+  text-shadow: 0 0 3px rgba(var(--pipboy-rgb), 0.6);
 }
 
 .lang-option.active {
   color: var(--pipboy-green);
   border-color: var(--pipboy-green);
-  background-color: rgba(65, 255, 0, 0.1);
+  background-color: rgba(var(--pipboy-rgb), 0.1);
   cursor: default;
   text-shadow: var(--pipboy-glow);
 }
@@ -1114,7 +1135,7 @@ footer p {
   font-size: var(--font-size-small);
   color: var(--pipboy-green);
   z-index: 1000;
-  box-shadow: 0 0 15px rgba(65, 255, 0, 0.3);
+  box-shadow: 0 0 15px rgba(var(--pipboy-rgb), 0.3);
   text-align: center;
   max-width: 90vw;
 }
@@ -1701,7 +1722,7 @@ article.post .post-content,
 }
 
 .posts-page .post-item:hover {
-  background: rgba(65, 255, 0, 0.05);
+  background: rgba(var(--pipboy-rgb), 0.05);
   box-shadow: var(--pipboy-glow-intense);
   border-color: var(--pipboy-green);
 }
@@ -1796,7 +1817,7 @@ article.post .post-content,
   border-radius: 0;
   padding: 1.5rem 1rem;
   margin: 1.5rem 0;
-  box-shadow: inset 0 0 20px rgba(65, 255, 0, 0.1);
+  box-shadow: inset 0 0 20px rgba(var(--pipboy-rgb), 0.1);
   overflow-x: auto;
   text-align: center;
 }
@@ -1811,44 +1832,44 @@ article.post .post-content,
 .mermaid .edgeLabel,
 .mermaid .label,
 .mermaid text {
-  fill: #41ff00 !important;
-  color: #41ff00 !important;
+  fill: var(--pipboy-green) !important;
+  color: var(--pipboy-green) !important;
 }
 
 /* Node styling */
 .mermaid .node rect,
 .mermaid .node circle,
 .mermaid .node polygon {
-  stroke: #29a000 !important;
+  stroke: var(--pipboy-dark-green) !important;
 }
 
 /* Edge/arrow lines */
 .mermaid .edgePath .path,
 .mermaid .flowchart-link {
-  stroke: #41ff00 !important;
+  stroke: var(--pipboy-green) !important;
 }
 
 /* Arrow markers */
 .mermaid marker path {
-  fill: #41ff00 !important;
-  stroke: #41ff00 !important;
+  fill: var(--pipboy-green) !important;
+  stroke: var(--pipboy-green) !important;
 }
 
 /* Cluster/subgraph borders */
 .mermaid .cluster rect {
-  stroke: #29a000 !important;
-  fill: #001a00 !important;
+  stroke: var(--pipboy-dark-green) !important;
+  fill: var(--pipboy-bg-alt) !important;
 }
 
 /* Sequence diagram lifelines */
 .mermaid line {
-  stroke: #29a000 !important;
+  stroke: var(--pipboy-dark-green) !important;
 }
 
 /* Sequence diagram actor boxes */
 .mermaid .actor {
-  stroke: #29a000 !important;
-  fill: #001100 !important;
+  stroke: var(--pipboy-dark-green) !important;
+  fill: var(--pipboy-bg-alt) !important;
 }
 
 @media (max-width: 810px) {

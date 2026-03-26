@@ -1,30 +1,30 @@
 {
   "colors": {
-    "accent": "#2bc52b",
+    "accent": "#7ABF5E",
     "accentFg": "#000000",
-    "border": "#2bc52b",
+    "border": "#4E8A2C",
     "button": {
       "bg": "#000000",
-      "border": "#2bc52b",
-      "fg": "#2bc52b",
-      "hoverBg": "#2bc52b",
+      "border": "#4E8A2C",
+      "fg": "#7ABF5E",
+      "hoverBg": "#4E8A2C",
       "hoverFg": "#000000"
     },
-    "buttonFg": "#2bc52b",
-    "fg": "#2bc52b",
-    "fgLight": "#2bc52b",
+    "buttonFg": "#7ABF5E",
+    "fg": "#7ABF5E",
+    "fgLight": "#96D47A",
     "headerBg": "#000000",
-    "headerFg": "#2bc52b",
+    "headerFg": "#7ABF5E",
     "input": {
       "bg": "#000000",
-      "border": "#2bc52b",
-      "fg": "#2bc52b",
-      "placeHolderFg": "#2bc52b"
+      "border": "#4E8A2C",
+      "fg": "#7ABF5E",
+      "placeHolderFg": "#4E8A2C"
     },
     "main": {
       "bg": "#000000",
-      "fg": "#2bc52b",
-      "fgLight": "#2bc52b"
+      "fg": "#7ABF5E",
+      "fgLight": "#96D47A"
     }
   }
-} 
+}

@@ -62,15 +62,7 @@ Press any key to return to homepage...
 </div>
 
 <style>
-:root {
-  --pipboy-green: #4caf50;
-  --pipboy-dark-green: #1b5e20;
-  --pipboy-light-green: #a5d6a7;
-  --pipboy-black: #0a0a0a;
-  --pipboy-bg: #0a0f0d;
-  --pipboy-terminal-font: 'DungGeunMo', 'Nanum Gothic Coding', 'Share Tech Mono', 'VT323', monospace;
-  --pipboy-glow: 0 0 10px rgba(76, 175, 80, 0.7);
-}
+/* 404 page inherits :root variables from pipboy.css */
 
 body {
   background-color: var(--pipboy-bg) !important;
@@ -88,7 +80,7 @@ body {
   font-size: 18px !important;
   line-height: 1.5;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+  box-shadow: 0 0 10px rgba(var(--pipboy-rgb-alt), 0.7);
   text-shadow: var(--pipboy-glow);
   margin: 50px auto;
   max-width: 800px;

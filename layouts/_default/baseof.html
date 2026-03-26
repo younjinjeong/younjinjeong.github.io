@@ -59,30 +59,36 @@
   {{ if .Store.Get "hasMermaid" }}
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'dark',
-      themeVariables: {
-        darkMode: true,
-        primaryColor: '#003300',
-        primaryTextColor: '#41ff00',
-        primaryBorderColor: '#29a000',
-        lineColor: '#41ff00',
-        secondaryColor: '#001a00',
-        tertiaryColor: '#002200',
-        noteBkgColor: '#001100',
-        noteTextColor: '#41ff00',
-        noteBorderColor: '#29a000',
-        actorTextColor: '#41ff00',
-        actorBorder: '#29a000',
-        actorBkg: '#001100',
-        labelTextColor: '#41ff00',
-        edgeLabelBackground: '#001100',
-        clusterBkg: '#001a00',
-        clusterBorder: '#29a000',
-        fontFamily: 'Monofonto, VT323, monospace'
-      }
-    });
+    (function() {
+      var cs = getComputedStyle(document.documentElement);
+      var green = cs.getPropertyValue('--pipboy-green').trim();
+      var darkGreen = cs.getPropertyValue('--pipboy-dark-green').trim();
+      var bgAlt = cs.getPropertyValue('--pipboy-bg-alt').trim();
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+          darkMode: true,
+          primaryColor: bgAlt,
+          primaryTextColor: green,
+          primaryBorderColor: darkGreen,
+          lineColor: green,
+          secondaryColor: bgAlt,
+          tertiaryColor: bgAlt,
+          noteBkgColor: bgAlt,
+          noteTextColor: green,
+          noteBorderColor: darkGreen,
+          actorTextColor: green,
+          actorBorder: darkGreen,
+          actorBkg: bgAlt,
+          labelTextColor: green,
+          edgeLabelBackground: bgAlt,
+          clusterBkg: bgAlt,
+          clusterBorder: darkGreen,
+          fontFamily: 'Monofonto, VT323, monospace'
+        }
+      });
+    })();
   </script>
   {{ end }}
 
@@ -90,5 +96,8 @@
   <div class="terminal-shortcut-hint">
     Press Shift+T for terminal
   </div>
+
+  <!-- Color scheme selector — lets visitors pick their preferred display color -->
+  <script type="application/javascript" src="/js/color-scheme-selector.js"></script>
 </body>
 </html>
