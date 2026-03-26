@@ -115,8 +115,8 @@
       0deg,
       transparent,
       transparent 2px,
-      rgba(76, 175, 80, 0.03) 2px,
-      rgba(76, 175, 80, 0.03) 4px
+      rgba(var(--pipboy-rgb-alt), 0.03) 2px,
+      rgba(var(--pipboy-rgb-alt), 0.03) 4px
     );
     pointer-events: none;
   }
@@ -135,7 +135,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background: rgba(76, 175, 80, 0.1);
+    background: rgba(var(--pipboy-rgb-alt), 0.1);
     border: 1px solid var(--pipboy-green);
     border-radius: 4px;
   }
@@ -264,7 +264,7 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
+    filter: drop-shadow(0 0 20px rgba(var(--pipboy-rgb-alt), 0.5));
   }
 
   .boot-terminal {
@@ -323,7 +323,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background: rgba(76, 175, 80, 0.1);
+    background: rgba(var(--pipboy-rgb-alt), 0.1);
     border: 1px solid var(--pipboy-green);
     border-radius: 4px;
   }
