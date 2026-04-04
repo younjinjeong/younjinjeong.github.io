@@ -21,7 +21,7 @@ translations:
 
 ## 프로젝트의 세 시대
 
-MegaDB는 Rust로 작성된 데이터베이스 엔진이다. OLTP와 OLAP를 모두 지원하고, SQL 파서, pgwire 프로토콜, gRPC, K8s 오퍼레이터, 벡터 검색, 그래프 쿼리까지 포함하는 꽤 큰 규모의 시스템이다.
+[MegaDB](/2026/03/megadb-ko/)는 Rust로 작성된 데이터베이스 엔진이다. OLTP와 OLAP를 모두 지원하고, SQL 파서, pgwire 프로토콜, gRPC, K8s 오퍼레이터, 벡터 검색, 그래프 쿼리까지 포함하는 꽤 큰 규모의 시스템이다.
 
 개발은 세 단계를 거쳤다.
 
