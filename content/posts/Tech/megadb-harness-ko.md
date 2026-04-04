@@ -1,7 +1,7 @@
 ---
 title: "24시간 멈추지 않는 AI 개발팀 — MegaDB 멀티머신 하네스 회고"
 url: "/2026/04/megadb-harness-ko/"
-date: 2026-04-05T12:00:00+09:00
+date: 2026-04-05T00:00:00+09:00
 draft: false
 comments: true
 authors:
