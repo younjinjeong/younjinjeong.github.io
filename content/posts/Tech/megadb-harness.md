@@ -20,7 +20,7 @@ For the past month and a half, I shipped what would have taken me years to build
 
 ## Three Eras of MegaDB
 
-MegaDB is a database engine written in Rust. It handles both OLTP and OLAP, includes a SQL parser, pgwire protocol, gRPC, Kubernetes operators, vector search, graph queries — a substantial system.
+[MegaDB](/2026/03/megadb/) is a database engine written in Rust. It handles both OLTP and OLAP, includes a SQL parser, pgwire protocol, gRPC, Kubernetes operators, vector search, graph queries — a substantial system.
 
 Development unfolded in three distinct eras:
 
