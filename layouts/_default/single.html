@@ -1,7 +1,6 @@
 {{ define "main" }}
 <article class="post"{{ with .Params.content_lang }} lang="{{ . }}"{{ end }}>
   <header>
-    <h1>{{ .Title }}</h1>
     <div class="post-meta">
       <time>{{ .Date.Format "2006-01-02" }}</time>
       <span class="reading-time">{{ .ReadingTime }} min read</span>
@@ -21,6 +20,7 @@
       {{ end }}
     </div>
     {{ partial "language-switcher.html" . }}
+    <h1>{{ .Title }}</h1>
   </header>
   
   <div class="post-content">
