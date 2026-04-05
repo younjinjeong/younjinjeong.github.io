@@ -1,0 +1,16 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+  '''\.git/''',
+  '''public/''',
+  '''node_modules/''',
+  '''themes/''',
+  '''.env\.example''',
+]
+regexTarget = "match"
+regexes = [
+  '''younjin\.jeong@gmail\.com''',
+]
